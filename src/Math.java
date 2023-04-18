@@ -4,12 +4,25 @@ public class Math {
     {
         type x;
         type y;
+
+        void SetValues(type x , type y)
+        {
+            this.x = x;
+            this.y = y;
+        }
     }
     class Vec3<type>
     {
         type x;
         type y;
         type z;
+
+        void SetValues(type x , type y , type z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
     }
     class Vec4<type>
     {
@@ -17,6 +30,15 @@ public class Math {
         type y;
         type z;
         type w;
+
+        void SetValues(type x , type y , type z ,type w)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.w = w;
+        }
+
     }
 
 
