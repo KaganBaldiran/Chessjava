@@ -7,13 +7,19 @@ public abstract class piece {
     Tile TilePieceStandingOn;
 
     Vector<Math.Vec2<Integer>> Possible_Moves;
-
     int Color;
 
     piece(int x_cord, int y_cord , int color)
     {
        this.Coordinates.SetValues(x_cord,y_cord);
        this.Color = color;
+    }
+
+    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
+    {
+        this.Coordinates.SetValues(x_cord,y_cord);
+        this.Color = color;
+        this.TilePieceStandingOn = TilePieceStandingOn;
     }
 
     void ReferenceTile(Tile input_tile)
