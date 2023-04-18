@@ -4,6 +4,10 @@ public class Tile
     Math.Vec2<Integer>  Tilecoordinates;
     boolean TileEmpty;
 
+<<<<<<< Updated upstream
+=======
+    s
+>>>>>>> Stashed changes
     Tile()
     {
         TileEmpty = true;
