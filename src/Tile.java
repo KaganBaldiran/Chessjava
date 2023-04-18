@@ -5,7 +5,7 @@ public class Tile
 {
     Math.Vec2<Integer>  Tilecoordinates;
     boolean TileEmpty;
-    piece PieceOnThisTile;
+
     int Color;
     static final int BLACK = 0;
     static final int WHITE = 1;
@@ -21,12 +21,11 @@ public class Tile
         Tilecoordinates = coordinate;
     }
 
-    void SetPiece(piece CurrentPiece)
+    void SetEmptinessState(boolean CurrentTileState)
     {
-        this.PieceOnThisTile = CurrentPiece;
-        TileEmpty = false;
+        TileEmpty = CurrentTileState;
     }
-    
+
     public boolean isTileEmpty() {
         return TileEmpty;
     }

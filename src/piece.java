@@ -4,6 +4,8 @@ public abstract class piece {
 
     Math.Vec2<Integer> Coordinates;
 
+    Tile TilePieceStandingOn;
+
     Vector<Math.Vec2<Integer>> Possible_Moves;
 
     int Color;
@@ -12,6 +14,11 @@ public abstract class piece {
     {
        this.Coordinates.SetValues(x_cord,y_cord);
        this.Color = color;
+    }
+
+    void ReferenceTile(Tile input_tile)
+    {
+        this.TilePieceStandingOn = input_tile;
     }
 
     public abstract void Move(int newX,int newY);

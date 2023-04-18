@@ -1,3 +1,4 @@
+import javax.lang.model.type.NullType;
 import java.util.Vector;
 
 public class Board
@@ -5,11 +6,16 @@ public class Board
     Vector<Tile> Tiles;
 
     public void Board() {
+
         Integer TempColor = 0;
         Integer ColorCounter = 0;
+
         Math.Vec2<Integer> TempLocation = new Math.Vec2<>();
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
+
+        for (int y = 1; y < 9; y++) {
+
+            for (int x = 1; x < 9; x++) {
+
                 if (ColorCounter > 1) {
                     ColorCounter = 0;
                 }
@@ -18,11 +24,44 @@ public class Board
                 } else if (ColorCounter == 1) {
                     TempColor = 1;
                 }
+
                 TempLocation.SetValues(x, y);
                 Tiles.add(new Tile(TempColor, TempLocation));
                 ColorCounter++;
+
             }
+
         }
     }
+
+    Tile FetchTile(int x_cord , int y_cord)
+    {
+        Tile returntile = null;
+
+        if (!Tiles.isEmpty())
+        {
+            int index = (y_cord - 1) * 8 + (x_cord - 1);
+
+            if (index >= 0)
+            {
+                returntile = Tiles.get(index);
+            }
+
+        }
+
+        return returntile;
+    };
+
+    Tile FetchTile(int index_in_array)
+    {
+        Tile returntile = null;
+
+        if (index_in_array >= 0)
+        {
+            returntile = Tiles.get(index_in_array);
+        }
+
+        return returntile;
+    };
 
 }

@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 public class King extends piece
 {
     King(int x_cord , int y_cord , int color)
@@ -13,5 +15,10 @@ public class King extends piece
     public void capture()
     {
 
+    }
+
+    @Override
+    public Vector<Math.Vec2<Integer>> GetPossibleMoves() {
+        return null;
     }
 }

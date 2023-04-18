@@ -1,5 +1,7 @@
+import java.util.Vector;
+
 public class Pawn extends piece{
-    
+
     Pawn(int x_cord , int y_cord , int color){
 
         super(x_cord, y_cord, color);
@@ -13,5 +15,10 @@ public class Pawn extends piece{
     @Override
     public void capture() {
 
+    }
+
+    @Override
+    public Vector<Math.Vec2<Integer>> GetPossibleMoves() {
+        return null;
     }
 }

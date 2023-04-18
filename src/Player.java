@@ -9,11 +9,6 @@ public class Player
     {
         this.Color = color;
 
-        for (int i = 0; i < 2; i++)
-        {
-            if (this.Color == )
-            pieces.add(new Rook())
-        }
     }
 
 
