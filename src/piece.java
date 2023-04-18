@@ -1,6 +1,11 @@
+import java.util.Vector;
+
 public abstract class piece {
 
     Math.Vec2<Integer> Coordinates;
+
+    Vector<Math.Vec2<Integer>> Possible_Moves;
+
     int Color;
 
     piece(int x_cord, int y_cord , int color)
@@ -11,6 +16,7 @@ public abstract class piece {
 
     public abstract void Move(int newX,int newY);
     public abstract void capture();
+    public abstract Vector<Math.Vec2<Integer>> GetPossibleMoves();
 
 }
 
