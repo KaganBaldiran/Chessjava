@@ -1,6 +1,6 @@
 public class Math {
 
-    class Vec2<type>
+    public static class Vec2<type>
     {
         type x;
         type y;
@@ -11,7 +11,7 @@ public class Math {
             this.y = y;
         }
     }
-    class Vec3<type>
+    public static class Vec3<type>
     {
         type x;
         type y;
@@ -24,7 +24,7 @@ public class Math {
             this.z = z;
         }
     }
-    class Vec4<type>
+    public static class Vec4<type>
     {
         type x;
         type y;
