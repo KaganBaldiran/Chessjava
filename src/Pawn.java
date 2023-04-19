@@ -3,7 +3,7 @@ import java.util.Vector;
 public class Pawn extends piece{
 
     boolean First_turn;
-    Vector<Math.Vec2<Integer>> PossibleMoves;
+    
     Math.Vec2<Integer> tileTracer;
 
     Pawn(int x_cord , int y_cord , int color){
@@ -37,7 +37,7 @@ public class Pawn extends piece{
                 {
                     tileTracer.y += 2;
                     this.First_turn = false;
-                    GetPossibleMoves((this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
+                    GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
 
                 }
                 else if (!this.First_turn)
@@ -68,9 +68,9 @@ public class Pawn extends piece{
         else if(!isTileEmpty)
         {
 
-            if(!this.PossibleMoves.isEmpty())
+            if(!this.Possible_Moves.isEmpty())
             {
-                this.PossibleMoves.clear();
+                this.Possible_Moves.clear();
             }
 
             if (this.Color == Tile.WHITE)
@@ -82,7 +82,7 @@ public class Pawn extends piece{
                 Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y+1));
             }
 
-            return this.PossibleMoves;
+            return this.Possible_Moves;
         }
         return null;
     }

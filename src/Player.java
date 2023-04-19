@@ -8,7 +8,6 @@ public class Player
     Player(int color)
     {
         this.Color = color;
-
     }
 
 
