@@ -26,6 +26,8 @@ public class Tile
         TileEmpty = CurrentTileState;
     }
 
+
+
     public boolean isTileEmpty() {
         return TileEmpty;
     }

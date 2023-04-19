@@ -19,7 +19,7 @@ public class Queen extends piece
     }
 
     @Override
-    public Vector<Math.Vec2<Integer>> GetPossibleMoves() {
+    public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty) {
         return null;
     }
 }

@@ -13,7 +13,16 @@ public class Pawn extends piece{
         Math.Vec2<Integer> tileTracer = new Math.Vec2<>();
 
     }
-    @Override
+    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
+    {
+        super(x_cord, y_cord, color, TilePieceStandingOn);
+    }
+    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard)
+    {
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard);
+    }
+
+        @Override
     public void Move(int newX, int newY) {
         this.Coordinates.SetValues(newX,newY);
     }
@@ -30,38 +39,23 @@ public class Pawn extends piece{
         if (isTileEmpty)
         {
 
-            if (this.Color == Tile.WHITE)
+            tileTracer.SetValues(this.Coordinates);
+            if (this.First_turn)
             {
-                tileTracer.SetValues(this.Coordinates);
-                if (this.First_turn)
-                {
-                    tileTracer.y += 2;
-                    this.First_turn = false;
-                    GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
+                tileTracer.y += 2;
+                this.First_turn = false;
+                GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
 
-                }
-                else if (!this.First_turn)
-                {
-                    tileTracer.y += 1;
-                    GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
-                }
             }
-            else if (this.Color == Tile.BLACK)
+            else if (!this.First_turn)
             {
-                tileTracer.SetValues(this.Coordinates);
-                if (this.First_turn)
-                {
-                    tileTracer.y -= 2;
-                    this.First_turn = false;
-                    GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
+                tileTracer.y += 1;
+                GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
+            }
 
-                }
-                else if (!this.First_turn)
-                {
-                    tileTracer.y -= 1;
-                    GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
-
-                }
+            if (this.Color == Tile.BLACK)
+            {
+                Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
             }
 
         }
@@ -73,14 +67,7 @@ public class Pawn extends piece{
                 this.Possible_Moves.clear();
             }
 
-            if (this.Color == Tile.WHITE)
-            {
-                Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y-1));
-            }
-            else if (this.Color == Tile.BLACK)
-            {
-                Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y+1));
-            }
+            Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y-1));
 
             return this.Possible_Moves;
         }
