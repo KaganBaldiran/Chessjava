@@ -16,7 +16,12 @@ class MyGUI extends JFrame {
 
     public static void main(String[] args)
     {
-        new MyGUI();
+        JFrame frame = new JFrame("Chess Board");
+        Board chessBoard = new Board();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1025, 1025);
+        frame.add(chessBoard);
+        frame.setVisible(true);
 
         Math.Vec2<Integer> temp = new Math.Vec2<>(6,2);
 

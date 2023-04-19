@@ -1,11 +1,12 @@
 import javax.lang.model.type.NullType;
 import javax.swing.*;
+import java.awt.*;
 import java.util.Vector;
 
 public class Board extends JPanel
 {
     Vector<Tile> Tiles = new Vector<>();
-    private static final int SQUARE_SIZE = 50;
+    static final int SQUARE_SIZE = 1000 / 8;
 
     Board() {
 
@@ -71,13 +72,33 @@ public class Board extends JPanel
         return returntile;
     };
 
-    public void DrawTheChessBoard()
-    {
-        
 
+    @Override
+    protected void paintComponent(Graphics g) {
 
+        super.paintComponent(g);
 
+        // Draw chessboard squares
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                int x = col * SQUARE_SIZE;
+                int y = row * SQUARE_SIZE;
+                if ((row + col) % 2 == 0) {
+                    g.setColor(Color.WHITE);
+                } else {
+                    g.setColor(Color.GRAY);
+                }
+                g.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
+            }
+        }
 
-    };
+        // Draw chess pieces
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.PLAIN, 40));
+        g.drawString("♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜", 0, SQUARE_SIZE);
+        g.drawString("♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟", 0, 2 * SQUARE_SIZE);
+        g.drawString("♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙", 0, 6 * SQUARE_SIZE);
+        g.drawString("♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖", 0, 7 * SQUARE_SIZE);
+    }
 
 }
