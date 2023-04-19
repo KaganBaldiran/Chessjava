@@ -39,6 +39,10 @@ public abstract class piece {
     {
         return CurrentGameBoard.Tiles.get(tile_index).isTileEmpty();
     };
+    public boolean IsTileEmpty(Tile tile_i)
+    {
+        return tile_i.isTileEmpty();
+    };
 
     public abstract void Move(int newX,int newY);
     public abstract void capture();

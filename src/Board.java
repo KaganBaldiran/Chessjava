@@ -34,7 +34,7 @@ public class Board
         }
     }
 
-    Tile FetchTile(int x_cord , int y_cord)
+    public Tile FetchTile(int x_cord , int y_cord)
     {
         Tile returntile = null;
 
@@ -52,7 +52,7 @@ public class Board
         return returntile;
     };
 
-    Tile FetchTile(int index_in_array)
+    public Tile FetchTile(int index_in_array)
     {
         Tile returntile = null;
 

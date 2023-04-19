@@ -4,11 +4,13 @@ public class Pawn extends piece{
 
     boolean First_turn;
     Vector<Math.Vec2<Integer>> PossibleMoves;
+    Math.Vec2<Integer> tileTracer;
 
     Pawn(int x_cord , int y_cord , int color){
 
         super(x_cord, y_cord, color);
         this.First_turn = true;
+        Math.Vec2<Integer> tileTracer = new Math.Vec2<>();
 
     }
     @Override
@@ -17,7 +19,8 @@ public class Pawn extends piece{
     }
 
     @Override
-    public void capture() {
+    public void capture()
+    {
 
     }
 
@@ -26,38 +29,60 @@ public class Pawn extends piece{
 
         if (isTileEmpty)
         {
-            Math.Vec2<Integer> tileTracer = new Math.Vec2<>(this.Coordinates);
+
             if (this.Color == Tile.WHITE)
             {
+                tileTracer.SetValues(this.Coordinates);
                 if (this.First_turn)
                 {
                     tileTracer.y += 2;
-                    GetPossibleMoves(this.IsTileEmpty(tileTracer.y));
                     this.First_turn = false;
+                    GetPossibleMoves((this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
+
                 }
                 else if (!this.First_turn)
                 {
                     tileTracer.y += 1;
-                    GetPossibleMoves(this.IsTileEmpty(tileTracer.y));
+                    GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
                 }
             }
             else if (this.Color == Tile.BLACK)
             {
+                tileTracer.SetValues(this.Coordinates);
                 if (this.First_turn)
                 {
                     tileTracer.y -= 2;
-                    GetPossibleMoves(this.IsTileEmpty(tileTracer.y));
                     this.First_turn = false;
+                    GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
 
                 }
                 else if (!this.First_turn)
                 {
                     tileTracer.y -= 1;
-                    GetPossibleMoves(this.IsTileEmpty(tileTracer.y));
+                    GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
 
                 }
             }
 
+        }
+        else if(!isTileEmpty)
+        {
+
+            if(!this.PossibleMoves.isEmpty())
+            {
+                this.PossibleMoves.clear();
+            }
+
+            if (this.Color == Tile.WHITE)
+            {
+                Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y-1));
+            }
+            else if (this.Color == Tile.BLACK)
+            {
+                Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y+1));
+            }
+
+            return this.PossibleMoves;
         }
         return null;
     }
