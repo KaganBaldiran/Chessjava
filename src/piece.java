@@ -7,7 +7,7 @@ public abstract class piece {
     Tile TilePieceStandingOn;
 
     Board CurrentGameBoard;
-    Vector<Math.Vec2<Integer>> Possible_Moves;
+    Vector<Math.Vec2<Integer>> Possible_Moves = new Vector<>();
     int Color;
 
     piece(int x_cord, int y_cord , int color)

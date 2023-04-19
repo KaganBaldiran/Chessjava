@@ -5,6 +5,7 @@ public class Pawn extends piece{
     boolean First_turn;
     
     Math.Vec2<Integer> tileTracer;
+    int Count_of_reco = 0;
 
     Pawn(int x_cord , int y_cord , int color)
     {
@@ -35,14 +36,17 @@ public class Pawn extends piece{
     @Override
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty) {
 
-        if (isTileEmpty)
+
+        if (isTileEmpty && this.Count_of_reco < 2)
         {
+            this.Count_of_reco++;
             tileTracer.SetValues(this.Coordinates);
             if (this.First_turn)
             {
                 tileTracer.y += 2;
                 this.First_turn = false;
 
+                this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
 
             }
@@ -59,15 +63,18 @@ public class Pawn extends piece{
             }
 
         }
-        else if(!isTileEmpty)
+        else if(!isTileEmpty || this.Count_of_reco == 2)
         {
 
-            if(!this.Possible_Moves.isEmpty())
+            if(!this.Possible_Moves.isEmpty() && !this.First_turn)
             {
                 this.Possible_Moves.clear();
             }
 
-            Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y-1));
+            this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
+
+
+            System.out.println("INSIDE THE RECURSIVE FUNCTION: "+ String.valueOf(tileTracer.x) + " " + String.valueOf(tileTracer.y));
 
             return this.Possible_Moves;
         }

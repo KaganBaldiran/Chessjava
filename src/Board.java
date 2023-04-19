@@ -1,9 +1,11 @@
 import javax.lang.model.type.NullType;
+import javax.swing.*;
 import java.util.Vector;
 
-public class Board
+public class Board extends JPanel
 {
     Vector<Tile> Tiles = new Vector<>();
+    private static final int SQUARE_SIZE = 50;
 
     Board() {
 
@@ -67,6 +69,15 @@ public class Board
         }
 
         return returntile;
+    };
+
+    public void DrawTheChessBoard()
+    {
+        
+
+
+
+
     };
 
 }

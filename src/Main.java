@@ -22,16 +22,14 @@ class MyGUI extends JFrame {
 
         Math.UV_Tools.Invert_Y_Axis(temp,Tile.BLACK);
 
-        Pawn newPawn = new Pawn(1,2,Tile.WHITE);
+        Pawn newPawn = new Pawn(3,5,Tile.WHITE);
 
         newPawn.GetPossibleMoves(true);
 
         for (int i = 0; i < newPawn.Possible_Moves.size(); i++)
         {
-            System.out.println(String.valueOf(newPawn.Possible_Moves.get(i)));
+            System.out.println(String.valueOf(newPawn.Possible_Moves.get(i).x) + " " + String.valueOf(newPawn.Possible_Moves.get(i).y));
         }
-
-        //System.out.println(String.valueOf(temp.x) + " " + String.valueOf(temp.y));
 
     }
 
