@@ -6,12 +6,11 @@ public class Pawn extends piece{
     
     Math.Vec2<Integer> tileTracer;
 
-    Pawn(int x_cord , int y_cord , int color){
-
+    Pawn(int x_cord , int y_cord , int color)
+    {
         super(x_cord, y_cord, color);
         this.First_turn = true;
-        Math.Vec2<Integer> tileTracer = new Math.Vec2<>();
-
+        this.tileTracer = new Math.Vec2<>();
     }
     Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
     {
@@ -38,18 +37,19 @@ public class Pawn extends piece{
 
         if (isTileEmpty)
         {
-
             tileTracer.SetValues(this.Coordinates);
             if (this.First_turn)
             {
                 tileTracer.y += 2;
                 this.First_turn = false;
+
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
 
             }
             else if (!this.First_turn)
             {
                 tileTracer.y += 1;
+                System.out.println(String.valueOf(tileTracer.x) + " " + String.valueOf(tileTracer.y));
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
             }
 

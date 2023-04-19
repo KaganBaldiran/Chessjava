@@ -24,7 +24,14 @@ class MyGUI extends JFrame {
 
         Pawn newPawn = new Pawn(1,2,Tile.WHITE);
 
-        System.out.println(String.valueOf(temp.x) + " " + String.valueOf(temp.y));
+        newPawn.GetPossibleMoves(true);
+
+        for (int i = 0; i < newPawn.Possible_Moves.size(); i++)
+        {
+            System.out.println(String.valueOf(newPawn.Possible_Moves.get(i)));
+        }
+
+        //System.out.println(String.valueOf(temp.x) + " " + String.valueOf(temp.y));
 
     }
 

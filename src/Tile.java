@@ -3,7 +3,7 @@
 
 public class Tile
 {
-    Math.Vec2<Integer>  Tilecoordinates;
+    Math.Vec2<Integer>  Tilecoordinates = new Math.Vec2<>();
     boolean TileEmpty;
 
     int Color;
@@ -18,14 +18,13 @@ public class Tile
     {
         TileEmpty = true;
         this.Color = Color;
-        Tilecoordinates = coordinate;
+        Tilecoordinates.SetValues(coordinate);
     }
 
     void SetEmptinessState(boolean CurrentTileState)
     {
         TileEmpty = CurrentTileState;
     }
-
 
 
     public boolean isTileEmpty() {

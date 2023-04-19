@@ -3,12 +3,12 @@ import java.util.Vector;
 
 public class Board
 {
-    Vector<Tile> Tiles;
+    Vector<Tile> Tiles = new Vector<>();
 
-    public void Board() {
+    Board() {
 
-        Integer TempColor = 0;
-        Integer ColorCounter = 0;
+        int TempColor = 0;
+        int ColorCounter = 0;
 
         Math.Vec2<Integer> TempLocation = new Math.Vec2<>();
 
@@ -38,9 +38,12 @@ public class Board
     {
         Tile returntile = null;
 
-        if (!Tiles.isEmpty())
+        if (!this.Tiles.isEmpty())
         {
-            int index = (y_cord - 1) * 8 + (x_cord - 1);
+
+            int index = ((y_cord - 1) * 8) + (x_cord - 1);
+
+            System.out.println("INDEX: " + String.valueOf(index) );
 
             if (index >= 0)
             {
@@ -48,6 +51,8 @@ public class Board
             }
 
         }
+
+        System.out.println("INSIDE THE FUNCTION: " + String.valueOf(returntile.Tilecoordinates.x) + " " +  String.valueOf(returntile.Tilecoordinates.y) );
 
         return returntile;
     };

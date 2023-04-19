@@ -14,6 +14,7 @@ public abstract class piece {
     {
         this.Coordinates = new Math.Vec2<>();
        this.Coordinates.SetValues(x_cord,y_cord);
+       this.CurrentGameBoard = new Board();
        this.Color = color;
     }
     piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
@@ -21,6 +22,7 @@ public abstract class piece {
         this.Coordinates.SetValues(x_cord,y_cord);
         this.Color = color;
         this.TilePieceStandingOn = TilePieceStandingOn;
+        this.CurrentGameBoard = new Board();
     }
     piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard)
     {
