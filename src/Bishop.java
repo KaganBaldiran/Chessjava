@@ -3,6 +3,10 @@ import java.util.Vector;
 public class Bishop extends piece{
 
 
+    public static final int RIGHT_UP = 1;
+    public static final int RIGHT_DOWN = 2;
+    public static final int LEFT_UP = 3;
+    public static final int LEFT_DOWN = 4;
 
     Bishop(int x_cord , int y_cord , int color)
     {
@@ -131,7 +135,7 @@ public class Bishop extends piece{
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
 
         }
-        else
+        if (!isTileEmpty || this.Side > LEFT_DOWN)
         {
             this.Side = RIGHT_UP;
             return this.Possible_Moves;
