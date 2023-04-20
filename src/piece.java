@@ -1,6 +1,7 @@
+import javax.swing.*;
 import java.util.Vector;
 
-public abstract class piece {
+public abstract class piece extends JPanel {
 
     Math.Vec2<Integer> Coordinates;
 

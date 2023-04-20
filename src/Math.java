@@ -128,18 +128,23 @@ public class Math {
         static public Math.Vec2<Integer> Board_Size = new Vec2<>(8,8);
         static public Math.Vec2<Integer> Invert_Y_Axis(Math.Vec2<Integer> Tile_to_invert_Cord, int Current_Up_Color)
         {
+
+            Vec2<Integer> result = new Vec2<>();
+
              if (Current_Up_Color == Tile.BLACK)
              {
-                 Tile_to_invert_Cord.y = Board_Size.y - (Tile_to_invert_Cord.y - 1);
+                 //Tile_to_invert_Cord.y = Board_Size.y - (Tile_to_invert_Cord.y - 1);
+                 result.SetValues(Tile_to_invert_Cord.x,Board_Size.y - (Tile_to_invert_Cord.y - 1));
                  System.out.println("its BLACK");
              }
             else if (Current_Up_Color == Tile.WHITE)
             {
-                Tile_to_invert_Cord.y = 1 + (Board_Size.y - Tile_to_invert_Cord.y);
+                //Tile_to_invert_Cord.y = 1 + (Board_Size.y - Tile_to_invert_Cord.y);
+                result.SetValues(Tile_to_invert_Cord.x,1 + (Board_Size.y - Tile_to_invert_Cord.y));
                 System.out.println("its WHITE");
 
             }
-            return Tile_to_invert_Cord;
+            return result;
         }
 
     }

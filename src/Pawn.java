@@ -1,6 +1,7 @@
+import javax.swing.*;
 import java.util.Vector;
 
-public class Pawn extends piece{
+public class Pawn extends piece {
 
     boolean First_turn;
     
