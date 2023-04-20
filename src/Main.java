@@ -30,6 +30,8 @@ class MyGUI extends JFrame {
 
         Pawn newPawn = new Pawn(3,5,Tile.WHITE);
 
+        Bishop newBishop = new Bishop(4,5,Tile.WHITE);
+
         Board newboard = new Board();
 
         Player newplayer = new Player(Tile.WHITE,newboard);
@@ -39,9 +41,16 @@ class MyGUI extends JFrame {
         Vector<Math.Vec2<Integer>> result = newPawn.GetPossibleMoves(true, newPawn.Coordinates);
         result = newPawn.GetPossibleMoves(true, newPawn.Coordinates);
 
+        newBishop.GetPossibleMoves(true,newBishop.Coordinates);
+
         for (int i = 0; i < newPawn.Possible_Moves.size(); i++)
         {
             System.out.println("Possible moves: " + newPawn.Possible_Moves.size() + " " + String.valueOf(newPawn.Possible_Moves.get(i).x) + " " + String.valueOf(newPawn.Possible_Moves.get(i).y));
+        }
+
+        for (int i = 0; i < newBishop.Possible_Moves.size(); i++)
+        {
+            System.out.println("Possible moves: " + newBishop.Possible_Moves.size() + " " + String.valueOf(newBishop.Possible_Moves.get(i).x) + " " + String.valueOf(newBishop.Possible_Moves.get(i).y));
         }
 
     }
