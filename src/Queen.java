@@ -13,7 +13,6 @@ public class Queen extends piece
     public static final int LEFT_DOWN = 8;
 
 
-
     Queen(int x_cord,int y_cord,int color)
     {
         super(x_cord, y_cord, color);
@@ -49,13 +48,8 @@ public class Queen extends piece
             this.SwitchSide = false;
         }
 
-        if (isTileEmpty && !(this.CurrentGameBoard.MinMaxBoundaries.x >= input_Coordinates.x ||
-                this.CurrentGameBoard.MinMaxBoundaries.y <= input_Coordinates.x ||
-                this.CurrentGameBoard.MinMaxBoundaries.z >= input_Coordinates.y ||
-                this.CurrentGameBoard.MinMaxBoundaries.w <= input_Coordinates.y))
-        {
 
-            if (this.Side == UP)
+            if (this.Side == UP && input_Coordinates.y < 8)
             {
                 tileTracer.SetValues(input_Coordinates);
 
@@ -70,7 +64,7 @@ public class Queen extends piece
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
             }
-            else if (this.Side == DOWN)
+            else if (this.Side == DOWN  && input_Coordinates.y > 1)
             {
                 tileTracer.SetValues(input_Coordinates);
 
@@ -85,7 +79,7 @@ public class Queen extends piece
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
             }
-            else if (this.Side == LEFT)
+            else if (this.Side == LEFT  && input_Coordinates.x > 1)
             {
                 tileTracer.SetValues(input_Coordinates);
 
@@ -100,7 +94,7 @@ public class Queen extends piece
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
             }
-            else if (this.Side == RIGHT)
+            else if (this.Side == RIGHT  && input_Coordinates.x < 8)
             {
                 tileTracer.SetValues(input_Coordinates);
 
@@ -115,7 +109,7 @@ public class Queen extends piece
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
             }
-            else if (this.Side == RIGHT_UP)
+            else if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8)
             {
                 tileTracer.SetValues(input_Coordinates);
 
@@ -131,7 +125,7 @@ public class Queen extends piece
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
             }
-            else if (this.Side == RIGHT_DOWN)
+            else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y > 1)
             {
                 tileTracer.SetValues(input_Coordinates);
 
@@ -147,7 +141,7 @@ public class Queen extends piece
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
             }
-            else if (this.Side == LEFT_UP)
+            else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y < 8)
             {
                 tileTracer.SetValues(input_Coordinates);
 
@@ -163,7 +157,7 @@ public class Queen extends piece
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
             }
-            else if (this.Side == LEFT_DOWN)
+            else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y > 1)
             {
                 tileTracer.SetValues(input_Coordinates);
 
@@ -179,19 +173,14 @@ public class Queen extends piece
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
             }
+            else if(this.Side <= LEFT_DOWN)
+            {
+               this.SwitchSide = true;
+               tileTracer.SetValues(this.Coordinates);
+               GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
 
-        }
-        else if ((this.CurrentGameBoard.MinMaxBoundaries.x >= input_Coordinates.x ||
-                this.CurrentGameBoard.MinMaxBoundaries.y <= input_Coordinates.x ||
-                this.CurrentGameBoard.MinMaxBoundaries.z >= input_Coordinates.y ||
-                this.CurrentGameBoard.MinMaxBoundaries.w <= input_Coordinates.y))
-        {
+           }
 
-            this.SwitchSide = true;
-            tileTracer.SetValues(this.Coordinates);
-            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
-
-        }
         if(!isTileEmpty || this.Side > LEFT_DOWN)
         {
             System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
