@@ -18,7 +18,7 @@ public class Rook extends piece{
     }
 
     @Override
-    public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty) {
+    public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates) {
         return null;
     }
 }

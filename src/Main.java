@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.util.Vector;
 
 
 class MyGUI extends JFrame {
@@ -35,11 +36,12 @@ class MyGUI extends JFrame {
 
         System.out.println("SIZE OF PLAYER PIECES: " + newplayer.pieces.get(0).Coordinates.x);
 
-        newPawn.GetPossibleMoves(true);
+        Vector<Math.Vec2<Integer>> result = newPawn.GetPossibleMoves(true, newPawn.Coordinates);
+        result = newPawn.GetPossibleMoves(true, newPawn.Coordinates);
 
         for (int i = 0; i < newPawn.Possible_Moves.size(); i++)
         {
-            System.out.println(String.valueOf(newPawn.Possible_Moves.get(i).x) + " " + String.valueOf(newPawn.Possible_Moves.get(i).y));
+            System.out.println("Possible moves: " + newPawn.Possible_Moves.size() + " " + String.valueOf(newPawn.Possible_Moves.get(i).x) + " " + String.valueOf(newPawn.Possible_Moves.get(i).y));
         }
 
     }

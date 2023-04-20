@@ -49,7 +49,7 @@ public abstract class piece extends JPanel {
 
     public abstract void Move(int newX,int newY);
     public abstract void capture();
-    public abstract Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty);
+    public abstract Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates);
 
 
 }

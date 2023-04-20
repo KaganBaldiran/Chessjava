@@ -4,7 +4,7 @@ import java.util.Vector;
 public class Pawn extends piece {
 
     boolean First_turn;
-    
+
     Math.Vec2<Integer> tileTracer;
     int Count_of_reco = 0;
 
@@ -17,10 +17,14 @@ public class Pawn extends piece {
     Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn);
+        this.First_turn = true;
+        this.tileTracer = new Math.Vec2<>();
     }
     Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard);
+        this.First_turn = true;
+        this.tileTracer = new Math.Vec2<>();
     }
 
         @Override
@@ -34,48 +38,46 @@ public class Pawn extends piece {
 
     }
 
+    int times_to_repeat = 1;
+
     @Override
-    public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty) {
+    public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty , Math.Vec2<Integer> input_Coordinates) {
 
 
-        if (isTileEmpty && this.Count_of_reco < 2)
+        if(!this.Possible_Moves.isEmpty() && this.Count_of_reco == 0)
+        {
+            this.Possible_Moves.clear();
+        }
+
+        if (this.First_turn)
+        {
+            times_to_repeat = 2;
+            this.First_turn = false;
+        }
+
+        if (isTileEmpty && this.Count_of_reco < times_to_repeat)
         {
             this.Count_of_reco++;
-            tileTracer.SetValues(this.Coordinates);
-            if (this.First_turn)
-            {
-                tileTracer.y += 2;
-                this.First_turn = false;
+            tileTracer.SetValues(input_Coordinates);
 
-                this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
-                GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
-
-            }
-            else if (!this.First_turn)
-            {
-                tileTracer.y += 1;
-                System.out.println(String.valueOf(tileTracer.x) + " " + String.valueOf(tileTracer.y));
-                GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty());
-            }
+            tileTracer.y += 1;
 
             if (this.Color == Tile.BLACK)
             {
-                Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
-        }
-        else if(!isTileEmpty || this.Count_of_reco == 2)
-        {
-
-            if(!this.Possible_Moves.isEmpty() && !this.First_turn)
-            {
-                this.Possible_Moves.clear();
+                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
             }
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
+            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
 
-            System.out.println("INSIDE THE RECURSIVE FUNCTION: "+ String.valueOf(tileTracer.x) + " " + String.valueOf(tileTracer.y));
+        }
+
+        else if(!isTileEmpty || this.Count_of_reco == times_to_repeat)
+        {
+
+           this.Count_of_reco = 0;
+           this.times_to_repeat = 1;
 
             return this.Possible_Moves;
         }
