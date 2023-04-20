@@ -43,6 +43,10 @@ class MyGUI extends JFrame {
 
         newBishop.GetPossibleMoves(true,newBishop.Coordinates);
 
+        Rook newrook = new Rook(3,4,Tile.WHITE);
+
+        newrook.GetPossibleMoves(true , newrook.Coordinates);
+
         for (int i = 0; i < newPawn.Possible_Moves.size(); i++)
         {
             System.out.println("Possible moves: " + newPawn.Possible_Moves.size() + " " + String.valueOf(newPawn.Possible_Moves.get(i).x) + " " + String.valueOf(newPawn.Possible_Moves.get(i).y));
@@ -51,6 +55,11 @@ class MyGUI extends JFrame {
         for (int i = 0; i < newBishop.Possible_Moves.size(); i++)
         {
             System.out.println("Possible moves: " + newBishop.Possible_Moves.size() + " " + String.valueOf(newBishop.Possible_Moves.get(i).x) + " " + String.valueOf(newBishop.Possible_Moves.get(i).y));
+        }
+
+        for (int i = 0; i < newrook.Possible_Moves.size(); i++)
+        {
+            System.out.println("Possible moves: " + newrook.Possible_Moves.size() + " " + String.valueOf(newrook.Possible_Moves.get(i).x) + " " + String.valueOf(newrook.Possible_Moves.get(i).y));
         }
 
     }
