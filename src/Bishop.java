@@ -52,91 +52,82 @@ public class Bishop extends piece{
             this.SwitchSide = false;
         }
 
-        if (isTileEmpty && !(this.CurrentGameBoard.MinMaxBoundaries.x >= input_Coordinates.x ||
-                           this.CurrentGameBoard.MinMaxBoundaries.y <= input_Coordinates.x ||
-                           this.CurrentGameBoard.MinMaxBoundaries.z >= input_Coordinates.y ||
-                           this.CurrentGameBoard.MinMaxBoundaries.w <= input_Coordinates.y))
+
+        else if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8)
         {
+            tileTracer.SetValues(input_Coordinates);
 
-            if (this.Side == RIGHT_UP)
+            tileTracer.x++;
+            tileTracer.y++;
+
+            if (this.Color == Tile.BLACK)
             {
-                tileTracer.SetValues(input_Coordinates);
-
-                tileTracer.y++;
-                tileTracer.x++;
-
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
-
-                this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
-
-                GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
-            }
-            else if (this.Side == RIGHT_DOWN)
-            {
-                tileTracer.SetValues(input_Coordinates);
-
-                tileTracer.y--;
-                tileTracer.x++;
-
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
-
-                this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
-
-                GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
-            }
-            else if (this.Side == LEFT_UP)
-            {
-                tileTracer.SetValues(input_Coordinates);
-
-                tileTracer.y++;
-                tileTracer.x--;
-
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
-
-                this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
-
-                GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
-            }
-            else if (this.Side == LEFT_DOWN)
-            {
-                tileTracer.SetValues(input_Coordinates);
-
-                tileTracer.y--;
-                tileTracer.x--;
-
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
-
-                this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
-
-                GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
             }
 
+            this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
+
+            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if ((this.CurrentGameBoard.MinMaxBoundaries.x >= input_Coordinates.x ||
-                  this.CurrentGameBoard.MinMaxBoundaries.y <= input_Coordinates.x ||
-                  this.CurrentGameBoard.MinMaxBoundaries.z >= input_Coordinates.y ||
-                  this.CurrentGameBoard.MinMaxBoundaries.w <= input_Coordinates.y))
+        else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y > 1)
         {
+            tileTracer.SetValues(input_Coordinates);
 
+            tileTracer.x++;
+            tileTracer.y--;
+
+            if (this.Color == Tile.BLACK)
+            {
+                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
+            }
+
+            this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
+
+            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+        }
+        else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y < 8)
+        {
+            tileTracer.SetValues(input_Coordinates);
+
+            tileTracer.x--;
+            tileTracer.y++;
+
+            if (this.Color == Tile.BLACK)
+            {
+                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
+            }
+
+            this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
+
+            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+        }
+        else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y > 1)
+        {
+            tileTracer.SetValues(input_Coordinates);
+
+            tileTracer.x--;
+            tileTracer.y--;
+
+            if (this.Color == Tile.BLACK)
+            {
+                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
+            }
+
+            this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
+
+            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+        }
+        else if(this.Side <= LEFT_DOWN)
+        {
             this.SwitchSide = true;
             tileTracer.SetValues(this.Coordinates);
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
 
         }
-        if (!isTileEmpty || this.Side > LEFT_DOWN)
+
+        if(!isTileEmpty || this.Side > LEFT_DOWN)
         {
+            System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = RIGHT_UP;
             return this.Possible_Moves;
         }

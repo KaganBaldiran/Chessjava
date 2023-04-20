@@ -48,7 +48,6 @@ public class Queen extends piece
             this.SwitchSide = false;
         }
 
-
             if (this.Side == UP && input_Coordinates.y < 8)
             {
                 tileTracer.SetValues(input_Coordinates);

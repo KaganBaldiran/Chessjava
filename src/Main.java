@@ -47,7 +47,7 @@ class MyGUI extends JFrame {
 
         newrook.GetPossibleMoves(true , newrook.Coordinates);
 
-        Queen newqueen = new Queen(7,1,Tile.WHITE);
+        Queen newqueen = new Queen(1,1,Tile.WHITE);
 
         newqueen.GetPossibleMoves(true,newqueen.Coordinates);
 
