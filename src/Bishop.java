@@ -2,10 +2,7 @@ import java.util.Vector;
 
 public class Bishop extends piece{
 
-    private static final int RIGHT_UP = 1;
-    private static final int RIGHT_DOWN = 2;
-    private static final int LEFT_UP = 3;
-    private static final int LEFT_DOWN = 4;
+
 
     Bishop(int x_cord , int y_cord , int color)
     {

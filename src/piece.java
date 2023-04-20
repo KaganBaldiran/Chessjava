@@ -11,6 +11,19 @@ public abstract class piece extends JPanel {
     Vector<Math.Vec2<Integer>> Possible_Moves = new Vector<>();
     int Color;
 
+    public static final int RIGHT_UP = 1;
+    public static final int RIGHT_DOWN = 2;
+    public static final int LEFT_UP = 3;
+    public static final int LEFT_DOWN = 4;
+
+    public boolean IsInsideBoundries(int x_cord , int y_cord)
+    {
+       return !(this.CurrentGameBoard.MinMaxBoundaries.x >= x_cord ||
+               this.CurrentGameBoard.MinMaxBoundaries.y <= x_cord ||
+               this.CurrentGameBoard.MinMaxBoundaries.z >= y_cord ||
+               this.CurrentGameBoard.MinMaxBoundaries.w <= y_cord);
+    }
+
     piece(int x_cord, int y_cord , int color)
     {
         this.Coordinates = new Math.Vec2<>();
