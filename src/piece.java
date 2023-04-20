@@ -3,7 +3,7 @@ import java.util.Vector;
 
 public abstract class piece extends JPanel {
 
-    Math.Vec2<Integer> Coordinates;
+    Math.Vec2<Integer> Coordinates = new Math.Vec2<>();
 
     Tile TilePieceStandingOn;
 

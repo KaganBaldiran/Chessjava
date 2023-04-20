@@ -29,6 +29,12 @@ class MyGUI extends JFrame {
 
         Pawn newPawn = new Pawn(3,5,Tile.WHITE);
 
+        Board newboard = new Board();
+
+        Player newplayer = new Player(Tile.WHITE,newboard);
+
+        System.out.println("SIZE OF PLAYER PIECES: " + newplayer.pieces.get(0).Coordinates.x);
+
         newPawn.GetPossibleMoves(true);
 
         for (int i = 0; i < newPawn.Possible_Moves.size(); i++)
