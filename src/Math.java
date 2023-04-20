@@ -59,7 +59,7 @@ public class Math {
         {
             this.x = Input.x;
             this.y = Input.y;
-            this.y = Input.y;
+            this.z = Input.z;
         }
 
         void SetValues(type x , type y , type z)
@@ -73,7 +73,7 @@ public class Math {
         {
             this.x = Input.x;
             this.y = Input.y;
-            this.y = Input.y;
+            this.z = Input.z;
         }
     }
     public static class Vec4<type>
@@ -102,7 +102,7 @@ public class Math {
         {
             this.x = Input.x;
             this.y = Input.y;
-            this.y = Input.y;
+            this.z = Input.z;
             this.w = Input.w;
         }
 
@@ -118,7 +118,7 @@ public class Math {
         {
             this.x = Input.x;
             this.y = Input.y;
-            this.y = Input.y;
+            this.z = Input.z;
             this.w = Input.w;
         }
 
