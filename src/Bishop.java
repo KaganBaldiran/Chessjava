@@ -53,7 +53,7 @@ public class Bishop extends piece{
         }
 
 
-        else if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8)
+        if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8)
         {
             tileTracer.SetValues(input_Coordinates);
 
