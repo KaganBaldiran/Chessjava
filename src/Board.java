@@ -6,6 +6,8 @@ import java.util.Vector;
 public class Board extends JPanel
 {
     Vector<Tile> Tiles = new Vector<>();
+
+    Math.Vec4<Integer> MinMaxBoundaries = new Math.Vec4<>();
     static final int SQUARE_SIZE = 1000 / 8;
 
     Board() {
@@ -14,6 +16,8 @@ public class Board extends JPanel
         int ColorCounter = 0;
 
         Math.Vec2<Integer> TempLocation = new Math.Vec2<>();
+
+        this.MinMaxBoundaries.SetValues(1,8,1,8);
 
         for (int y = 1; y < 9; y++) {
 
