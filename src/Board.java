@@ -8,7 +8,8 @@ public class Board extends JPanel
     Vector<Tile> Tiles = new Vector<>();
 
     Math.Vec4<Integer> MinMaxBoundaries = new Math.Vec4<>();
-    static final int SQUARE_SIZE = 1000 / 8;
+
+    public static final int SQUARE_SIZE = 1000 / 8;
 
     Board() {
 
@@ -95,7 +96,7 @@ public class Board extends JPanel
                 g.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
             }
         }
-
+/*
         // Draw chess pieces
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -103,6 +104,8 @@ public class Board extends JPanel
         g.drawString("♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟", 0, 2 * SQUARE_SIZE);
         g.drawString("♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙", 0, 6 * SQUARE_SIZE);
         g.drawString("♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖", 0, 7 * SQUARE_SIZE);
+  */
+
     }
 
 }

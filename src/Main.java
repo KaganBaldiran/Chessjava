@@ -19,33 +19,16 @@ class MyGUI extends JFrame {
     {
         JFrame frame = new JFrame("Chess Board");
         Board chessBoard = new Board();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1025, 1025);
-        frame.add(chessBoard);
-        frame.setVisible(true);
-
-        Math.Vec2<Integer> temp = new Math.Vec2<>(6,2);
-
-        Math.UV_Tools.Invert_Y_Axis(temp,Tile.BLACK);
-
+        Queen newqueen = new Queen(7,5,Tile.WHITE);
+        newqueen.GetPossibleMoves(true,newqueen.Coordinates);
+        Knight newknight = new Knight(5,5,Tile.WHITE);
+        newknight.GetPossibleMoves(true,newknight.Coordinates);
         Pawn newPawn = new Pawn(1,1,Tile.WHITE);
-
         Bishop newBishop = new Bishop(4,5,Tile.WHITE);
-
-        Board newboard = new Board();
-
+        Rook newrook = new Rook(8,8,Tile.WHITE);
         King newking = new King(5,5,Tile.WHITE);
 
-        Player newplayer = new Player(Tile.WHITE,newboard);
-
-        System.out.println("SIZE OF PLAYER PIECES: " + newplayer.pieces.get(0).Coordinates.x);
-
-        Vector<Math.Vec2<Integer>> result = newPawn.GetPossibleMoves(true, newPawn.Coordinates);
-       // result = newPawn.GetPossibleMoves(true, newPawn.Coordinates);
-
         newBishop.GetPossibleMoves(true,newBishop.Coordinates);
-
-        Rook newrook = new Rook(8,8,Tile.WHITE);
 
         newrook.GetPossibleMoves(true , newrook.Coordinates);
 
@@ -53,14 +36,33 @@ class MyGUI extends JFrame {
 
         newking.GetPossibleMoves(true , newking.Coordinates);
 
-        Queen newqueen = new Queen(1,1,Tile.WHITE);
+        newPawn.GetPossibleMoves(true, newPawn.Coordinates);
 
-        newqueen.GetPossibleMoves(true,newqueen.Coordinates);
 
-        Knight newknight = new Knight(5,5,Tile.WHITE);
 
-        newknight.GetPossibleMoves(true,newknight.Coordinates);
+        GraphicHandler gh = new GraphicHandler(chessBoard,newqueen,newknight,newPawn,newrook,newking,newBishop);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1025, 1025);
+        //frame.add(chessBoard);
+        frame.add(gh);
+        frame.setVisible(true);
 
+        Math.Vec2<Integer> temp = new Math.Vec2<>(6,2);
+
+        Math.UV_Tools.Invert_Y_Axis(temp,Tile.BLACK);
+
+
+
+        Board newboard = new Board();
+
+
+
+        Player newplayer = new Player(Tile.WHITE,newboard);
+
+        System.out.println("SIZE OF PLAYER PIECES: " + newplayer.pieces.get(0).Coordinates.x);
+
+
+       // result = newPawn.GetPossibleMoves(true, newPawn.Coordinates);
 
         for (int i = 0; i < newPawn.Possible_Moves.size(); i++)
         {

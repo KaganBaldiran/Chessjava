@@ -192,7 +192,7 @@ public class Queen extends piece
 
         if(!isTileEmpty || this.Side > LEFT_DOWN)
         {
-            System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
+            System.out.println("KNIGHT POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = UP;
             this.ClearPossibleMoves = true;
             return this.Possible_Moves;
