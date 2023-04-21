@@ -9,6 +9,8 @@ public abstract class piece extends JPanel {
 
     Board CurrentGameBoard;
     Vector<Math.Vec2<Integer>> Possible_Moves = new Vector<>();
+
+    boolean ClearPossibleMoves = false;
     int Color;
 
 

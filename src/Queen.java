@@ -17,6 +17,15 @@ public class Queen extends piece
     {
         super(x_cord, y_cord, color);
     }
+    Queen(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
+    {
+        super(x_cord, y_cord, color, TilePieceStandingOn);
+    }
+    Queen(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard)
+    {
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard);
+    }
+
 
     @Override
     public void Move(int newX, int newY)
@@ -37,8 +46,9 @@ public class Queen extends piece
     @Override
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates)
     {
-        if(!this.Possible_Moves.isEmpty() && !isTileEmpty)
+        if(!this.Possible_Moves.isEmpty() && !isTileEmpty || this.ClearPossibleMoves)
         {
+            this.ClearPossibleMoves = false;
             this.Possible_Moves.clear();
         }
 
@@ -184,6 +194,7 @@ public class Queen extends piece
         {
             System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = UP;
+            this.ClearPossibleMoves = true;
             return this.Possible_Moves;
         }
         return null;

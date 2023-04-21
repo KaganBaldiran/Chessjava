@@ -42,8 +42,9 @@ public class Rook extends piece{
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates)
     {
 
-        if(!this.Possible_Moves.isEmpty() && !isTileEmpty)
+        if(!this.Possible_Moves.isEmpty() && !isTileEmpty || this.ClearPossibleMoves)
         {
+            this.ClearPossibleMoves = false;
             this.Possible_Moves.clear();
         }
 
@@ -125,6 +126,7 @@ public class Rook extends piece{
         {
             System.out.println("ROOK POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = UP;
+            this.ClearPossibleMoves = true;
             return this.Possible_Moves;
         }
         return null;

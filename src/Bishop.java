@@ -41,8 +41,9 @@ public class Bishop extends piece{
     @Override
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates)
     {
-        if(!this.Possible_Moves.isEmpty() && !isTileEmpty)
+        if(!this.Possible_Moves.isEmpty() && !isTileEmpty || this.ClearPossibleMoves)
         {
+            this.ClearPossibleMoves = false;
             this.Possible_Moves.clear();
         }
 
@@ -51,7 +52,6 @@ public class Bishop extends piece{
             this.Side++;
             this.SwitchSide = false;
         }
-
 
         if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8)
         {
@@ -129,6 +129,7 @@ public class Bishop extends piece{
         {
             System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = RIGHT_UP;
+            this.ClearPossibleMoves = true;
             return this.Possible_Moves;
         }
         return null;
