@@ -57,6 +57,10 @@ class MyGUI extends JFrame {
 
         newqueen.GetPossibleMoves(true,newqueen.Coordinates);
 
+        Knight newknight = new Knight(5,5,Tile.WHITE);
+
+        newknight.GetPossibleMoves(true,newknight.Coordinates);
+
 
         for (int i = 0; i < newPawn.Possible_Moves.size(); i++)
         {
@@ -81,6 +85,11 @@ class MyGUI extends JFrame {
         for (int i = 0; i < newking.Possible_Moves.size(); i++)
         {
             System.out.println(" KING Possible moves: " + newking.Possible_Moves.size() + " " + String.valueOf(newking.Possible_Moves.get(i).x) + " " + String.valueOf(newking.Possible_Moves.get(i).y));
+        }
+
+        for (int i = 0; i < newknight.Possible_Moves.size(); i++)
+        {
+            System.out.println(" KNIGHT Possible moves: " + newknight.Possible_Moves.size() + " " + String.valueOf(newknight.Possible_Moves.get(i).x) + " " + String.valueOf(newknight.Possible_Moves.get(i).y));
         }
 
     }
