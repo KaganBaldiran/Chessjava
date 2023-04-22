@@ -34,7 +34,7 @@ public class Game extends JPanel implements Runnable
     boolean allow_click[];
 
 
-    Game(Queen selectedpiece)
+    Game()
     {
         frame = new JFrame("Chess Board");
         chessBoard = new Board();
@@ -66,7 +66,7 @@ public class Game extends JPanel implements Runnable
         current_canvas = new Canvas();
         current_canvas.setPreferredSize(new Dimension(1025, 1025));
         current_canvas.setFocusable(false);
-        current_canvas.requestFocus(); // Request focus for the canvas
+        current_canvas.requestFocus();
 
         frame.addKeyListener(input_handler);
 
@@ -77,16 +77,7 @@ public class Game extends JPanel implements Runnable
         frame.pack();
 
 
-
-
-
-
-
-
-
-
-
-        current_canvas.createBufferStrategy(3); // Create buffer strategy after canvas is added to the frame
+        current_canvas.createBufferStrategy(3);
     }
 
 
@@ -94,11 +85,6 @@ public class Game extends JPanel implements Runnable
     @Override
     public void run()
     {
-        //this.Selected_piece.GetPossibleMoves(true,this.Selected_piece.Coordinates);
-
-
-
-        newBishop.GetPossibleMoves(true,newBishop.Coordinates);
 
         newrook.GetPossibleMoves(true , newrook.Coordinates);
 
@@ -132,23 +118,26 @@ public class Game extends JPanel implements Runnable
             }
 
 
-                if (input_handler.isPressed(KeyEvent.VK_DOWN) && this.newqueen.Coordinates.y < 8 && allow_click[0]) {
-                    this.newqueen.Coordinates.y++;
+                if (input_handler.isPressed(KeyEvent.VK_DOWN) && this.newBishop.Coordinates.y < 8 && allow_click[0]) {
+                    //this.newqueen.Coordinates.y++;
+                    this.newBishop.Coordinates.y++;
                     allow_click[0] = false;
                 }
 
-                if (input_handler.isPressed(KeyEvent.VK_UP) && this.newqueen.Coordinates.y > 1 & allow_click[1]) {
-                    this.newqueen.Coordinates.y--;
+                if (input_handler.isPressed(KeyEvent.VK_UP) && this.newBishop.Coordinates.y > 1 & allow_click[1]) {
+                    //this.newqueen.Coordinates.y--;
+                    this.newBishop.Coordinates.y--;
                     allow_click[1] = false;
                 }
 
-                if (input_handler.isPressed(KeyEvent.VK_LEFT) && this.newqueen.Coordinates.x > 1 && allow_click[2]) {
-                    this.newqueen.Coordinates.x--;
+                if (input_handler.isPressed(KeyEvent.VK_LEFT) && this.newBishop.Coordinates.x > 1 && allow_click[2]) {
+                    //this.newqueen.Coordinates.x--;
+                    this.newBishop.Coordinates.x--;
                     allow_click[2] = false;
                 }
 
-                if (input_handler.isPressed(KeyEvent.VK_RIGHT) && this.newqueen.Coordinates.x < 8 && allow_click[3]) {
-                    this.newqueen.Coordinates.x++;
+                if (input_handler.isPressed(KeyEvent.VK_RIGHT) && this.newBishop.Coordinates.x < 8 && allow_click[3]) {
+                    this.newBishop.Coordinates.x++;
                     allow_click[3] = false;
                 }
 
@@ -156,7 +145,8 @@ public class Game extends JPanel implements Runnable
 
 
 
-            newqueen.GetPossibleMoves(true,newqueen.Coordinates);
+            //newqueen.GetPossibleMoves(true,newqueen.Coordinates);
+            newBishop.GetPossibleMoves(true,newBishop.Coordinates);
 
 
             // Draw the BufferedImage to the Canvas

@@ -7,10 +7,7 @@ import javax.swing.JPanel;
 
 public class InputHandler implements KeyListener
 {
-
     private boolean[] pressed;
-
-
 
     public InputHandler() throws HeadlessException
     {
