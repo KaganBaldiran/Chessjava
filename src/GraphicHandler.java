@@ -33,15 +33,18 @@ public class GraphicHandler extends JPanel
     {
 
        this.current_board.paintComponent(g);
-       //this.newqueen.paintComponent(g);
+       this.newqueen.paintComponent(g);
+
+
         //this.newknight.paintComponent(g);
         //this.newbishop.paintComponent(g);
         //this.newrook.paintComponent(g);
         //this.newpawn.paintComponent(g);
-        this.newking.paintComponent(g);
+        //this.newking.paintComponent(g);
 
-
+        g.dispose();
     }
+
 
 
 
