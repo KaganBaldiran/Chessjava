@@ -127,7 +127,7 @@ public class Bishop extends piece{
 
         if(!isTileEmpty || this.Side > LEFT_DOWN)
         {
-            System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
+            //System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = RIGHT_UP;
             this.ClearPossibleMoves = true;
             return this.Possible_Moves;

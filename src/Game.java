@@ -1,8 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+
+import java.awt.event.MouseAdapter;
+
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
@@ -17,7 +21,7 @@ public class Game extends JPanel implements Runnable
     Rook newrook;
     King newking;
     Queen newqueen;
-    JFrame frame;
+    //JFrame frame;
 
     Canvas current_canvas;
 
@@ -27,16 +31,29 @@ public class Game extends JPanel implements Runnable
 
     InputHandler input_handler;
 
+
+
+
+
     boolean isRunning;
 
+    Label label;
+
     BufferedImage buffer = new BufferedImage(1025, 1025, BufferedImage.TYPE_INT_ARGB);
+
+    //MouseInputListener mouseListener = new MouseInputListener();
+    MouseInputListener mouseListener;
+
+
 
     boolean allow_click[];
 
 
     Game()
     {
-        frame = new JFrame("Chess Board");
+
+
+
         chessBoard = new Board();
         newqueen = new Queen(7,5,Tile.WHITE);
 
@@ -55,33 +72,44 @@ public class Game extends JPanel implements Runnable
         this.allow_click = new boolean[4];
 
 
-
         gh = new GraphicHandler(chessBoard, newqueen, newknight, newPawn, newrook, newking, newBishop);
 
 
-        frame = new JFrame("My Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        javax.swing.JFrame frame = new javax.swing.JFrame();
+        MouseInputListener mouseListener = new MouseInputListener(frame);
+        this.mouseListener = mouseListener;
+        frame.addMouseListener(mouseListener);
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
+
+        frame.setFocusable(true);
+
+
+
         current_canvas = new Canvas();
-        current_canvas.setPreferredSize(new Dimension(1025, 1025));
-        current_canvas.setFocusable(false);
+        current_canvas.setPreferredSize(new Dimension(1000, 1000));
+        current_canvas.setFocusable(true);
         current_canvas.requestFocus();
+
 
         frame.addKeyListener(input_handler);
 
+
         gh.add(current_canvas);
+
         frame.add(current_canvas);
+
+
+        current_canvas.addMouseListener(mouseListener);
 
 
         frame.pack();
 
-
         current_canvas.createBufferStrategy(3);
     }
-
-
-
+    
     @Override
     public void run()
     {
@@ -142,17 +170,17 @@ public class Game extends JPanel implements Runnable
                 }
 
 
+                if(this.mouseListener.isClicked(MouseEvent.BUTTON1))
+                {
+                    System.out.println("MOUSE BUTTON 1 CLICKED!");
+                    //this.newBishop.Coordinates.y++;
+                }
 
 
-
+            System.out.println("MOUSE LOCATION X: "+ this.mouseListener.GetMousePos().x + " Y: "+ this.mouseListener.GetMousePos().y );
+                
             //newqueen.GetPossibleMoves(true,newqueen.Coordinates);
             newBishop.GetPossibleMoves(true,newBishop.Coordinates);
-
-
-            // Draw the BufferedImage to the Canvas
-
-
-            System.out.println(" QUEEN COORDINATES: " + String.valueOf(newqueen.Coordinates.x) + " " + String.valueOf(newqueen.Coordinates.y));
 
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();
@@ -162,11 +190,9 @@ public class Game extends JPanel implements Runnable
             graphics.dispose();
             bufferstrategy.show();
 
-
-
-
         }
 
 
     }
+
 }

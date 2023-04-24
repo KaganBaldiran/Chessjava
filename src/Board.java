@@ -51,7 +51,7 @@ public class Board extends JPanel
 
             int index = ((y_cord - 1) * 8) + (x_cord - 1);
 
-            System.out.println("INDEX: " + String.valueOf(index) );
+            //System.out.println("INDEX: " + String.valueOf(index) );
 
             if (index >= 0)
             {
@@ -60,7 +60,7 @@ public class Board extends JPanel
 
         }
 
-        System.out.println("INSIDE THE FUNCTION: " + String.valueOf(returntile.Tilecoordinates.x) + " " +  String.valueOf(returntile.Tilecoordinates.y) );
+        //System.out.println("INSIDE THE FUNCTION: " + String.valueOf(returntile.Tilecoordinates.x) + " " +  String.valueOf(returntile.Tilecoordinates.y) );
 
         return returntile;
     };
