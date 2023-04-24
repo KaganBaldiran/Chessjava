@@ -178,7 +178,7 @@ public class Game extends JPanel implements Runnable
 
 
             System.out.println("MOUSE LOCATION X: "+ this.mouseListener.GetMousePos().x + " Y: "+ this.mouseListener.GetMousePos().y );
-                
+
             //newqueen.GetPossibleMoves(true,newqueen.Coordinates);
             newBishop.GetPossibleMoves(true,newBishop.Coordinates);
 
