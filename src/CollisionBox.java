@@ -83,7 +83,7 @@ public class CollisionBox
 
     boolean CheckCollisionBoxMouse(Math.Vec2<Double> MousePos)
     {
-        
+
         if ((MousePos.x < (this.x + (this.width) / 2)) && (MousePos.x > (this.x - (this.width) / 2)))
         {
             if ((MousePos.y < (this.y + (this.height) / 2)) && (MousePos.y > (this.y - (this.height) / 2)))

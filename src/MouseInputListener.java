@@ -39,7 +39,7 @@ public class MouseInputListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("Mouse Clicked: X=" + e.getX() + ", Y=" + e.getY());
-        this.clickked[e.getButton()] = true;
+        //this.clickked[e.getButton()] = true;
     }
 
     @Override
