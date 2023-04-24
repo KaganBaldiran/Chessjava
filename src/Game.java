@@ -179,15 +179,16 @@ public class Game extends JPanel implements Runnable
 
             for (int i = 0; i < this.chessBoard.Tiles.size(); i++)
             {
-                if (this.chessBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.mouseListener.GetMousePos()) && this.mouseListener.isClicked(MouseEvent.BUTTON1))
+                if (this.chessBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.mouseListener.GetMousePos()))
                 {
                     System.out.println("COLLISION SPOTTED ! TILE LOCATION X: "+ this.chessBoard.Tiles.get(i).Tilecoordinates.x + " Y: "+ this.chessBoard.Tiles.get(i).Tilecoordinates.y );
+                    System.out.println("MOUSE LOCATION X: "+ this.mouseListener.GetMousePos().x + " Y: "+ this.mouseListener.GetMousePos().y );
+
                 }
 
             }
 
 
-            //System.out.println("MOUSE LOCATION X: "+ this.mouseListener.GetMousePos().x + " Y: "+ this.mouseListener.GetMousePos().y );
 
             //newqueen.GetPossibleMoves(true,newqueen.Coordinates);
             newBishop.GetPossibleMoves(true,newBishop.Coordinates);

@@ -96,7 +96,8 @@ public class Board extends JPanel
                 g.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
             }
         }
-/*
+
+        /*
         // Draw chess pieces
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.PLAIN, 40));
