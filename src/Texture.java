@@ -8,6 +8,8 @@ public class Texture extends JPanel
 {
 
     Math.Vec2<Integer> Position = new Math.Vec2<>();
+
+    float scale = 1.0f;
     private Image textureimage;
     Texture(String file_path)
     {
@@ -25,12 +27,17 @@ public class Texture extends JPanel
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        DrawTexture(g, Position.x,Position.y,getWidth(),getHeight());
+        //DrawTexture(g, Position.x,Position.y,getWidth(),getHeight());
+        DrawTexture(g, Position.x,Position.y,(int)(textureimage.getWidth(null) * scale),(int)(textureimage.getHeight(null) * scale));
     }
 
     public void DrawTexture(Graphics g, int x, int y, int width, int height)
     {
         g.drawImage(textureimage,x, y, width,height,null);
 
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
     }
 }

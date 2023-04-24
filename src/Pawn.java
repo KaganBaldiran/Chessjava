@@ -20,9 +20,9 @@ public class Pawn extends piece {
         this.First_turn = true;
         this.tileTracer = new Math.Vec2<>();
     }
-    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard)
+    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path)
     {
-        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard);
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path);
         this.First_turn = true;
         this.tileTracer = new Math.Vec2<>();
     }

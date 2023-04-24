@@ -14,6 +14,8 @@ public abstract class piece extends JPanel {
     boolean ClearPossibleMoves = false;
     int Color;
 
+    Texture piecetexture;
+
 
 
     public boolean IsInsideBoundries(int x_cord , int y_cord)
@@ -38,12 +40,16 @@ public abstract class piece extends JPanel {
         this.TilePieceStandingOn = TilePieceStandingOn;
         this.CurrentGameBoard = new Board();
     }
-    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard)
+    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String texture_file_path)
     {
         this.Coordinates.SetValues(x_cord,y_cord);
         this.Color = color;
         this.TilePieceStandingOn = TilePieceStandingOn;
         this.CurrentGameBoard = CurrentBoard;
+        this.piecetexture = new Texture(texture_file_path);
+        piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
+        //piecetexture.Position.SetValues(100,100);
+        piecetexture.setScale(0.15f);
     }
 
     void ReferenceTile(Tile input_tile)
@@ -84,6 +90,8 @@ public abstract class piece extends JPanel {
             g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
 
         }
+
+        piecetexture.paintComponent(g);
 
     }
 

@@ -18,6 +18,12 @@ public class Knight extends piece
         super(x_cord, y_cord, color);
     }
 
+    Knight(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path)
+    {
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard , file_path);
+    }
+
+
     @Override
     public void Move(int newX, int newY) {
         this.Coordinates.SetValues(newX,newY);

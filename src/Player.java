@@ -1,6 +1,8 @@
+import javax.swing.*;
+import java.awt.*;
 import java.util.Vector;
 
-public class Player
+public class Player extends JPanel
 {
     Vector<piece> pieces = new Vector<>();
     Vector<piece> TakenPieces = new Vector<>();
@@ -23,10 +25,37 @@ public class Player
 
         for (int x = 1; x < 9; x++)
         {
-            pieces.add(new Pawn(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
+            //pieces.add(new Pawn(x,y_axis,this.Color,current_board.FetchTile(x,y_axis),this.Current_Board_Reference,null));
         }
+
+        //pieces.add(new King(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
+
+
+        pieces.add(new Knight(6,2,this.Color,current_board.FetchTile(6,2),this.Current_Board_Reference,"C:\\Users\\kbald\\Desktop\\Chess_cdt45.png"));
+
+        //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
+        //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
+
+        //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
 
     }
 
+    public void TakeOpponentPiece(piece takenPiece)
+    {
+        TakenPieces.add(takenPiece);
+    }
 
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+
+        pieces.get(0).paintComponent(g);
+
+
+
+
+        g.dispose();
+    }
 }

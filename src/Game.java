@@ -80,7 +80,7 @@ public class Game extends JPanel implements Runnable
         MouseInputListener mouseListener = new MouseInputListener(frame);
         this.mouseListener = mouseListener;
         frame.addMouseListener(mouseListener);
-        frame.setSize(300, 200);
+        frame.setSize(1000, 1000);
         frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 

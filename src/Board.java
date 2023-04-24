@@ -42,6 +42,38 @@ public class Board extends JPanel
         }
     }
 
+    Board(int frame_size) {
+
+        int TempColor = 0;
+        int ColorCounter = 0;
+
+        Math.Vec2<Integer> TempLocation = new Math.Vec2<>();
+
+        this.MinMaxBoundaries.SetValues(1,8,1,8);
+
+        for (int y = 1; y < 9; y++) {
+
+            for (int x = 1; x < 9; x++) {
+
+                if (ColorCounter > 1) {
+                    ColorCounter = 0;
+                }
+                if (ColorCounter == 0) {
+                    TempColor = 0;
+                } else if (ColorCounter == 1) {
+                    TempColor = 1;
+                }
+
+                TempLocation.SetValues(x, y);
+                Tiles.add(new Tile(TempColor, TempLocation));
+                ColorCounter++;
+
+            }
+
+        }
+
+    }
+
     public Tile FetchTile(int x_cord , int y_cord)
     {
         Tile returntile = null;
@@ -83,7 +115,6 @@ public class Board extends JPanel
 
         super.paintComponent(g);
 
-        // Draw chessboard squares
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 int x = col * SQUARE_SIZE;

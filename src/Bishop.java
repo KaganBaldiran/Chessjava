@@ -18,9 +18,9 @@ public class Bishop extends piece{
         super(x_cord, y_cord, color,TilePieceStandingOn);
     }
 
-    Bishop(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard)
+    Bishop(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path)
     {
-        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard);
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path);
     }
 
     @Override

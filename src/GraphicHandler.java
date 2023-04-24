@@ -16,6 +16,10 @@ public class GraphicHandler extends JPanel
 
     Bishop newbishop;
 
+    Texture knighttexture;
+
+    Player player;
+
     GraphicHandler(Board br , Queen qn , Knight k , Pawn pawn , Rook r , King king , Bishop b)
     {
         this.current_board = br;
@@ -25,6 +29,10 @@ public class GraphicHandler extends JPanel
         this.newrook = r;
         this.newking = king;
         this.newbishop = b;
+        knighttexture = new Texture("C:\\Users\\kbald\\Desktop\\Chess_cdt45.png");
+        knighttexture.Position.SetValues(100,100);
+        knighttexture.setScale(0.7f);
+        this.player = new Player(Tile.WHITE,current_board);
 
     }
 
@@ -35,12 +43,13 @@ public class GraphicHandler extends JPanel
        this.current_board.paintComponent(g);
        //this.newqueen.paintComponent(g);
 
-
+         player.paintComponent(g);
         //this.newknight.paintComponent(g);
-        this.newbishop.paintComponent(g);
+        //this.newbishop.paintComponent(g);
         //this.newrook.paintComponent(g);
         //this.newpawn.paintComponent(g);
         //this.newking.paintComponent(g);
+        //knighttexture.paintComponent(g);
 
         g.dispose();
     }
