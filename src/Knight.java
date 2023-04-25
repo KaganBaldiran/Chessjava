@@ -24,12 +24,14 @@ public class Knight extends piece
     Knight(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard , file_path);
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
     Knight(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path , MouseInputListener current_mouse_listener)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard , file_path);
         this.CurrentMouseListenerReference = current_mouse_listener;
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
     boolean IsPieceHovering = false;
@@ -50,22 +52,33 @@ public class Knight extends piece
                     this.IsPieceHoveringClick = true;
                 }
 
-                if(this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick)
+                if(this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick &&
+                                                             this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() == this.Coordinates.x.intValue() &&
+                                                             this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue() == this.Coordinates.y.intValue())
                 {
                     this.IsPieceHovering = true;
                     this.IsPieceHoveringClick = false;
+                    this.Selected = true;
                 }
-                else if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
+
+                //System.out.println("IsPieceHovering: " + this.IsPieceHovering + " IsPieceHoveringClick: " + IsPieceHoveringClick);
+
+                if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
 
                     this.IsPieceHovering = false;
                     this.IsPieceHoveringClick = false;
-                    for (int y = 0; y < Possible_Moves.size(); y++) {
+                    this.Selected = false;
 
-                        if (Possible_Moves.get(y).x == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x && Possible_Moves.get(y).y == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y)
-                        {
+                    for (Math.Vec2<Integer> possibleMove : Possible_Moves) {
+
+                        if (possibleMove.x.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() && possibleMove.y.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue()) {
+
+                            this.TilePieceStandingOn.SetEmptinessState(true);
                             Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
-
+                            this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
+                            this.TilePieceStandingOn.SetEmptinessState(false);
                         }
+
                     }
                 }
 
@@ -73,6 +86,9 @@ public class Knight extends piece
             }
 
         }
+
+
+
 
         if (this.IsPieceHovering)
         {
@@ -95,7 +111,7 @@ public class Knight extends piece
 
         input_Coordinates = this.Coordinates;
 
-        if(!this.Possible_Moves.isEmpty() && !isTileEmpty || this.ClearPossibleMoves)
+        if(!this.Possible_Moves.isEmpty() && this.ClearPossibleMoves)
         {
             this.ClearPossibleMoves = false;
             this.Possible_Moves.clear();
@@ -107,7 +123,7 @@ public class Knight extends piece
             this.SwitchSide = false;
         }
 
-        if (this.Side == UP_LEFT && input_Coordinates.y < 7 && input_Coordinates.x > 1)
+        if (this.Side == UP_LEFT && input_Coordinates.y < 7 && input_Coordinates.x > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -125,7 +141,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == UP_RIGHT  && input_Coordinates.y < 7 && input_Coordinates.x < 8)
+        else if (this.Side == UP_RIGHT  && input_Coordinates.y < 7 && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -143,7 +159,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == DOWN_LEFT  && input_Coordinates.y > 2 && input_Coordinates.x > 1)
+        else if (this.Side == DOWN_LEFT  && input_Coordinates.y > 2 && input_Coordinates.x > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -161,7 +177,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == DOWN_RIGHT  && input_Coordinates.y > 2 && input_Coordinates.x < 8)
+        else if (this.Side == DOWN_RIGHT  && input_Coordinates.y > 2 && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -179,7 +195,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT_UP  && input_Coordinates.y < 8  && input_Coordinates.x > 2)
+        else if (this.Side == LEFT_UP  && input_Coordinates.y < 8  && input_Coordinates.x > 2 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -197,7 +213,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT_DOWN  && input_Coordinates.y > 1  && input_Coordinates.x > 2)
+        else if (this.Side == LEFT_DOWN  && input_Coordinates.y > 1  && input_Coordinates.x > 2 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -215,7 +231,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT_UP && input_Coordinates.y < 8  && input_Coordinates.x < 8)
+        else if (this.Side == RIGHT_UP && input_Coordinates.y < 8  && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -233,7 +249,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT_DOWN && input_Coordinates.y > 1  && input_Coordinates.x < 8)
+        else if (this.Side == RIGHT_DOWN && input_Coordinates.y > 1  && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -255,13 +271,13 @@ public class Knight extends piece
         {
             this.SwitchSide = true;
             tileTracer.SetValues(this.Coordinates);
-            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+            GetPossibleMoves(true,tileTracer);
 
         }
 
-        if(!isTileEmpty || this.Side > RIGHT_DOWN)
+        if(this.Side > RIGHT_DOWN)
         {
-            System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
+            //System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = UP_LEFT;
             this.ClearPossibleMoves = true;
             return this.Possible_Moves;

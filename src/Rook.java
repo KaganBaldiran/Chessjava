@@ -23,12 +23,14 @@ public class Rook extends piece{
     {
         super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path);
         this.CurrentMouseListenerReference = null;
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
     Rook(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path, MouseInputListener current_mouse_listener)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path);
         this.CurrentMouseListenerReference = current_mouse_listener;
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
     boolean IsPieceHovering = false;
@@ -38,28 +40,45 @@ public class Rook extends piece{
     @Override
     public void Move(int newX, int newY) {
 
-        for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++) {
-            if (this.CurrentGameBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.CurrentMouseListenerReference.GetMousePos())) {
-                System.out.println("COLLISION SPOTTED ! TILE LOCATION X: " + this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x + " Y: " + this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y);
-                System.out.println("MOUSE LOCATION X: " + this.CurrentMouseListenerReference.GetMousePos().x + " Y: " + this.CurrentMouseListenerReference.GetMousePos().y);
+        for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++)
+        {
+            if (this.CurrentGameBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.CurrentMouseListenerReference.GetMousePos()))
+            {
+                System.out.println("COLLISION SPOTTED ! TILE LOCATION X: "+ this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x + " Y: "+ this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y + "EMPTY: "+  this.CurrentGameBoard.Tiles.get(i).isTileEmpty());
+                System.out.println("MOUSE LOCATION X: "+ this.CurrentMouseListenerReference.GetMousePos().x + " Y: "+ this.CurrentMouseListenerReference.GetMousePos().y );
 
-                if (this.CurrentMouseListenerReference.isReleased(MouseEvent.BUTTON1)) {
+                if (this.CurrentMouseListenerReference.isReleased(MouseEvent.BUTTON1))
+                {
                     this.IsPieceHoveringClick = true;
                 }
 
-                if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick) {
+                if(this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick &&
+                        this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() == this.Coordinates.x.intValue() &&
+                        this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue() == this.Coordinates.y.intValue())
+                {
                     this.IsPieceHovering = true;
                     this.IsPieceHoveringClick = false;
-                } else if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
+                    this.Selected = true;
+                }
+
+                //System.out.println("IsPieceHovering: " + this.IsPieceHovering + " IsPieceHoveringClick: " + IsPieceHoveringClick);
+
+                if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
 
                     this.IsPieceHovering = false;
                     this.IsPieceHoveringClick = false;
-                    for (int y = 0; y < Possible_Moves.size(); y++) {
+                    this.Selected = false;
 
-                        if (Possible_Moves.get(y).x == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x && Possible_Moves.get(y).y == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y) {
+                    for (Math.Vec2<Integer> possibleMove : Possible_Moves) {
+
+                        if (possibleMove.x.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() && possibleMove.y.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue()) {
+
+                            this.TilePieceStandingOn.SetEmptinessState(true);
                             Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
-
+                            this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
+                            this.TilePieceStandingOn.SetEmptinessState(false);
                         }
+
                     }
                 }
 
@@ -84,7 +103,9 @@ public class Rook extends piece{
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates)
     {
 
-        if(!this.Possible_Moves.isEmpty() && !isTileEmpty || this.ClearPossibleMoves)
+        System.out.println("INSIDE ROOK IS EMPTY: " + isTileEmpty);
+
+        if(!this.Possible_Moves.isEmpty() && this.ClearPossibleMoves)
         {
             this.ClearPossibleMoves = false;
             this.Possible_Moves.clear();
@@ -96,7 +117,8 @@ public class Rook extends piece{
             this.SwitchSide = false;
         }
 
-        if (this.Side == UP && input_Coordinates.y < 8)
+
+        if (this.Side == UP && input_Coordinates.y < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -110,8 +132,11 @@ public class Rook extends piece{
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+
+            System.out.println("REAL TILE: " + tileTracer.x +" "+ tileTracer.y+ " FETCHED TILE : "+this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates.x +" "+ this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates.y );
+
         }
-        else if (this.Side == DOWN  && input_Coordinates.y > 1)
+        else if (this.Side == DOWN  && input_Coordinates.y > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -126,7 +151,7 @@ public class Rook extends piece{
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT  && input_Coordinates.x > 1)
+        else if (this.Side == LEFT  && input_Coordinates.x > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -141,7 +166,7 @@ public class Rook extends piece{
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT  && input_Coordinates.x < 8)
+        else if (this.Side == RIGHT  && input_Coordinates.x < 8  && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -160,13 +185,13 @@ public class Rook extends piece{
         {
             this.SwitchSide = true;
             tileTracer.SetValues(this.Coordinates);
-            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+            GetPossibleMoves(true,tileTracer);
 
         }
 
-        if(!isTileEmpty || this.Side > RIGHT)
+        if(this.Side > RIGHT)
         {
-            System.out.println("ROOK POSSIBLE MOVES RETURN THE VALUE: ");
+            //System.out.println("ROOK POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = UP;
             this.ClearPossibleMoves = true;
             return this.Possible_Moves;

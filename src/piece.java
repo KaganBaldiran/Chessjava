@@ -16,6 +16,8 @@ public abstract class piece extends JPanel {
 
     Texture piecetexture;
 
+    boolean Selected = false;
+
 
 
     public boolean IsInsideBoundries(int x_cord , int y_cord)
@@ -75,22 +77,23 @@ public abstract class piece extends JPanel {
 
         super.paintComponent(g);
 
+        /*
         int centerX_piece = (this.Coordinates.x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
         int centerY_piece = (this.Coordinates.y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2) ;
         int radius_piece = 40;
         g.setColor(java.awt.Color.RED);
         g.fillOval(centerX_piece - radius_piece, centerY_piece - radius_piece, radius_piece * 2, radius_piece * 2);
+*/
+        if (this.Selected) {
+            for (int i = 0; i < Possible_Moves.size(); i++) {
+                int centerX = (Possible_Moves.get(i).x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
+                int centerY = (Possible_Moves.get(i).y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
+                int radius = 40;
+                g.setColor(java.awt.Color.lightGray);
+                g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
 
-        for (int i = 0; i < Possible_Moves.size(); i++)
-        {
-            int centerX = (Possible_Moves.get(i).x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
-            int centerY = (Possible_Moves.get(i).y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2) ;
-            int radius = 40;
-            g.setColor(java.awt.Color.BLACK);
-            g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
-
+            }
         }
-
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
 
         piecetexture.paintComponent(g);

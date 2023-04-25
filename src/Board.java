@@ -92,8 +92,6 @@ public class Board extends JPanel
 
         }
 
-        //System.out.println("INSIDE THE FUNCTION: " + String.valueOf(returntile.Tilecoordinates.x) + " " +  String.valueOf(returntile.Tilecoordinates.y) );
-
         return returntile;
     };
 
