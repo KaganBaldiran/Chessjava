@@ -128,16 +128,6 @@ public class Board extends JPanel
             }
         }
 
-        /*
-        // Draw chess pieces
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.PLAIN, 40));
-        g.drawString("♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜", 0, SQUARE_SIZE);
-        g.drawString("♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟", 0, 2 * SQUARE_SIZE);
-        g.drawString("♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙", 0, 6 * SQUARE_SIZE);
-        g.drawString("♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖", 0, 7 * SQUARE_SIZE);
-  */
-
     }
 
 }

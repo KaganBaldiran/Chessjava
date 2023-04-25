@@ -91,6 +91,8 @@ public abstract class piece extends JPanel {
 
         }
 
+        piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
+
         piecetexture.paintComponent(g);
 
     }

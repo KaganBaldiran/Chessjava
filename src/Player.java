@@ -31,9 +31,9 @@ public class Player extends JPanel
         //pieces.add(new King(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
 
 
-        pieces.add(new Knight(6,2,this.Color,current_board.FetchTile(6,2),this.Current_Board_Reference,"C:\\Users\\kbald\\Desktop\\Chess_cdt45.png"));
+        pieces.add(new Knight(6,2,this.Color,current_board.FetchTile(6,2),this.Current_Board_Reference,"resources\\Chess_cdt45.png"));
 
-        pieces.add(new Bishop(7,2,this.Color,current_board.FetchTile(7,2),this.Current_Board_Reference,"C:\\Users\\kbald\\Desktop\\Chess_tile_bd.png"));
+        pieces.add(new Bishop(7,2,this.Color,current_board.FetchTile(7,2),this.Current_Board_Reference,"resources\\Chess_tile_bd.png"));
         //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
         //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
 

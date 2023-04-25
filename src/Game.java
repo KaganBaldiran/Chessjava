@@ -34,7 +34,8 @@ public class Game extends JPanel implements Runnable
 
 
 
-
+    boolean IsPieceHovering = false;
+    boolean IsPieceHoveringClick = false;
 
     boolean isRunning;
 
@@ -82,7 +83,7 @@ public class Game extends JPanel implements Runnable
         this.newBishop = (Bishop) whiteplayer.pieces.get(1);
 
 
-        javax.swing.JFrame frame = new javax.swing.JFrame();
+        javax.swing.JFrame frame = new javax.swing.JFrame("Chess");
         MouseInputListener mouseListener = new MouseInputListener(frame);
         this.mouseListener = mouseListener;
         frame.addMouseListener(mouseListener);
@@ -127,13 +128,13 @@ public class Game extends JPanel implements Runnable
 
         newPawn.GetPossibleMoves(true, newPawn.Coordinates);
 
-        newknight.GetPossibleMoves(true,newknight.Coordinates);
+        newknight.GetPossibleMoves(true,newkngit ight.Coordinates);
 
 
 
         while (isRunning) {
 
-
+            this.whiteplayer.pieces.get(0).GetPossibleMoves(true , this.whiteplayer.pieces.get(0).Coordinates);
 
             if (input_handler.isReleased(KeyEvent.VK_DOWN))
             {
@@ -190,11 +191,43 @@ public class Game extends JPanel implements Runnable
                     System.out.println("COLLISION SPOTTED ! TILE LOCATION X: "+ this.chessBoard.Tiles.get(i).Tilecoordinates.x + " Y: "+ this.chessBoard.Tiles.get(i).Tilecoordinates.y );
                     System.out.println("MOUSE LOCATION X: "+ this.mouseListener.GetMousePos().x + " Y: "+ this.mouseListener.GetMousePos().y );
 
+                    if (this.mouseListener.isReleased(MouseEvent.BUTTON1))
+                    {
+                        this.IsPieceHoveringClick = true;
+                    }
+
+                    if(this.mouseListener.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick)
+                    {
+                        this.IsPieceHovering = true;
+                        this.IsPieceHoveringClick = false;
+                    }
+                    else if (this.mouseListener.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
+
+                        this.IsPieceHovering = false;
+                        this.IsPieceHoveringClick = false;
+                        for (int y = 0; y < whiteplayer.pieces.get(0).Possible_Moves.size(); y++) {
+
+                            if (whiteplayer.pieces.get(0).Possible_Moves.get(y).x == this.chessBoard.Tiles.get(i).Tilecoordinates.x && whiteplayer.pieces.get(0).Possible_Moves.get(y).y == this.chessBoard.Tiles.get(i).Tilecoordinates.y)
+                            {
+                                whiteplayer.pieces.get(0).Coordinates.SetValues(this.chessBoard.Tiles.get(i).Tilecoordinates);
+
+                            }
+                        }
+                    }
+
+
                 }
 
             }
 
 
+
+            if (this.IsPieceHovering)
+            {
+                //whiteplayer.pieces.get(0).Coordinates.SetValues((mouseListener.GetMousePos().x.intValue() / Board.SQUARE_SIZE)  + 1,(mouseListener.GetMousePos().y.intValue() / Board.SQUARE_SIZE) + 1);
+            }
+
+            System.out.println("ENTITY 1 X: "+whiteplayer.pieces.get(0).Coordinates.x + " Y: " + whiteplayer.pieces.get(0).Coordinates.y);
 
             //newqueen.GetPossibleMoves(true,newqueen.Coordinates);
             newBishop.GetPossibleMoves(true,newBishop.Coordinates);
