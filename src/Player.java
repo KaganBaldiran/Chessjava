@@ -33,6 +33,7 @@ public class Player extends JPanel
 
         pieces.add(new Knight(6,2,this.Color,current_board.FetchTile(6,2),this.Current_Board_Reference,"C:\\Users\\kbald\\Desktop\\Chess_cdt45.png"));
 
+        pieces.add(new Bishop(7,2,this.Color,current_board.FetchTile(7,2),this.Current_Board_Reference,"C:\\Users\\kbald\\Desktop\\Chess_tile_bd.png"));
         //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
         //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
 
@@ -52,6 +53,7 @@ public class Player extends JPanel
         super.paintComponent(g);
 
         pieces.get(0).paintComponent(g);
+        pieces.get(1).paintComponent(g);
 
 
 

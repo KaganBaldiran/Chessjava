@@ -45,7 +45,8 @@ public class Game extends JPanel implements Runnable
     //MouseInputListener mouseListener = new MouseInputListener();
     MouseInputListener mouseListener;
 
-
+    Player whiteplayer;
+    Player blackplayer;
 
     boolean allow_click[];
 
@@ -58,6 +59,9 @@ public class Game extends JPanel implements Runnable
         chessBoard = new Board();
         newqueen = new Queen(7,5,Tile.WHITE);
 
+
+        this.whiteplayer = new Player(Tile.WHITE,this.chessBoard);
+        this.blackplayer = new Player(Tile.BLACK,this.chessBoard);
 
         newknight = new Knight(5,5,Tile.WHITE);
 
@@ -73,7 +77,9 @@ public class Game extends JPanel implements Runnable
         this.allow_click = new boolean[4];
 
 
-        gh = new GraphicHandler(chessBoard, newqueen, newknight, newPawn, newrook, newking, newBishop);
+        //gh = new GraphicHandler(chessBoard, newqueen, newknight, newPawn, newrook, newking, newBishop);
+        gh = new GraphicHandler(chessBoard, this.whiteplayer,this.blackplayer);
+        this.newBishop = (Bishop) whiteplayer.pieces.get(1);
 
 
         javax.swing.JFrame frame = new javax.swing.JFrame();
