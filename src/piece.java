@@ -51,7 +51,7 @@ public abstract class piece extends JPanel {
         this.piecetexture = new Texture(texture_file_path);
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
         //piecetexture.Position.SetValues(100,100);
-        piecetexture.setScale(0.15f);
+        piecetexture.setScale(Board.SQUARE_SIZE * 0.00115f);
     }
 
     void ReferenceTile(Tile input_tile)
@@ -79,14 +79,19 @@ public abstract class piece extends JPanel {
 
         if (this.Selected) {
             for (int i = 0; i < Possible_Moves.size(); i++) {
-                int centerX = (Possible_Moves.get(i).x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
-                int centerY = (Possible_Moves.get(i).y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
-                int radius = 35;
 
-                Color TRANSPARENT_LIGHT_GRAY = new Color(java.awt.Color.LIGHT_GRAY.getRed()/ 255,java.awt.Color.LIGHT_GRAY.getGreen() / 255,java.awt.Color.LIGHT_GRAY.getBlue() / 255,0.2f );
+                if (Possible_Moves.get(i).x < 9)
+                {
+                    int centerX = (Possible_Moves.get(i).x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
+                    int centerY = (Possible_Moves.get(i).y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
+                    int radius = 35;
 
-                g.setColor(TRANSPARENT_LIGHT_GRAY);
-                g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+                    Color TRANSPARENT_LIGHT_GRAY = new Color(java.awt.Color.LIGHT_GRAY.getRed()/ 255,java.awt.Color.LIGHT_GRAY.getGreen() / 255,java.awt.Color.LIGHT_GRAY.getBlue() / 255,0.2f );
+
+                    g.setColor(TRANSPARENT_LIGHT_GRAY);
+                    g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+
+                }
 
             }
         }

@@ -185,6 +185,7 @@ public class Rook extends piece{
         {
             this.SwitchSide = true;
             tileTracer.SetValues(this.Coordinates);
+
             GetPossibleMoves(true,tileTracer);
 
         }

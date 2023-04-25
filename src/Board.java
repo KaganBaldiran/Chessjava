@@ -9,7 +9,7 @@ public class Board extends JPanel
 
     Math.Vec4<Integer> MinMaxBoundaries = new Math.Vec4<>();
 
-    public static final int SQUARE_SIZE = 1000 / 8;
+    public static final int SQUARE_SIZE = (int)(900.0f / 8.0f);
 
     Board() {
 

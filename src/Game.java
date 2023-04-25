@@ -60,7 +60,7 @@ public class Game extends JPanel implements Runnable
         this.mouseListener = mouseListener;
 
         frame.addMouseListener(mouseListener);
-        frame.setSize(1000, 1000);
+        frame.setSize(1300, 900);
         frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
@@ -86,7 +86,7 @@ public class Game extends JPanel implements Runnable
 
 
         current_canvas = new Canvas();
-        current_canvas.setPreferredSize(new Dimension(1000, 1000));
+        current_canvas.setPreferredSize(new Dimension(1300, 900));
         current_canvas.setFocusable(true);
         current_canvas.requestFocus();
 
