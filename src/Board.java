@@ -120,7 +120,9 @@ public class Board extends JPanel
                 if ((row + col) % 2 == 0) {
                     g.setColor(Color.WHITE);
                 } else {
-                    g.setColor(Color.GRAY);
+
+                    Color DARK_CUSTOM_GREEN = GraphicHandler.HexToRgba("#7D945D");
+                    g.setColor(DARK_CUSTOM_GREEN);
                 }
                 g.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
             }

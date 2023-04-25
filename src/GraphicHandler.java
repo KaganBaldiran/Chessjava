@@ -52,15 +52,33 @@ public class GraphicHandler extends JPanel
        //this.newqueen.paintComponent(g);
 
          player1.paintComponent(g);
-        //this.newknight.paintComponent(g);
-        //this.newbishop.paintComponent(g);
-        //this.newrook.paintComponent(g);
-        //this.newpawn.paintComponent(g);
-        //this.newking.paintComponent(g);
-        //knighttexture.paintComponent(g);
 
         g.dispose();
     }
+
+
+        public static Color HexToRgba(String hexCode) {
+            hexCode = hexCode.trim();
+
+            if (!hexCode.matches("^#[0-9A-Fa-f]{6}$")) {
+                throw new IllegalArgumentException("Invalid HEX code format");
+            }
+
+            int red = Integer.parseInt(hexCode.substring(1, 3), 16);
+            int green = Integer.parseInt(hexCode.substring(3, 5), 16);
+            int blue = Integer.parseInt(hexCode.substring(5, 7), 16);
+
+
+            int alpha = 255;
+
+            if (hexCode.length() == 9) {
+                alpha = Integer.parseInt(hexCode.substring(7, 9), 16);
+            }
+
+            return new Color(red, green, blue, alpha);
+        }
+
+
 
 
 
