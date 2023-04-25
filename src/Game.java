@@ -133,15 +133,16 @@ public class Game extends JPanel implements Runnable
         //newPawn.GetPossibleMoves(true, newPawn.Coordinates);
 
        /// newknight.GetPossibleMoves(true,newknight.Coordinates);
-        newBishop.GetPossibleMoves(true,newBishop.Coordinates);
 
-
-        whiteplayer.GetPosssibleMoves();
 
 
         while (isRunning) {
 
-            this.whiteplayer.pieces.get(0).GetPossibleMoves(true , this.whiteplayer.pieces.get(0).Coordinates);
+            newBishop.GetPossibleMoves(true,newBishop.Coordinates);
+
+
+            whiteplayer.GetPosssibleMoves();
+
 
             if (input_handler.isReleased(KeyEvent.VK_DOWN))
             {
