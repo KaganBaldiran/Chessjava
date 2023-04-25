@@ -60,9 +60,17 @@ public class Game extends JPanel implements Runnable
         chessBoard = new Board();
         newqueen = new Queen(7,5,Tile.WHITE);
 
+        javax.swing.JFrame frame = new javax.swing.JFrame("Chess");
+        MouseInputListener mouseListener = new MouseInputListener(frame);
+        this.mouseListener = mouseListener;
 
-        this.whiteplayer = new Player(Tile.WHITE,this.chessBoard);
-        this.blackplayer = new Player(Tile.BLACK,this.chessBoard);
+        frame.addMouseListener(mouseListener);
+        frame.setSize(1000, 1000);
+        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
+        this.whiteplayer = new Player(Tile.WHITE,this.chessBoard,this.mouseListener);
+        this.blackplayer = new Player(Tile.BLACK,this.chessBoard,this.mouseListener);
 
         newknight = new Knight(5,5,Tile.WHITE);
 
@@ -80,16 +88,12 @@ public class Game extends JPanel implements Runnable
 
         //gh = new GraphicHandler(chessBoard, newqueen, newknight, newPawn, newrook, newking, newBishop);
         gh = new GraphicHandler(chessBoard, this.whiteplayer,this.blackplayer);
-        this.newBishop = (Bishop) whiteplayer.pieces.get(1);
+        //this.newBishop = (Bishop) whiteplayer.pieces.get(1);
 
 
-        javax.swing.JFrame frame = new javax.swing.JFrame("Chess");
-        MouseInputListener mouseListener = new MouseInputListener(frame);
-        this.mouseListener = mouseListener;
-        frame.addMouseListener(mouseListener);
-        frame.setSize(1000, 1000);
-        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+
+
+
 
 
         frame.setFocusable(true);
@@ -122,14 +126,17 @@ public class Game extends JPanel implements Runnable
     public void run()
     {
 
-        newrook.GetPossibleMoves(true , newrook.Coordinates);
+        //newrook.GetPossibleMoves(true , newrook.Coordinates);
 
-        newking.GetPossibleMoves(true , newking.Coordinates);
+       //newking.GetPossibleMoves(true , newking.Coordinates);
 
-        newPawn.GetPossibleMoves(true, newPawn.Coordinates);
+        //newPawn.GetPossibleMoves(true, newPawn.Coordinates);
 
-        newknight.GetPossibleMoves(true,newkngit ight.Coordinates);
+       /// newknight.GetPossibleMoves(true,newknight.Coordinates);
+        newBishop.GetPossibleMoves(true,newBishop.Coordinates);
 
+
+        whiteplayer.GetPosssibleMoves();
 
 
         while (isRunning) {
@@ -184,6 +191,8 @@ public class Game extends JPanel implements Runnable
                     //this.newBishop.Coordinates.y++;
                 }
 
+
+                /*
             for (int i = 0; i < this.chessBoard.Tiles.size(); i++)
             {
                 if (this.chessBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.mouseListener.GetMousePos()))
@@ -226,11 +235,15 @@ public class Game extends JPanel implements Runnable
             {
                 //whiteplayer.pieces.get(0).Coordinates.SetValues((mouseListener.GetMousePos().x.intValue() / Board.SQUARE_SIZE)  + 1,(mouseListener.GetMousePos().y.intValue() / Board.SQUARE_SIZE) + 1);
             }
+            */
+
+            whiteplayer.MovePlayerPieces();
+
 
             System.out.println("ENTITY 1 X: "+whiteplayer.pieces.get(0).Coordinates.x + " Y: " + whiteplayer.pieces.get(0).Coordinates.y);
 
+
             //newqueen.GetPossibleMoves(true,newqueen.Coordinates);
-            newBishop.GetPossibleMoves(true,newBishop.Coordinates);
 
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();

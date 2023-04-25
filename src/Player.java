@@ -8,15 +8,19 @@ public class Player extends JPanel
     Vector<piece> TakenPieces = new Vector<>();
     Board Current_Board_Reference;
 
+    MouseInputListener mouselistenerreference;
+
     int Color;
 
-    Player(int color , Board current_board)
+    Player(int color , Board current_board , MouseInputListener current_mouse_listener)
     {
         this.Color = color;
 
         this.Current_Board_Reference = current_board;
 
         int y_axis = 2;
+
+        this.mouselistenerreference = current_mouse_listener;
 
         if (this.Color == Tile.BLACK)
         {
@@ -31,9 +35,12 @@ public class Player extends JPanel
         //pieces.add(new King(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
 
 
-        pieces.add(new Knight(6,2,this.Color,current_board.FetchTile(6,2),this.Current_Board_Reference,"resources\\Chess_cdt45.png"));
+        pieces.add(new Knight(6,2,this.Color,current_board.FetchTile(6,2),this.Current_Board_Reference,"resources\\Chess_cdt45.png",current_mouse_listener));
 
-        pieces.add(new Bishop(7,2,this.Color,current_board.FetchTile(7,2),this.Current_Board_Reference,"resources\\Chess_tile_bd.png"));
+        //pieces.add(new Bishop(7,2,this.Color,current_board.FetchTile(7,2),this.Current_Board_Reference,"resources\\Chess_tile_bd.png"));
+
+        pieces.add(new Rook(7,2,this.Color,current_board.FetchTile(7,2),this.Current_Board_Reference,"resources\\rookpng.png",current_mouse_listener));
+
         //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
         //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
 
@@ -46,14 +53,35 @@ public class Player extends JPanel
         TakenPieces.add(takenPiece);
     }
 
+    public void MovePlayerPieces()
+    {
+        for (int i = 0; i < this.pieces.size(); i++)
+        {
+            this.pieces.get(i).Move(0,0);
+        }
+    }
+
+    public void GetPosssibleMoves()
+    {
+        for (int i = 0; i < this.pieces.size(); i++)
+        {
+            this.pieces.get(i).GetPossibleMoves(true,this.pieces.get(i).Coordinates);
+        }
+
+    }
 
     @Override
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
 
-        pieces.get(0).paintComponent(g);
-        pieces.get(1).paintComponent(g);
+        for (int i = 0; i < this.pieces.size(); i++)
+        {
+            pieces.get(i).paintComponent(g);
+        }
+
+
+
 
 
 

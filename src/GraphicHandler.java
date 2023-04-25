@@ -33,7 +33,6 @@ public class GraphicHandler extends JPanel
         knighttexture = new Texture("C:\\Users\\kbald\\Desktop\\Chess_cdt45.png");
         knighttexture.Position.SetValues(100,100);
         knighttexture.setScale(0.7f);
-        this.player1 = new Player(Tile.WHITE,current_board);
 
     }
 
