@@ -8,7 +8,8 @@ public class GameServer extends Thread
     private DatagramSocket socket;
     private Game game;
 
-    public GameServer(Game game , String ipAddress) throws UnknownHostException, SocketException {
+    public GameServer(Game game , String ipAddress) throws UnknownHostException, SocketException
+    {
         this.game = game;
 
         try

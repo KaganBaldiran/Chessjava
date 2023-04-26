@@ -50,6 +50,7 @@ public class Queen extends piece
         {
             this.Side++;
             this.SwitchSide = false;
+
         }
 
             if (this.Side == UP && input_Coordinates.y < 8 && isTileEmpty)

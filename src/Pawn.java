@@ -43,7 +43,7 @@ public class Pawn extends piece {
     @Override
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty , Math.Vec2<Integer> input_Coordinates) {
 
-        if (First_turn)
+        if (!this.FirstMove)
         {
            times_to_repeat = 2;
         }

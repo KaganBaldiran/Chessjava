@@ -74,6 +74,8 @@ public abstract class piece extends JPanel {
     boolean IsPieceHovering = false;
     boolean IsPieceHoveringClick = false;
 
+    boolean FirstMove = false;
+
     public void Move()
     {
 
@@ -110,6 +112,7 @@ public abstract class piece extends JPanel {
 
                         if (possibleMove.x.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() && possibleMove.y.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue()) {
 
+                            this.FirstMove = true;
                             this.TilePieceStandingOn.SetEmptinessState(true);
                             Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
                             this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);

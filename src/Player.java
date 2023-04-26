@@ -48,6 +48,9 @@ public class Player extends JPanel
 
         pieces.add(new Queen(4,8,this.Color,current_board.FetchTile(6,8),this.Current_Board_Reference,"resources\\Rescaled_versions\\queen_black.png",current_mouse_listener));
 
+        pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,"resources\\Rescaled_versions\\King_black.png",current_mouse_listener));
+
+
     }
 
     public void TakeOpponentPiece(piece takenPiece)

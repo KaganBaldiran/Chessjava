@@ -46,7 +46,7 @@ public class King extends piece
 
         input_Coordinates = this.Coordinates;
 
-        if(!this.Possible_Moves.isEmpty() && !isTileEmpty || this.ClearPossibleMoves)
+        if(!this.Possible_Moves.isEmpty() && this.ClearPossibleMoves)
         {
             this.ClearPossibleMoves = false;
             this.Possible_Moves.clear();
@@ -58,7 +58,7 @@ public class King extends piece
             this.SwitchSide = false;
         }
 
-        if (this.Side == UP && input_Coordinates.y < 8)
+        if (this.Side == UP && input_Coordinates.y < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -75,7 +75,7 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == DOWN  && input_Coordinates.y > 1)
+        else if (this.Side == DOWN  && input_Coordinates.y > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -92,7 +92,7 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT  && input_Coordinates.x > 1)
+        else if (this.Side == LEFT  && input_Coordinates.x > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -109,7 +109,7 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT  && input_Coordinates.x < 8)
+        else if (this.Side == RIGHT  && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -126,7 +126,7 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8)
+        else if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -144,7 +144,7 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y > 1)
+        else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -162,7 +162,7 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y < 8)
+        else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -180,7 +180,7 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y > 1)
+        else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -202,11 +202,11 @@ public class King extends piece
         {
             this.SwitchSide = true;
             tileTracer.SetValues(this.Coordinates);
-            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+            GetPossibleMoves(true,tileTracer);
 
         }
 
-        if(!isTileEmpty || this.Side > LEFT_DOWN)
+        if(this.Side > LEFT_DOWN)
         {
             System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = UP;
