@@ -13,18 +13,21 @@ public class Pawn extends piece {
         super(x_cord, y_cord, color);
         this.First_turn = true;
         this.tileTracer = new Math.Vec2<>();
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
     Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn);
         this.First_turn = true;
         this.tileTracer = new Math.Vec2<>();
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
     Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path,  MouseInputListener current_mouse_listener)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path,current_mouse_listener);
         this.First_turn = true;
         this.tileTracer = new Math.Vec2<>();
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
 
@@ -36,9 +39,24 @@ public class Pawn extends piece {
 
     int times_to_repeat = 1;
 
+
     @Override
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty , Math.Vec2<Integer> input_Coordinates) {
 
+        if (First_turn)
+        {
+           times_to_repeat = 2;
+        }
+        if (input_Coordinates.y < 8 && input_Coordinates.y > 1)
+        {
+            tileTracer.SetValues(this.Coordinates);
+            tileTracer.y--;
+            isTileEmpty = this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty();
+        }
+        else
+        {
+            isTileEmpty = false;
+        }
 
         if((!this.Possible_Moves.isEmpty() && this.Count_of_reco == 0) || this.ClearPossibleMoves)
         {
@@ -46,18 +64,12 @@ public class Pawn extends piece {
             this.Possible_Moves.clear();
         }
 
-        if (this.First_turn)
-        {
-            times_to_repeat = 2;
-            this.First_turn = false;
-        }
-
-        if (isTileEmpty && this.Count_of_reco < times_to_repeat && input_Coordinates.y < 8 && input_Coordinates.y >= 1 && isTileEmpty)
+        if (isTileEmpty && this.Count_of_reco < times_to_repeat && input_Coordinates.y < 8 && input_Coordinates.y >= 1)
         {
             this.Count_of_reco++;
             tileTracer.SetValues(input_Coordinates);
 
-            tileTracer.y += 1;
+            tileTracer.y -= 1;
 
             if (this.Color == Tile.BLACK)
             {
@@ -69,12 +81,13 @@ public class Pawn extends piece {
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
 
         }
-        
-        else if(!isTileEmpty || this.Count_of_reco == times_to_repeat || !(input_Coordinates.y < 8 && input_Coordinates.y >= 1))
+
+        if(!isTileEmpty || this.Count_of_reco == times_to_repeat || !(input_Coordinates.y < 8 && input_Coordinates.y >= 1))
         {
             this.ClearPossibleMoves = true;
             this.Count_of_reco = 0;
             this.times_to_repeat = 1;
+            First_turn = false;
             return this.Possible_Moves;
         }
         return null;

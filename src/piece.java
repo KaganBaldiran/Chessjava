@@ -76,6 +76,7 @@ public abstract class piece extends JPanel {
 
     public void Move()
     {
+
         for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++)
         {
             if (this.CurrentGameBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.CurrentMouseListenerReference.GetMousePos()))
@@ -135,19 +136,22 @@ public abstract class piece extends JPanel {
         super.paintComponent(g);
 
         if (this.Selected) {
-            for (int i = 0; i < Possible_Moves.size(); i++) {
 
-                if (Possible_Moves.get(i).x < 9)
-                {
-                    int centerX = (Possible_Moves.get(i).x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
-                    int centerY = (Possible_Moves.get(i).y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
-                    int radius = 35;
+            if (!Possible_Moves.isEmpty())
+            {
+                for (int i = 0; i < Possible_Moves.size(); i++) {
 
-                    g.setColor(TRANSPARENT_LIGHT_GRAY);
-                    g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+                    if (Possible_Moves.get(i).x < 9) {
+                        int centerX = (Possible_Moves.get(i).x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
+                        int centerY = (Possible_Moves.get(i).y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
+                        int radius = 35;
+
+                        g.setColor(TRANSPARENT_LIGHT_GRAY);
+                        g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+
+                    }
 
                 }
-
             }
 
             int x = (this.Coordinates.x -1) * Board.SQUARE_SIZE;

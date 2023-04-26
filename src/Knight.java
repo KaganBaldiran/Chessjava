@@ -167,7 +167,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT_UP && input_Coordinates.y < 8  && input_Coordinates.x < 8 && isTileEmpty)
+        else if (this.Side == RIGHT_UP && input_Coordinates.y < 8  && input_Coordinates.x < 7 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -185,7 +185,7 @@ public class Knight extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT_DOWN && input_Coordinates.y > 1  && input_Coordinates.x < 8 && isTileEmpty)
+        else if (this.Side == RIGHT_DOWN && input_Coordinates.y > 1  && input_Coordinates.x < 7 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
