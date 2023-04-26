@@ -18,15 +18,11 @@ public class Bishop extends piece{
         super(x_cord, y_cord, color,TilePieceStandingOn);
     }
 
-    Bishop(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path)
+    Bishop(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path,  MouseInputListener current_mouse_listener)
     {
-        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path);
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path,current_mouse_listener);
     }
 
-    @Override
-    public void Move(int newX, int newY) {
-        this.Coordinates.SetValues(newX,newY);
-    }
 
     @Override
     public void capture() {
@@ -41,7 +37,7 @@ public class Bishop extends piece{
     @Override
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates)
     {
-        if(!this.Possible_Moves.isEmpty() && !isTileEmpty || this.ClearPossibleMoves)
+        if(!this.Possible_Moves.isEmpty() && this.ClearPossibleMoves)
         {
             this.ClearPossibleMoves = false;
             this.Possible_Moves.clear();
@@ -53,7 +49,7 @@ public class Bishop extends piece{
             this.SwitchSide = false;
         }
 
-        if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8)
+        if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -69,7 +65,7 @@ public class Bishop extends piece{
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y > 1)
+        else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -85,7 +81,7 @@ public class Bishop extends piece{
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y < 8)
+        else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -101,7 +97,7 @@ public class Bishop extends piece{
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y > 1)
+        else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -121,11 +117,11 @@ public class Bishop extends piece{
         {
             this.SwitchSide = true;
             tileTracer.SetValues(this.Coordinates);
-            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+            GetPossibleMoves(true,tileTracer);
 
         }
 
-        if(!isTileEmpty || this.Side > LEFT_DOWN)
+        if(this.Side > LEFT_DOWN)
         {
             //System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = RIGHT_UP;

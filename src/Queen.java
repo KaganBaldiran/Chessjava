@@ -21,17 +21,11 @@ public class Queen extends piece
     {
         super(x_cord, y_cord, color, TilePieceStandingOn);
     }
-    Queen(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path)
+    Queen(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path,  MouseInputListener current_mouse_listener)
     {
-        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path);
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path,current_mouse_listener);
     }
 
-
-    @Override
-    public void Move(int newX, int newY)
-    {
-        this.Coordinates.SetValues(newX,newY);
-    }
 
     @Override
     public void capture() {

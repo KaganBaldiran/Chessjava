@@ -19,15 +19,16 @@ public class King extends piece
         this.CheckMate = false;
     }
 
+    King(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path,  MouseInputListener current_mouse_listener)
+    {
+        super(x_cord, y_cord, color, TilePieceStandingOn,CurrentBoard,file_path,current_mouse_listener);
+    }
+
     public boolean isCheckMate() {
         return CheckMate;
     }
 
-    @Override
-    public void Move(int newX, int newY)
-    {
-         this.Coordinates.SetValues(newX,newY);
-    }
+
     @Override
     public void capture()
     {

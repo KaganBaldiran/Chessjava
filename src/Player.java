@@ -32,18 +32,14 @@ public class Player extends JPanel
             //pieces.add(new Pawn(x,y_axis,this.Color,current_board.FetchTile(x,y_axis),this.Current_Board_Reference,null));
         }
 
-        //pieces.add(new King(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
-
         pieces.add(new Knight(2,8,this.Color,current_board.FetchTile(2,8),this.Current_Board_Reference,"resources\\Chess_cdt45.png",current_mouse_listener));
         pieces.add(new Knight(7,8,this.Color,current_board.FetchTile(7,8),this.Current_Board_Reference,"resources\\Chess_cdt45.png",current_mouse_listener));
 
         pieces.add(new Rook(8,8,this.Color,current_board.FetchTile(8,8),this.Current_Board_Reference,"resources\\rookpng.png",current_mouse_listener));
         pieces.add(new Rook(1,8,this.Color,current_board.FetchTile(1,8),this.Current_Board_Reference,"resources\\rookpng.png",current_mouse_listener));
 
-        //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
-        //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
-
-        //pieces.add(new Bishop(x,y_axis,this.Color,current_board.FetchTile(x,2),this.Current_Board_Reference));
+        pieces.add(new Bishop(3,8,this.Color,current_board.FetchTile(3,8),this.Current_Board_Reference,"resources\\Chess_tile_bd.png",current_mouse_listener));
+        pieces.add(new Bishop(6,8,this.Color,current_board.FetchTile(6,8),this.Current_Board_Reference,"resources\\Chess_tile_bd.png",current_mouse_listener));
 
     }
 
@@ -56,7 +52,7 @@ public class Player extends JPanel
     {
         for (piece piece : this.pieces)
         {
-            piece.Move(0, 0);
+            piece.Move();
         }
     }
 

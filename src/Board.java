@@ -13,6 +13,9 @@ public class Board extends JPanel
 
     public static final int SQUARE_SIZE = (int)((screenSize.getSize().getHeight() * 0.90f) / 8.0f);
 
+    public static final Color DARK_CUSTOM_GREEN = GraphicHandler.HexToRgba("#7D945D");
+    public static final Color LIGHT_YELLOW = GraphicHandler.HexToRgba("#E4EA87");
+
     Board() {
 
         int TempColor = 0;
@@ -123,7 +126,6 @@ public class Board extends JPanel
                     g.setColor(Color.WHITE);
                 } else {
 
-                    Color DARK_CUSTOM_GREEN = GraphicHandler.HexToRgba("#7D945D");
                     g.setColor(DARK_CUSTOM_GREEN);
                 }
                 g.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);

@@ -8,7 +8,6 @@ public class Rook extends piece{
     public static final int LEFT = 3;
     public static final int RIGHT = 4;
 
-    MouseInputListener CurrentMouseListenerReference;
 
     Rook(int x_cord,int y_cord , int color)
     {
@@ -19,74 +18,12 @@ public class Rook extends piece{
         super(x_cord, y_cord, color, TilePieceStandingOn);
         this.CurrentMouseListenerReference = null;
     }
-    Rook(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path)
+    Rook(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path , MouseInputListener current_mouse_listener)
     {
-        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path);
-        this.CurrentMouseListenerReference = null;
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path,current_mouse_listener);
         this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
-    Rook(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path, MouseInputListener current_mouse_listener)
-    {
-        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path);
-        this.CurrentMouseListenerReference = current_mouse_listener;
-        this.TilePieceStandingOn.SetEmptinessState(false);
-    }
-
-    boolean IsPieceHovering = false;
-    boolean IsPieceHoveringClick = false;
-
-
-    @Override
-    public void Move(int newX, int newY) {
-
-        for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++)
-        {
-            if (this.CurrentGameBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.CurrentMouseListenerReference.GetMousePos()))
-            {
-                System.out.println("COLLISION SPOTTED ! TILE LOCATION X: "+ this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x + " Y: "+ this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y + "EMPTY: "+  this.CurrentGameBoard.Tiles.get(i).isTileEmpty());
-                System.out.println("MOUSE LOCATION X: "+ this.CurrentMouseListenerReference.GetMousePos().x + " Y: "+ this.CurrentMouseListenerReference.GetMousePos().y );
-
-                if (this.CurrentMouseListenerReference.isReleased(MouseEvent.BUTTON1))
-                {
-                    this.IsPieceHoveringClick = true;
-                }
-
-                if(this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick &&
-                        this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() == this.Coordinates.x.intValue() &&
-                        this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue() == this.Coordinates.y.intValue())
-                {
-                    this.IsPieceHovering = true;
-                    this.IsPieceHoveringClick = false;
-                    this.Selected = true;
-                }
-
-                //System.out.println("IsPieceHovering: " + this.IsPieceHovering + " IsPieceHoveringClick: " + IsPieceHoveringClick);
-
-                if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
-
-                    this.IsPieceHovering = false;
-                    this.IsPieceHoveringClick = false;
-                    this.Selected = false;
-
-                    for (Math.Vec2<Integer> possibleMove : Possible_Moves) {
-
-                        if (possibleMove.x.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() && possibleMove.y.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue()) {
-
-                            this.TilePieceStandingOn.SetEmptinessState(true);
-                            Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
-                            this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
-                            this.TilePieceStandingOn.SetEmptinessState(false);
-                        }
-
-                    }
-                }
-
-
-            }
-
-        }
-    }
 
     @Override
     public void capture()

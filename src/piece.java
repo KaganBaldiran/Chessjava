@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 public abstract class piece extends JPanel {
@@ -18,6 +19,7 @@ public abstract class piece extends JPanel {
 
     boolean Selected = false;
 
+    MouseInputListener CurrentMouseListenerReference;
 
 
     public boolean IsInsideBoundries(int x_cord , int y_cord)
@@ -42,7 +44,7 @@ public abstract class piece extends JPanel {
         this.TilePieceStandingOn = TilePieceStandingOn;
         this.CurrentGameBoard = new Board();
     }
-    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String texture_file_path)
+    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String texture_file_path , MouseInputListener current_mouse_listener)
     {
         this.Coordinates.SetValues(x_cord,y_cord);
         this.Color = color;
@@ -52,6 +54,7 @@ public abstract class piece extends JPanel {
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
         //piecetexture.Position.SetValues(100,100);
         piecetexture.setScale(Board.SQUARE_SIZE * 0.00115f);
+        this.CurrentMouseListenerReference = current_mouse_listener;
     }
 
     void ReferenceTile(Tile input_tile)
@@ -68,9 +71,63 @@ public abstract class piece extends JPanel {
         return tile_i.isTileEmpty();
     };
 
-    public abstract void Move(int newX,int newY);
+    boolean IsPieceHovering = false;
+    boolean IsPieceHoveringClick = false;
+
+    public void Move()
+    {
+        for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++)
+        {
+            if (this.CurrentGameBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.CurrentMouseListenerReference.GetMousePos()))
+            {
+                System.out.println("COLLISION SPOTTED ! TILE LOCATION X: "+ this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x + " Y: "+ this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y + "EMPTY: "+  this.CurrentGameBoard.Tiles.get(i).isTileEmpty());
+                System.out.println("MOUSE LOCATION X: "+ this.CurrentMouseListenerReference.GetMousePos().x + " Y: "+ this.CurrentMouseListenerReference.GetMousePos().y );
+
+                if (this.CurrentMouseListenerReference.isReleased(MouseEvent.BUTTON1))
+                {
+                    this.IsPieceHoveringClick = true;
+                }
+
+                if(this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick &&
+                        this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() == this.Coordinates.x.intValue() &&
+                        this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue() == this.Coordinates.y.intValue())
+                {
+                    this.IsPieceHovering = true;
+                    this.IsPieceHoveringClick = false;
+                    this.Selected = true;
+                }
+
+                //System.out.println("IsPieceHovering: " + this.IsPieceHovering + " IsPieceHoveringClick: " + IsPieceHoveringClick);
+
+                if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
+
+                    this.IsPieceHovering = false;
+                    this.IsPieceHoveringClick = false;
+                    this.Selected = false;
+
+                    for (Math.Vec2<Integer> possibleMove : Possible_Moves) {
+
+                        if (possibleMove.x.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() && possibleMove.y.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue()) {
+
+                            this.TilePieceStandingOn.SetEmptinessState(true);
+                            Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
+                            this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
+                            this.TilePieceStandingOn.SetEmptinessState(false);
+                        }
+
+                    }
+                }
+
+
+            }
+
+        }
+
+    }
     public abstract void capture();
     public abstract Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates);
+
+    private final Color TRANSPARENT_LIGHT_GRAY = new Color(java.awt.Color.LIGHT_GRAY.getRed()/ 255,java.awt.Color.LIGHT_GRAY.getGreen() / 255,java.awt.Color.LIGHT_GRAY.getBlue() / 255,0.2f );
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -86,15 +143,21 @@ public abstract class piece extends JPanel {
                     int centerY = (Possible_Moves.get(i).y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
                     int radius = 35;
 
-                    Color TRANSPARENT_LIGHT_GRAY = new Color(java.awt.Color.LIGHT_GRAY.getRed()/ 255,java.awt.Color.LIGHT_GRAY.getGreen() / 255,java.awt.Color.LIGHT_GRAY.getBlue() / 255,0.2f );
-
                     g.setColor(TRANSPARENT_LIGHT_GRAY);
                     g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
 
                 }
 
             }
+
+            int x = (this.Coordinates.x -1) * Board.SQUARE_SIZE;
+            int y = (this.Coordinates.y -1) * Board.SQUARE_SIZE;
+
+            g.setColor(Board.LIGHT_YELLOW);
+
+            g.fillRect(x, y, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
         }
+
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/8) , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/8)  );
 
         piecetexture.paintComponent(g);
