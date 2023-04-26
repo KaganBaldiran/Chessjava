@@ -15,9 +15,6 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 public class Game extends JPanel implements Runnable
 {
 
-
-    //JFrame frame;
-
     Canvas current_canvas;
 
     Board chessBoard;
@@ -28,15 +25,7 @@ public class Game extends JPanel implements Runnable
 
     BufferedImage bufferedImage;
 
-
-    boolean IsPieceHovering = false;
-    boolean IsPieceHoveringClick = false;
-
     boolean isRunning;
-
-    Label label;
-
-    BufferedImage buffer = new BufferedImage(1025, 1025, BufferedImage.TYPE_INT_ARGB);
 
     //MouseInputListener mouseListener = new MouseInputListener();
     MouseInputListener mouseListener;
@@ -60,7 +49,12 @@ public class Game extends JPanel implements Runnable
         this.mouseListener = mouseListener;
 
         frame.addMouseListener(mouseListener);
-        frame.setSize(1300, 900);
+
+        Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize().getSize();
+
+        ScreenSize.setSize(ScreenSize.getHeight() * 0.90f , ScreenSize.getHeight() * 0.90f);
+
+        frame.setSize((int)ScreenSize.getWidth(), (int)ScreenSize.getWidth());
         frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
@@ -84,17 +78,12 @@ public class Game extends JPanel implements Runnable
         frame.setFocusable(true);
 
 
-
         current_canvas = new Canvas();
-        current_canvas.setPreferredSize(new Dimension(1300, 900));
+        current_canvas.setPreferredSize(new Dimension((int)ScreenSize.getWidth(), (int)ScreenSize.getWidth()));
         current_canvas.setFocusable(true);
         current_canvas.requestFocus();
 
-
-
-
         frame.addKeyListener(input_handler);
-
 
         gh.add(current_canvas);
 

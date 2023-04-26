@@ -9,7 +9,9 @@ public class Board extends JPanel
 
     Math.Vec4<Integer> MinMaxBoundaries = new Math.Vec4<>();
 
-    public static final int SQUARE_SIZE = (int)(900.0f / 8.0f);
+    static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize().getSize();
+
+    public static final int SQUARE_SIZE = (int)((screenSize.getSize().getHeight() * 0.90f) / 8.0f);
 
     Board() {
 
