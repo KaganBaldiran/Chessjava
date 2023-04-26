@@ -53,7 +53,7 @@ public abstract class piece extends JPanel {
         this.piecetexture = new Texture(texture_file_path);
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
         //piecetexture.Position.SetValues(100,100);
-        piecetexture.setScale(Board.SQUARE_SIZE * 0.00115f);
+        piecetexture.setScale(Board.SQUARE_SIZE * 0.0090f);
         this.CurrentMouseListenerReference = current_mouse_listener;
     }
 
@@ -162,7 +162,7 @@ public abstract class piece extends JPanel {
             g.fillRect(x, y, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
         }
 
-        piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/8) , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/8)  );
+        piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/10) , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/10)  );
 
         piecetexture.paintComponent(g);
 
