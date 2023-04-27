@@ -40,6 +40,9 @@ public class Game extends JPanel implements Runnable
 
     Math.Vec2<Float> FBO_position = new Math.Vec2<>();
 
+    Math.Vec2<Float> Boundry_size = new Math.Vec2<>();
+
+
 
     javax.swing.JFrame frame;
 
@@ -112,7 +115,11 @@ public class Game extends JPanel implements Runnable
 
 
         frame.pack();
-        frame.setSize((int)ScreenSize.getWidth(), (int)ScreenSize.getHeight());
+
+        Boundry_size.SetValues((float) (frame.getWidth()- ScreenSize.getWidth()), (float) (frame.getHeight() - ScreenSize.getHeight()));
+
+        current_canvas.setSize(new Dimension((int)frame.getWidth(), (int)frame.getHeight()));
+        //frame.setSize((int)(frame.getWidth() * 0.95f), (int)(frame.getHeh() * 0.95f));
 
 
         current_canvas.createBufferStrategy(3);
@@ -132,6 +139,7 @@ public class Game extends JPanel implements Runnable
 
         while (isRunning) {
 
+            //current_canvas.setSize(new Dimension((int)frame.getWidth(), (int)frame.getHeight()));
 
 
             whiteplayer.GetPosssibleMoves();
@@ -141,7 +149,6 @@ public class Game extends JPanel implements Runnable
 
 
 
-            System.out.println("ENTITY 1 X: "+whiteplayer.pieces.get(0).Coordinates.x + " Y: " + whiteplayer.pieces.get(0).Coordinates.y);
 
 
 
@@ -155,27 +162,31 @@ public class Game extends JPanel implements Runnable
 
 
 
-            double final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame , this.ScreenSize);
+            double final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
 
 
 
+            float scaledWidth = (float) (bufferedImage.getWidth() * final_scale_coeffi);
+            float scaledHeight = (float) (bufferedImage.getHeight() * final_scale_coeffi);
 
-            float scaledWidth = (int)(bufferedImage.getWidth() * final_scale_coeffi);
-            float scaledHeight = (int)(bufferedImage.getHeight() * final_scale_coeffi);
 
-            FBO_position.SetValues(frame.getWidth() - scaledWidth , frame.getHeight() - scaledHeight);
+            //FBO_position.SetValues(frame.getWidth() - scaledWidth , frame.getHeight() - scaledHeight);
+            //FBO_position.SetValues(current_canvas.getWidth() - scaledWidth , current_canvas.getHeight() - scaledHeight);
+            FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , (current_canvas.getHeight()/2) - (scaledHeight/2));
+
+            System.out.println("FBO_position X: "+FBO_position.x + " Y: " + FBO_position.y);
 
             Board.UpdateSquareSize(scaledHeight);
 
             this.chessBoard.UpdateCollisionBoxes(FBO_position);
 
             System.out.println("BOARD SQUARE_SIZE SCALE * 8: " + Board.SQUARE_SIZE * 8);
-
+            //FBO_position.y = (float) 0;
 
 
             System.out.println("scaledWidth: " +scaledWidth+ " scaledHeight: " + scaledHeight);
 
-            graphics.drawImage(bufferedImage, (int)(FBO_position.x / 2), (int)(FBO_position.y / 2), (int)scaledWidth, (int)scaledHeight, current_canvas);
+            graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
 
 
 

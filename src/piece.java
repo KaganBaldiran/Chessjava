@@ -172,6 +172,7 @@ public abstract class piece extends JPanel {
                     }
 
                 }
+
             }
 
             int x = (this.Coordinates.x -1) * Board.SQUARE_SIZE;

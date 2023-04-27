@@ -16,7 +16,7 @@ public class Tile
     {
         TileEmpty = true;
 
-        this.TileCollisionBox = new CollisionBox((Tilecoordinates.x-1) * Board.SQUARE_SIZE_non_GUI + (Board.SQUARE_SIZE_non_GUI/2),
+        this.TileCollisionBox = new CollisionBox((Tilecoordinates.x) * Board.SQUARE_SIZE_non_GUI + (Board.SQUARE_SIZE_non_GUI/2),
                                                   Tilecoordinates.y * Board.SQUARE_SIZE_non_GUI - (Board.SQUARE_SIZE_non_GUI/4),
                                                     Board.SQUARE_SIZE_non_GUI,
                                                    Board.SQUARE_SIZE_non_GUI);
@@ -27,7 +27,7 @@ public class Tile
         this.Color = Color;
         Tilecoordinates.SetValues(coordinate);
 
-        this.TileCollisionBox = new CollisionBox((Tilecoordinates.x-1) * Board.SQUARE_SIZE_non_GUI + (Board.SQUARE_SIZE_non_GUI/2),
+        this.TileCollisionBox = new CollisionBox((Tilecoordinates.x) * Board.SQUARE_SIZE_non_GUI + (Board.SQUARE_SIZE_non_GUI/2),
                                                   Tilecoordinates.y * Board.SQUARE_SIZE_non_GUI - (Board.SQUARE_SIZE_non_GUI/4),
                                                     Board.SQUARE_SIZE_non_GUI,
                                                    Board.SQUARE_SIZE_non_GUI);

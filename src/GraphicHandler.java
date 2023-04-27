@@ -49,11 +49,11 @@ public class GraphicHandler extends JPanel
     {
 
        this.current_board.paintComponent(g);
-       //this.newqueen.paintComponent(g);
 
-         player1.paintComponent(g);
+       player1.paintComponent(g);
 
-        g.dispose();
+       g.dispose();
+
     }
 
 
@@ -78,10 +78,13 @@ public class GraphicHandler extends JPanel
             return new Color(red, green, blue, alpha);
         }
 
-        public static double GetScreenScaleCoefficient(JFrame frame , Dimension ScreenSize)
+        public static double GetScreenScaleCoefficient(JFrame frame , Canvas canvas , Dimension ScreenSize)
         {
-            double scaledWidth = (float)(frame.getSize().getWidth() / ScreenSize.getWidth());
-            double scaledHeight = (float)(frame.getSize().getHeight() / ScreenSize.getHeight());
+            //double scaledWidth = (float)(frame.getSize().getWidth() / ScreenSize.getWidth());
+            //double scaledHeight = (float)(frame.getSize().getHeight() / ScreenSize.getHeight());
+
+            double scaledWidth = (float)(canvas.getSize().getWidth() / ScreenSize.getWidth());
+            double scaledHeight = (float)(canvas.getSize().getHeight() / ScreenSize.getHeight());
 
             System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
             System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
