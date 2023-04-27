@@ -16,10 +16,10 @@ public class Tile
     {
         TileEmpty = true;
 
-        this.TileCollisionBox = new CollisionBox((Tilecoordinates.x-1) * Board.SQUARE_SIZE + (Board.SQUARE_SIZE/2),
-                                                  Tilecoordinates.y * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/4),
-                                                    Board.SQUARE_SIZE,
-                                                   Board.SQUARE_SIZE);
+        this.TileCollisionBox = new CollisionBox((Tilecoordinates.x-1) * Board.SQUARE_SIZE_non_GUI + (Board.SQUARE_SIZE_non_GUI/2),
+                                                  Tilecoordinates.y * Board.SQUARE_SIZE_non_GUI - (Board.SQUARE_SIZE_non_GUI/4),
+                                                    Board.SQUARE_SIZE_non_GUI,
+                                                   Board.SQUARE_SIZE_non_GUI);
     }
     Tile(int Color , Math.Vec2<Integer> coordinate)
     {
@@ -27,10 +27,10 @@ public class Tile
         this.Color = Color;
         Tilecoordinates.SetValues(coordinate);
 
-        this.TileCollisionBox = new CollisionBox((Tilecoordinates.x-1) * Board.SQUARE_SIZE + (Board.SQUARE_SIZE/2),
-                                                  Tilecoordinates.y * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/4),
-                                                    Board.SQUARE_SIZE,
-                                                   Board.SQUARE_SIZE);
+        this.TileCollisionBox = new CollisionBox((Tilecoordinates.x-1) * Board.SQUARE_SIZE_non_GUI + (Board.SQUARE_SIZE_non_GUI/2),
+                                                  Tilecoordinates.y * Board.SQUARE_SIZE_non_GUI - (Board.SQUARE_SIZE_non_GUI/4),
+                                                    Board.SQUARE_SIZE_non_GUI,
+                                                   Board.SQUARE_SIZE_non_GUI);
     }
 
     void SetEmptinessState(boolean CurrentTileState)

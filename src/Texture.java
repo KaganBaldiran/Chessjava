@@ -6,11 +6,9 @@ import java.io.IOException;
 
 public class Texture extends JPanel
 {
-
     Math.Vec2<Integer> Position = new Math.Vec2<>();
-
     float scale = 1.0f;
-    private Image textureimage;
+    public Image textureimage;
     Texture(String file_path)
     {
         try
@@ -20,7 +18,6 @@ public class Texture extends JPanel
         {
             e.printStackTrace();
         }
-
 
     }
 
@@ -34,7 +31,6 @@ public class Texture extends JPanel
     public void DrawTexture(Graphics g, int x, int y, int width, int height)
     {
         g.drawImage(textureimage,x, y, width,height,null);
-
     }
 
     public void setScale(float scale) {

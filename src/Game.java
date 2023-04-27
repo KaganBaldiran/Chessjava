@@ -7,6 +7,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import java.awt.event.MouseAdapter;
+import java.io.IOException;
 
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
@@ -43,8 +44,7 @@ public class Game extends JPanel implements Runnable
     javax.swing.JFrame frame;
 
 
-    Game()
-    {
+    Game() throws IOException {
 
 
 
@@ -158,15 +158,25 @@ public class Game extends JPanel implements Runnable
             double final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame , this.ScreenSize);
 
 
+
+
             float scaledWidth = (int)(bufferedImage.getWidth() * final_scale_coeffi);
             float scaledHeight = (int)(bufferedImage.getHeight() * final_scale_coeffi);
 
-
             FBO_position.SetValues(frame.getWidth() - scaledWidth , frame.getHeight() - scaledHeight);
 
-            System.out.println("bufferedImage.getWidth(): " + bufferedImage.getWidth()+ " bufferedImage.getHeight(): " + bufferedImage.getHeight());
+            Board.UpdateSquareSize(scaledHeight);
+
+            this.chessBoard.UpdateCollisionBoxes(FBO_position);
+
+            System.out.println("BOARD SQUARE_SIZE SCALE * 8: " + Board.SQUARE_SIZE * 8);
+
+
+
+            System.out.println("scaledWidth: " +scaledWidth+ " scaledHeight: " + scaledHeight);
 
             graphics.drawImage(bufferedImage, (int)(FBO_position.x / 2), (int)(FBO_position.y / 2), (int)scaledWidth, (int)scaledHeight, current_canvas);
+
 
 
             graphics.dispose();

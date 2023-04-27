@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Vector;
 
 public abstract class piece extends JPanel {
@@ -53,7 +54,20 @@ public abstract class piece extends JPanel {
         this.piecetexture = new Texture(texture_file_path);
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
         //piecetexture.Position.SetValues(100,100);
-        piecetexture.setScale(Board.SQUARE_SIZE * 0.0090f);
+        piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
+        this.CurrentMouseListenerReference = current_mouse_listener;
+    }
+
+    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener)
+    {
+        this.Coordinates.SetValues(x_cord,y_cord);
+        this.Color = color;
+        this.TilePieceStandingOn = TilePieceStandingOn;
+        this.CurrentGameBoard = CurrentBoard;
+        this.piecetexture = existing_texture;
+        piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
+        //piecetexture.Position.SetValues(100,100);
+        piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
         this.CurrentMouseListenerReference = current_mouse_listener;
     }
 
@@ -73,59 +87,62 @@ public abstract class piece extends JPanel {
 
     boolean IsPieceHovering = false;
     boolean IsPieceHoveringClick = false;
-
     boolean FirstMove = false;
+    Tile TileMouseIsOn = new Tile(Color,new Math.Vec2<>(0,0));
+
+    Math.Vec2<Double> previousMousePos = new Math.Vec2<>(0.0,0.0);
 
     public void Move()
     {
+            for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++) {
+                if (this.CurrentGameBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.CurrentMouseListenerReference.GetMousePos())) {
 
-        for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++)
-        {
-            if (this.CurrentGameBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.CurrentMouseListenerReference.GetMousePos()))
-            {
-                System.out.println("COLLISION SPOTTED ! TILE LOCATION X: "+ this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x + " Y: "+ this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y + "EMPTY: "+  this.CurrentGameBoard.Tiles.get(i).isTileEmpty());
-                System.out.println("MOUSE LOCATION X: "+ this.CurrentMouseListenerReference.GetMousePos().x + " Y: "+ this.CurrentMouseListenerReference.GetMousePos().y );
+                    TileMouseIsOn = this.CurrentGameBoard.Tiles.get(i);
 
-                if (this.CurrentMouseListenerReference.isReleased(MouseEvent.BUTTON1))
-                {
-                    this.IsPieceHoveringClick = true;
-                }
+                    System.out.println("COLLISION SPOTTED ! TILE LOCATION X: " + this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x + " Y: " + this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y + "EMPTY: " + this.CurrentGameBoard.Tiles.get(i).isTileEmpty());
+                    System.out.println("MOUSE LOCATION X: " + this.CurrentMouseListenerReference.GetMousePos().x + " Y: " + this.CurrentMouseListenerReference.GetMousePos().y);
 
-                if(this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick &&
-                        this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() == this.Coordinates.x.intValue() &&
-                        this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue() == this.Coordinates.y.intValue())
-                {
-                    this.IsPieceHovering = true;
-                    this.IsPieceHoveringClick = false;
-                    this.Selected = true;
-                }
-
-                //System.out.println("IsPieceHovering: " + this.IsPieceHovering + " IsPieceHoveringClick: " + IsPieceHoveringClick);
-
-                if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
-
-                    this.IsPieceHovering = false;
-                    this.IsPieceHoveringClick = false;
-                    this.Selected = false;
-
-                    for (Math.Vec2<Integer> possibleMove : Possible_Moves) {
-
-                        if (possibleMove.x.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() && possibleMove.y.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue()) {
-
-                            this.FirstMove = true;
-                            this.TilePieceStandingOn.SetEmptinessState(true);
-                            Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
-                            this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
-                            this.TilePieceStandingOn.SetEmptinessState(false);
-                        }
-
+                    if (this.CurrentMouseListenerReference.isReleased(MouseEvent.BUTTON1)) {
+                        this.IsPieceHoveringClick = true;
                     }
-                }
 
+                    if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick &&
+                            this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() == this.Coordinates.x.intValue() &&
+                            this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue() == this.Coordinates.y.intValue()) {
+                        this.IsPieceHovering = true;
+                        this.IsPieceHoveringClick = false;
+                        this.Selected = true;
+                    }
+
+                    //System.out.println("IsPieceHovering: " + this.IsPieceHovering + " IsPieceHoveringClick: " + IsPieceHoveringClick);
+
+                    if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
+
+                        this.IsPieceHovering = false;
+                        this.IsPieceHoveringClick = false;
+                        this.Selected = false;
+
+                        for (Math.Vec2<Integer> possibleMove : Possible_Moves) {
+
+                            if (possibleMove.x.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() && possibleMove.y.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue()) {
+
+                                this.FirstMove = true;
+                                this.TilePieceStandingOn.SetEmptinessState(true);
+                                Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
+                                this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
+                                this.TilePieceStandingOn.SetEmptinessState(false);
+                            }
+
+                        }
+                    }
+
+
+                }
 
             }
 
-        }
+
+        //this.previousMousePos.SetValues(this.CurrentMouseListenerReference.GetMousePos());
 
     }
     public abstract void capture();

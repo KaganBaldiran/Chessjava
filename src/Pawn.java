@@ -29,6 +29,13 @@ public class Pawn extends piece {
         this.tileTracer = new Math.Vec2<>();
         this.TilePieceStandingOn.SetEmptinessState(false);
     }
+    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener)
+    {
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard, existing_texture, current_mouse_listener);
+        this.First_turn = true;
+        this.tileTracer = new Math.Vec2<>();
+        this.TilePieceStandingOn.SetEmptinessState(false);
+    }
 
 
     @Override

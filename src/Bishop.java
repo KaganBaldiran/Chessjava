@@ -23,6 +23,11 @@ public class Bishop extends piece{
         super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path,current_mouse_listener);
         this.TilePieceStandingOn.SetEmptinessState(false);
     }
+    Bishop(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener)
+    {
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard, existing_texture, current_mouse_listener);
+        this.TilePieceStandingOn.SetEmptinessState(false);
+    }
 
 
     @Override

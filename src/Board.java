@@ -11,7 +11,10 @@ public class Board extends JPanel
 
     static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize().getSize();
 
-    public static final int SQUARE_SIZE = (int)((screenSize.getSize().getHeight() * 0.90f) / 8.0f);
+    //public static final int SQUARE_SIZE = (int)((screenSize.getHeight() * 0.90f) / 8.0f);
+    public static int SQUARE_SIZE = (int)(((screenSize.getHeight() * 0.90f) / 8.0f));
+    public static int SQUARE_SIZE_non_GUI = (int)(((screenSize.getHeight() * 0.90f) / 8.0f));
+
 
     public static final Color DARK_CUSTOM_GREEN = GraphicHandler.HexToRgba("#7D945D");
     public static final Color LIGHT_YELLOW = GraphicHandler.HexToRgba("#E4EA87");
@@ -45,6 +48,23 @@ public class Board extends JPanel
             }
 
         }
+    }
+
+    public static void UpdateSquareSize(float buffered_image_height)
+    {
+        SQUARE_SIZE_non_GUI = (int)((buffered_image_height / 8.0f));
+    }
+
+    public void UpdateCollisionBoxes(Math.Vec2<Float> position)
+    {
+        for (Tile tile : Tiles)
+        {
+
+            tile.TileCollisionBox.SetValues((tile.Tilecoordinates.x - 1) * Board.SQUARE_SIZE_non_GUI + (Board.SQUARE_SIZE_non_GUI / 2) + (position.x.intValue()/2),
+                    tile.Tilecoordinates.y * Board.SQUARE_SIZE_non_GUI - (Board.SQUARE_SIZE_non_GUI / 4) + (position.y.intValue()/2),
+                    Board.SQUARE_SIZE_non_GUI , Board.SQUARE_SIZE_non_GUI );
+        }
+
     }
 
     Board(int frame_size) {
