@@ -144,7 +144,8 @@ public class Game extends JPanel implements Runnable
 
          this.Yourname = JOptionPane.showInputDialog(this,"Enter your name: ");
 
-        client = new GameClient(this, InetAddress.getLocalHost().getHostAddress());
+        //client = new GameClient(this, InetAddress.getLocalHost().getHostAddress());
+        client = new GameClient(this,"192.168.56.1");
         client.start();
 
     }
