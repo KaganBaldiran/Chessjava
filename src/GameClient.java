@@ -37,8 +37,8 @@ public class GameClient extends Thread
                 throw new RuntimeException(e);
             }
 
-            System.out.println("SERVER > " + new String(packet.getData()));
-
+            String message = new String(packet.getData());
+            System.out.println("SERVER > " + message);
         }
     }
 

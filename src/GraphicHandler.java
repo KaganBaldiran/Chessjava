@@ -4,36 +4,12 @@ import java.awt.*;
 public class GraphicHandler extends JPanel
 {
     Board current_board;
-    Queen newqueen;
-
-    Knight newknight;
-
-    Pawn newpawn;
-
-    Rook newrook;
-
-    King newking;
-
-    Bishop newbishop;
-
-    Texture knighttexture;
-
     Player player1;
     Player player2;
 
-    GraphicHandler(Board br , Queen qn , Knight k , Pawn pawn , Rook r , King king , Bishop b)
+    GraphicHandler(Board br)
     {
         this.current_board = br;
-        this.newqueen = qn;
-        this.newknight = k;
-        this.newpawn = pawn;
-        this.newrook = r;
-        this.newking = king;
-        this.newbishop = b;
-        knighttexture = new Texture("C:\\Users\\kbald\\Desktop\\Chess_cdt45.png");
-        knighttexture.Position.SetValues(100,100);
-        knighttexture.setScale(0.7f);
-
     }
 
     GraphicHandler(Board br ,Player player1 , Player player2)
@@ -51,6 +27,8 @@ public class GraphicHandler extends JPanel
        this.current_board.paintComponent(g);
 
        player1.paintComponent(g);
+
+       //player2.paintComponent(g);
 
        g.dispose();
 

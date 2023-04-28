@@ -43,12 +43,16 @@ public class Game extends JPanel implements Runnable
     Math.Vec2<Float> Boundry_size = new Math.Vec2<>();
 
 
+    GameServer server;
+    GameClient client;
+
+
+
 
     javax.swing.JFrame frame;
 
 
     Game() throws IOException {
-
 
 
         chessBoard = new Board();
@@ -129,6 +133,15 @@ public class Game extends JPanel implements Runnable
 
         System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
+        if(JOptionPane.showConfirmDialog(this,"Do you want to run the server?") == 0)
+        {
+           server = new GameServer(this);
+           server.start();
+        }
+
+        client = new GameClient(this,"localhost");
+        client.start();
+
     }
     
     @Override
@@ -141,6 +154,7 @@ public class Game extends JPanel implements Runnable
 
             //current_canvas.setSize(new Dimension((int)frame.getWidth(), (int)frame.getHeight()));
 
+            client.SendData("ping".getBytes());
 
             whiteplayer.GetPosssibleMoves();
 
@@ -148,6 +162,10 @@ public class Game extends JPanel implements Runnable
             whiteplayer.MovePlayerPieces();
 
 
+            //blackplayer.GetPosssibleMoves();
+
+
+            //blackplayer.MovePlayerPieces();
 
 
 

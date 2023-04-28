@@ -95,6 +95,7 @@ public abstract class piece extends JPanel {
     public void Move()
     {
             for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++) {
+
                 if (this.CurrentGameBoard.Tiles.get(i).TileCollisionBox.CheckCollisionBoxMouse(this.CurrentMouseListenerReference.GetMousePos())) {
 
                     TileMouseIsOn = this.CurrentGameBoard.Tiles.get(i);

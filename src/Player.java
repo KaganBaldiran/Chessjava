@@ -61,6 +61,14 @@ public class Player extends JPanel
         pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,"resources\\Rescaled_versions_256\\King_black.png",current_mouse_listener));
 
 
+        if (this.Color == Tile.BLACK)
+        {
+            for(piece piece : this.pieces)
+            {
+                piece.Coordinates.SetValues(Math.UV_Tools.Invert_Y_Axis(piece.Coordinates,Tile.BLACK));
+            }
+        }
+
     }
 
     public void TakeOpponentPiece(piece takenPiece)
@@ -86,6 +94,7 @@ public class Player extends JPanel
             if (piece.Selected)
             {
                 piece.GetPossibleMoves(true, piece.Coordinates);
+
             }
         }
 
