@@ -39,7 +39,7 @@ public class GameServer extends Thread
 
             String message = new String(packet.getData());
             System.out.println("CLIENT [" + packet.getAddress().getHostAddress() + " port: " + packet.getPort() +  "] > " + message);
-            if(message.trim().equalsIgnoreCase("ping") )
+            if(message.trim().equalsIgnoreCase("AHMED") )
             {
                 SendData("Pong".getBytes(),packet.getAddress(), packet.getPort());
             }
