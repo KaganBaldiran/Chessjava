@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import java.awt.event.MouseAdapter;
 import java.io.IOException;
+import java.net.InetAddress;
 
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
@@ -50,6 +51,8 @@ public class Game extends JPanel implements Runnable
 
 
     javax.swing.JFrame frame;
+
+    String Yourname = new String();
 
 
     Game() throws IOException {
@@ -139,7 +142,9 @@ public class Game extends JPanel implements Runnable
            server.start();
         }
 
-        client = new GameClient(this,"localhost");
+         this.Yourname = JOptionPane.showInputDialog(this,"Enter your name: ");
+
+        client = new GameClient(this, InetAddress.getLocalHost().getHostAddress());
         client.start();
 
     }
@@ -154,7 +159,7 @@ public class Game extends JPanel implements Runnable
 
             //current_canvas.setSize(new Dimension((int)frame.getWidth(), (int)frame.getHeight()));
 
-            client.SendData("ping".getBytes());
+            client.SendData(this.Yourname.getBytes());
 
             whiteplayer.GetPosssibleMoves();
 
