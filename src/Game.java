@@ -158,26 +158,6 @@ public class Game extends JPanel implements Runnable
             this.ChessClient = new ChessClient("192.168.56.1", 1331);
             ChessClient.start();
 
-            
-        //this.ChessServer.AcceptClient();
-
-
-
-           // this.ChessClient = new ChessClient(InetAddress.getLocalHost().getHostAddress(), 1331);
-            //this.ChessClient.start();
-
-
-
-
-        //ChessClient client = new ChessClient("localhost", 1331);
-        //client.setDaemon(true);
-        //client.start();
-
-        //this.Yourname = JOptionPane.showInputDialog(this,"Enter your name: ");
-
-        //client = new GameClient(this, InetAddress.getLocalHost().getHostAddress());
-        //client = new GameClient(this,"172.20.10.2");
-        //client.start();
     }
     
     @Override
@@ -202,6 +182,7 @@ public class Game extends JPanel implements Runnable
 
             this.ChessServer.AcceptData();
 */
+
 
 
 
@@ -256,6 +237,16 @@ public class Game extends JPanel implements Runnable
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
 
 
+            for(piece piece : whiteplayer.pieces)
+            {
+                if(piece.Selected)
+                {
+                    this.ChessClient.setDataTosend(String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y));
+                }
+
+            }
+
+            
 
             graphics.dispose();
             bufferstrategy.show();

@@ -8,6 +8,8 @@ public class ChessClient extends Thread {
     private BufferedReader in;
     private PrintWriter out;
 
+    String DataTosend = new String("Is it coming?");
+
     ChessClient(String ipAddress , int port) throws IOException {
 
 
@@ -24,12 +26,16 @@ public class ChessClient extends Thread {
         while(true)
         {
             try {
-                SendData("Is it coming?");
+                SendData(this.DataTosend);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
         }
+    }
+
+    public void setDataTosend(String dataTosend) {
+        DataTosend = dataTosend;
     }
 
     public void SendData(String data) throws IOException {
