@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.awt.event.MouseAdapter;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
@@ -46,6 +48,9 @@ public class Game extends JPanel implements Runnable
 
     GameServer server;
     GameClient client;
+
+    ChessServer ChessServer;
+    ChessClient ChessClient;
 
 
 
@@ -136,31 +141,69 @@ public class Game extends JPanel implements Runnable
 
         System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
-        if(JOptionPane.showConfirmDialog(this,"Do you want to run the server?") == 0)
-        {
-           server = new GameServer(this);
-           server.start();
-        }
+        InitNetworking();
 
-         this.Yourname = JOptionPane.showInputDialog(this,"Enter your name: ");
+    }
+
+    public synchronized void InitNetworking() throws IOException {
+
+
+
+        if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
+
+            ChessServer ChessServer = new ChessServer(1331);
+            //server.setDaemon(true);
+            ChessServer.start();
+        }
+            this.ChessClient = new ChessClient("192.168.56.1", 1331);
+            ChessClient.start();
+
+            
+        //this.ChessServer.AcceptClient();
+
+
+
+           // this.ChessClient = new ChessClient(InetAddress.getLocalHost().getHostAddress(), 1331);
+            //this.ChessClient.start();
+
+
+
+
+        //ChessClient client = new ChessClient("localhost", 1331);
+        //client.setDaemon(true);
+        //client.start();
+
+        //this.Yourname = JOptionPane.showInputDialog(this,"Enter your name: ");
 
         //client = new GameClient(this, InetAddress.getLocalHost().getHostAddress());
-        client = new GameClient(this,"192.168.56.1");
-        client.start();
-
+        //client = new GameClient(this,"172.20.10.2");
+        //client.start();
     }
     
     @Override
     public void run()
     {
 
-        System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
+        System.out.println("this.current_canvas.getWidth()rr X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
         while (isRunning) {
 
             //current_canvas.setSize(new Dimension((int)frame.getWidth(), (int)frame.getHeight()));
 
-            client.SendData(this.Yourname.getBytes());
+            //client.SendData(this.Yourname.getBytes());
+/*
+            try {
+                this.ChessClient.SendData("IS IT COMING");
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+
+
+            this.ChessServer.AcceptData();
+*/
+
+
 
             whiteplayer.GetPosssibleMoves();
 
@@ -217,7 +260,17 @@ public class Game extends JPanel implements Runnable
             graphics.dispose();
             bufferstrategy.show();
 
+
+
         }
+
+
+            this.ChessServer.close();
+            try {
+                this.ChessClient.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
 
     }
