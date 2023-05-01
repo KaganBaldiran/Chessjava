@@ -22,16 +22,16 @@ public class Pawn extends piece {
         this.tileTracer = new Math.Vec2<>();
         this.TilePieceStandingOn.SetEmptinessState(false);
     }
-    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path,  MouseInputListener current_mouse_listener)
+    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path,  MouseInputListener current_mouse_listener, Player player_this_piece_belongs)
     {
-        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path,current_mouse_listener);
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path,current_mouse_listener,player_this_piece_belongs);
         this.First_turn = true;
         this.tileTracer = new Math.Vec2<>();
         this.TilePieceStandingOn.SetEmptinessState(false);
     }
-    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener)
+    Pawn(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener, Player player_this_piece_belongs)
     {
-        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard, existing_texture, current_mouse_listener);
+        super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard, existing_texture, current_mouse_listener,player_this_piece_belongs);
         this.First_turn = true;
         this.tileTracer = new Math.Vec2<>();
         this.TilePieceStandingOn.SetEmptinessState(false);

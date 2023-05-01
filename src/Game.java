@@ -61,21 +61,61 @@ public class Game extends JPanel implements Runnable
     String Yourname = new String();
 
 
+
+    JButton button = new JButton("random button");
+
+
     Game() throws IOException {
 
 
         chessBoard = new Board();
 
 
+
+
+
         frame = new javax.swing.JFrame("Chess");
         MouseInputListener mouseListener = new MouseInputListener(frame);
         this.mouseListener = mouseListener;
+
+
+
+
+
+
+
+
+
+
 
         frame.addMouseListener(mouseListener);
 
         ScreenSize = Toolkit.getDefaultToolkit().getScreenSize().getSize();
 
-        ScreenSize.setSize(ScreenSize.getHeight() * 0.90f , ScreenSize.getHeight() * 0.90f);
+        ScreenSize.setSize(ScreenSize.getHeight() * 0.90f + ScreenSize.getHeight() * 0.20f , ScreenSize.getHeight() * 0.90f);
+
+
+
+
+
+
+
+
+        this.whiteplayer = new Player(Tile.WHITE,this.chessBoard,this.mouseListener);
+        this.blackplayer = new Player(Tile.BLACK,this.chessBoard,this.mouseListener);
+
+
+
+
+
+
+        gh = new GraphicHandler(chessBoard, this.whiteplayer,this.blackplayer , null);
+
+
+
+
+
+
 
         frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -83,8 +123,6 @@ public class Game extends JPanel implements Runnable
         System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
         System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
 
-        this.whiteplayer = new Player(Tile.WHITE,this.chessBoard,this.mouseListener);
-        this.blackplayer = new Player(Tile.BLACK,this.chessBoard,this.mouseListener);
 
 
 
@@ -96,9 +134,7 @@ public class Game extends JPanel implements Runnable
 
 
         //gh = new GraphicHandler(chessBoard, newqueen, newknight, newPawn, newrook, newking, newBishop);
-        gh = new GraphicHandler(chessBoard, this.whiteplayer,this.blackplayer);
         //this.newBishop = (Bishop) whiteplayer.pieces.get(1);
-
 
         frame.setFocusable(true);
 
@@ -110,6 +146,9 @@ public class Game extends JPanel implements Runnable
         current_canvas.setFocusable(true);
         current_canvas.requestFocus();
 
+        button.setSize(100, 50); // set size to 100x50 pixels
+        button.setLocation((int) (ScreenSize.getHeight()), 0); // set location to (10, 10) pixels
+        frame.add(button); // add button to GraphicHandler panel
 
 
 
@@ -118,9 +157,8 @@ public class Game extends JPanel implements Runnable
 
         gh.add(current_canvas);
 
-
-
         frame.add(current_canvas);
+
 
 
         current_canvas.addMouseListener(mouseListener);
@@ -162,8 +200,8 @@ public class Game extends JPanel implements Runnable
             GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
 
-
-        client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
+        //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
+        client = new GameClient(this, InetAddress.getByName("192.168.0.107"),55516);
         client.start();
             //this.ChessClient = new ChessClient("192.168.56.1", 1331);
             //ChessClient.start();
@@ -178,7 +216,7 @@ public class Game extends JPanel implements Runnable
         while (isRunning) {
 
             try {
-               client.SendData("ping".getBytes());
+               client.SendData(client.DataTosend.getBytes());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -202,7 +240,11 @@ public class Game extends JPanel implements Runnable
 
             Graphics2D bufferedGraphics = bufferedImage.createGraphics();
 
+            gh.Update();
             gh.paintComponent(bufferedGraphics);
+            ///button.paint(bufferedGraphics);
+
+            //button.paint(bufferedGraphics);
 
 
 
@@ -231,14 +273,18 @@ public class Game extends JPanel implements Runnable
 
             System.out.println("scaledWidth: " +scaledWidth+ " scaledHeight: " + scaledHeight);
 
+
+
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
+            button.setLocation((int) (FBO_position.x.intValue() + scaledWidth * 0.90f),FBO_position.y.intValue());
+            button.setSize((int) (100 * final_scale_coeffi), (int) (50 * final_scale_coeffi));
 
 
             for(piece piece : whiteplayer.pieces)
             {
                 if(piece.Selected)
                 {
-                    this.ChessClient.setDataTosend(String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y));
+                    this.client.setDataTosend(String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y));
                 }
 
             }

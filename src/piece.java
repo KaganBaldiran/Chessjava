@@ -21,6 +21,7 @@ public abstract class piece extends JPanel {
     boolean Selected = false;
 
     MouseInputListener CurrentMouseListenerReference;
+    Player player_this_piece_belongs;
 
 
     public boolean IsInsideBoundries(int x_cord , int y_cord)
@@ -45,7 +46,7 @@ public abstract class piece extends JPanel {
         this.TilePieceStandingOn = TilePieceStandingOn;
         this.CurrentGameBoard = new Board();
     }
-    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String texture_file_path , MouseInputListener current_mouse_listener)
+    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String texture_file_path , MouseInputListener current_mouse_listener , Player player_this_piece_belongs)
     {
         this.Coordinates.SetValues(x_cord,y_cord);
         this.Color = color;
@@ -56,9 +57,10 @@ public abstract class piece extends JPanel {
         //piecetexture.Position.SetValues(100,100);
         piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
         this.CurrentMouseListenerReference = current_mouse_listener;
+        this.player_this_piece_belongs = player_this_piece_belongs;
     }
 
-    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener)
+    piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener , Player player_this_piece_belongs)
     {
         this.Coordinates.SetValues(x_cord,y_cord);
         this.Color = color;
@@ -69,6 +71,7 @@ public abstract class piece extends JPanel {
         //piecetexture.Position.SetValues(100,100);
         piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
         this.CurrentMouseListenerReference = current_mouse_listener;
+        this.player_this_piece_belongs = player_this_piece_belongs;
     }
 
     void ReferenceTile(Tile input_tile)
@@ -110,9 +113,22 @@ public abstract class piece extends JPanel {
                     if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && !this.IsPieceHovering && IsPieceHoveringClick &&
                             this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() == this.Coordinates.x.intValue() &&
                             this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue() == this.Coordinates.y.intValue()) {
-                        this.IsPieceHovering = true;
-                        this.IsPieceHoveringClick = false;
-                        this.Selected = true;
+
+                        boolean permitted = true;
+                        for(piece piece : player_this_piece_belongs.pieces)
+                        {
+                            if (piece.Selected) {
+                                permitted = false;
+                                break;
+                            }
+                        }
+                        if(permitted)
+                        {
+                            this.IsPieceHovering = true;
+                            this.IsPieceHoveringClick = false;
+                            this.Selected = true;
+                        }
+
                     }
 
                     //System.out.println("IsPieceHovering: " + this.IsPieceHovering + " IsPieceHoveringClick: " + IsPieceHoveringClick);

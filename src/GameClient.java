@@ -8,6 +8,8 @@ public class GameClient extends Thread
     private DatagramSocket socket;
     private Game game;
 
+    String DataTosend = new String("Is it coming?");
+
     int port;
 
     public GameClient(Game game , InetAddress ipAddress , int port) throws UnknownHostException, SocketException {
@@ -58,4 +60,7 @@ public class GameClient extends Thread
 
     }
 
+    public void setDataTosend(String dataTosend) {
+        DataTosend = dataTosend;
+    }
 }

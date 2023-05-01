@@ -1,11 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GraphicHandler extends JPanel
 {
     Board current_board;
     Player player1;
     Player player2;
+
+    JPanel UIpanel;
+
+    JButton button = new JButton("random button");
 
     GraphicHandler(Board br)
     {
@@ -20,17 +26,45 @@ public class GraphicHandler extends JPanel
         this.player2 = player2;
     }
 
+    GraphicHandler(Board br ,Player player1 , Player player2, JPanel UIpanel)
+    {
+        this.current_board = br;
+
+        this.player1 = player1;
+        this.player2 = player2;
+
+
+
+    }
+
     @Override
     protected void paintComponent(Graphics g)
     {
 
-       this.current_board.paintComponent(g);
+        super.paintComponent(g);
 
-       player1.paintComponent(g);
+
+        this.current_board.paintComponent(g);
+        //button.paint(g);
+        player1.paintComponent(g);
+
+       //UIpanel.setLocation(1000,1000);
+
+
+
+
 
        //player2.paintComponent(g);
 
        g.dispose();
+
+
+    }
+
+    public void Update()
+    {
+
+
 
     }
 
