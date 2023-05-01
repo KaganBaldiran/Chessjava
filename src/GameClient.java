@@ -8,15 +8,18 @@ public class GameClient extends Thread
     private DatagramSocket socket;
     private Game game;
 
-    public GameClient(Game game , String ipAddress) throws UnknownHostException, SocketException {
+    int port;
+
+    public GameClient(Game game , InetAddress ipAddress , int port) throws UnknownHostException, SocketException {
         this.game = game;
+        this.port = port;
 
         try
         {
             this.socket = new DatagramSocket();
-            this.ipAddress = InetAddress.getByName(ipAddress);
+            this.ipAddress = ipAddress;
         }
-        catch (SocketException | UnknownHostException e)
+        catch (SocketException e)
         {
             e.printStackTrace();
         }
@@ -27,6 +30,7 @@ public class GameClient extends Thread
     {
         while(true)
         {
+
             byte[] data = new byte[1024];
             DatagramPacket packet = new DatagramPacket(data , data.length);
 
@@ -38,13 +42,13 @@ public class GameClient extends Thread
             }
 
             String message = new String(packet.getData());
-            System.out.println("SERVER > " + message);
+            System.out.println("SERVER [" + packet.getAddress().getHostAddress() + " port: " + packet.getPort() +  "] > " + message);
         }
     }
 
     public void SendData(byte[] data)
     {
-        DatagramPacket packet = new DatagramPacket(data , data.length , ipAddress , 1331);
+        DatagramPacket packet = new DatagramPacket(data , data.length , ipAddress , port);
         try
         {
             socket.send(packet);

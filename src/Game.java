@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
@@ -147,17 +148,25 @@ public class Game extends JPanel implements Runnable
 
     public synchronized void InitNetworking() throws IOException {
 
-
-
         if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
 
-            ChessServer ChessServer = new ChessServer(1331);
-            //server.setDaemon(true);
-            ChessServer.start();
+            server = new GameServer(this,55516);
+            server.start();
         }
-            this.ChessClient = new ChessClient("192.168.56.1", 1331);
-            ChessClient.start();
 
+            InetAddress[] inet = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
+            System.out.println("HOST NAME: " + InetAddress.getLocalHost().getHostName() );
+
+            assert GameServer.getIPv4Addresses(inet) != null;
+            System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
+            GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
+
+
+
+        client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
+        client.start();
+            //this.ChessClient = new ChessClient("192.168.56.1", 1331);
+            //ChessClient.start();
     }
     
     @Override
@@ -168,24 +177,12 @@ public class Game extends JPanel implements Runnable
 
         while (isRunning) {
 
-            //current_canvas.setSize(new Dimension((int)frame.getWidth(), (int)frame.getHeight()));
-
-            //client.SendData(this.Yourname.getBytes());
-/*
             try {
-                this.ChessClient.SendData("IS IT COMING");
-            } catch (IOException e) {
-                e.printStackTrace();
+               client.SendData("ping".getBytes());
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-
-
-            this.ChessServer.AcceptData();
-*/
-
-
-
-
+            
             whiteplayer.GetPosssibleMoves();
 
 
@@ -245,8 +242,6 @@ public class Game extends JPanel implements Runnable
                 }
 
             }
-
-            
 
             graphics.dispose();
             bufferstrategy.show();

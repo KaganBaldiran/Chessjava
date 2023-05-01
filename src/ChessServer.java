@@ -13,6 +13,14 @@ public class ChessServer extends Thread{
 
      this.ChessServer = new ServerSocket(port);
 
+     try {
+         this.ClientSocket = ChessServer.accept();
+         this.in = new BufferedReader(new InputStreamReader(this.ClientSocket.getInputStream()));
+         this.out = new PrintWriter(new OutputStreamWriter(this.ClientSocket.getOutputStream()),true);
+     } catch (IOException e) {
+         throw new RuntimeException(e);
+     }
+
  }
 
 
@@ -22,13 +30,7 @@ public class ChessServer extends Thread{
  }
  public void run()
  {
-     try {
-         this.ClientSocket = ChessServer.accept();
-         this.in = new BufferedReader(new InputStreamReader(this.ClientSocket.getInputStream()));
-         this.out = new PrintWriter(new OutputStreamWriter(this.ClientSocket.getOutputStream()),true);
-     } catch (IOException e) {
-         throw new RuntimeException(e);
-     }
+
 
      while(true)
      {
