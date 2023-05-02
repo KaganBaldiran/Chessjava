@@ -67,7 +67,6 @@ public class GameClient extends Thread
 
                 String message = new String(recievepacket.getData()).trim();
 
-
                 if (message.equalsIgnoreCase("RECEIVED")) {
 
                     System.out.println("SERVER> " + message);

@@ -1,7 +1,7 @@
 import javax.naming.spi.Resolver;
 import java.io.IOException;
 import java.net.*;
-
+import java.util.Map;
 
 
 public class GameServer extends Thread
@@ -10,8 +10,8 @@ public class GameServer extends Thread
     private DatagramSocket socket;
     private Game game;
 
-    Boolean CLIENT1_STATE = false;
-    Boolean CLIENT2_STATE = false;
+    public Boolean CLIENT1_STATE = false;
+    public Boolean CLIENT2_STATE = false;
 
     public GameServer(Game game , int port) throws UnknownHostException, SocketException
     {
@@ -35,9 +35,6 @@ public class GameServer extends Thread
     {
         while(true)
         {
-
-            if (!(CLIENT1_STATE && CLIENT2_STATE))
-            {
 
                 if (!CLIENT1_STATE)
                 {
@@ -88,13 +85,13 @@ public class GameServer extends Thread
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    String message = new String(receivePacket.getData());
-                    System.out.println("CLIENT2> " + message);
+                    String message = new String(receivePacket.getData()).trim();
 
                     if(message.trim().equals("ONLINE"))
                     {
+                        System.out.println("CLIENT2> " + message);
                         CLIENT2_STATE = true;
-                        SendData("RECIEVED".getBytes() ,receivePacket.getAddress(),7070 );
+                        SendData("RECEIVED".getBytes() ,receivePacket.getAddress(),receivePacket.getPort() );
                     }
 
                     serverSocket2.close();
@@ -102,7 +99,7 @@ public class GameServer extends Thread
 
 
 
-            }
+
             /*byte[] data = new byte[1024];
             DatagramPacket packet = new DatagramPacket(data , data.length);
 
@@ -119,13 +116,13 @@ public class GameServer extends Thread
             {
                 SendData("Pong".getBytes(),packet.getAddress(), packet.getPort());
             }*/
-
+/*
             try {
                 HolePunching();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
+*/
         }
     }
 
