@@ -6,8 +6,11 @@ public class GameClient extends Thread
 {
 
     private InetAddress ipAddress;
+    private InetAddress otherclient_ipAddress;
     private DatagramSocket clientsocket;
     private Game game;
+
+    Boolean STATEINFORM = false;
 
     String DataTosend = new String("Is it coming?");
 
@@ -27,30 +30,51 @@ public class GameClient extends Thread
             e.printStackTrace();
         }
 
+
+
+
     }
 
     public void run()
     {
         while(true)
         {
-            try {
-                SendInfoToServer();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (!STATEINFORM) {
+                DatagramSocket socket;
+                try {
+                    socket = new DatagramSocket();
+                } catch (SocketException e) {
+                    throw new RuntimeException(e);
+                }
+
+                byte[] senddata = "ONLINE".getBytes();
+                DatagramPacket sendpacket;
+
+                try {
+                    sendpacket = new DatagramPacket(senddata, senddata.length,ipAddress, 7070);
+                    this.clientsocket.send(sendpacket);
+                } catch (RuntimeException | IOException e) {
+                    e.printStackTrace();
+                }
+
+                DatagramPacket recievepacket;
+                try {
+                    recievepacket = new DatagramPacket(new byte[1024], 1024);
+                    this.clientsocket.receive(recievepacket);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                String message = new String(recievepacket.getData()).trim();
+
+
+                if (message.equalsIgnoreCase("RECEIVED")) {
+
+                    System.out.println("SERVER> " + message);
+                    STATEINFORM = true;
+                }
             }
 
-            /*byte[] data = new byte[1024];
-            DatagramPacket packet = new DatagramPacket(data , data.length);
-
-            try
-            {
-                clientsocket.receive(packet);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            String message = new String(packet.getData());
-            System.out.println("SERVER [" + packet.getAddress().getHostAddress() + " port: " + packet.getPort() +  "] > " + message);*/
         }
     }
 

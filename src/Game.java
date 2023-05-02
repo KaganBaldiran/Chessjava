@@ -192,34 +192,29 @@ public class Game extends JPanel implements Runnable
             server.start();
         }
 
-            InetAddress[] inet = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
-            System.out.println("HOST NAME: " + InetAddress.getLocalHost().getHostName() );
+        InetAddress[] inet = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
+        System.out.println("HOST NAME: " + InetAddress.getLocalHost().getHostName() );
 
-            assert GameServer.getIPv4Addresses(inet) != null;
-            System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
-            GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
-
+        assert GameServer.getIPv4Addresses(inet) != null;
+        System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
+        GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
         //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
         client = new GameClient(this, InetAddress.getByName("192.168.0.107"),55516);
         client.start();
-            //this.ChessClient = new ChessClient("192.168.56.1", 1331);
-            //ChessClient.start();
+        //this.ChessClient = new ChessClient("192.168.56.1", 1331);
+        //ChessClient.start();
     }
     
     @Override
     public void run()
     {
 
-        System.out.println("this.current_canvas.getWidth()rr X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
+        //System.out.println("this.current_canvas.getWidth()rr X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
         while (isRunning) {
 
-            try {
-               client.SendData(client.DataTosend.getBytes());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+
             
             whiteplayer.GetPosssibleMoves();
 
@@ -261,17 +256,17 @@ public class Game extends JPanel implements Runnable
             //FBO_position.SetValues(current_canvas.getWidth() - scaledWidth , current_canvas.getHeight() - scaledHeight);
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , (current_canvas.getHeight()/2) - (scaledHeight/2));
 
-            System.out.println("FBO_position X: "+FBO_position.x + " Y: " + FBO_position.y);
+            //System.out.println("FBO_position X: "+FBO_position.x + " Y: " + FBO_position.y);
 
             Board.UpdateSquareSize(scaledHeight);
 
             this.chessBoard.UpdateCollisionBoxes(FBO_position);
 
-            System.out.println("BOARD SQUARE_SIZE SCALE * 8: " + Board.SQUARE_SIZE * 8);
+            //System.out.println("BOARD SQUARE_SIZE SCALE * 8: " + Board.SQUARE_SIZE * 8);
             //FBO_position.y = (float) 0;
 
 
-            System.out.println("scaledWidth: " +scaledWidth+ " scaledHeight: " + scaledHeight);
+            //System.out.println("scaledWidth: " +scaledWidth+ " scaledHeight: " + scaledHeight);
 
 
 

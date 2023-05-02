@@ -103,8 +103,8 @@ public abstract class piece extends JPanel {
 
                     TileMouseIsOn = this.CurrentGameBoard.Tiles.get(i);
 
-                    System.out.println("COLLISION SPOTTED ! TILE LOCATION X: " + this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x + " Y: " + this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y + "EMPTY: " + this.CurrentGameBoard.Tiles.get(i).isTileEmpty());
-                    System.out.println("MOUSE LOCATION X: " + this.CurrentMouseListenerReference.GetMousePos().x + " Y: " + this.CurrentMouseListenerReference.GetMousePos().y);
+                    //System.out.println("COLLISION SPOTTED ! TILE LOCATION X: " + this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x + " Y: " + this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y + "EMPTY: " + this.CurrentGameBoard.Tiles.get(i).isTileEmpty());
+                    //System.out.println("MOUSE LOCATION X: " + this.CurrentMouseListenerReference.GetMousePos().x + " Y: " + this.CurrentMouseListenerReference.GetMousePos().y);
 
                     if (this.CurrentMouseListenerReference.isReleased(MouseEvent.BUTTON1)) {
                         this.IsPieceHoveringClick = true;

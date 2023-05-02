@@ -10,6 +10,9 @@ public class GameServer extends Thread
     private DatagramSocket socket;
     private Game game;
 
+    Boolean CLIENT1_STATE = false;
+    Boolean CLIENT2_STATE = false;
+
     public GameServer(Game game , int port) throws UnknownHostException, SocketException
     {
         this.game = game;
@@ -17,9 +20,7 @@ public class GameServer extends Thread
         try
         {
             this.socket = new DatagramSocket(port);
-            System.out.println("Waiting for client 1 on Port " + socket.getLocalPort());
-
-
+            //System.out.println("Waiting for client 1 on Port " + socket.getLocalPort());
 
 
         }
@@ -35,6 +36,73 @@ public class GameServer extends Thread
         while(true)
         {
 
+            if (!(CLIENT1_STATE && CLIENT2_STATE))
+            {
+
+                if (!CLIENT1_STATE)
+                {
+                    DatagramSocket serverSocket1 = null;
+                    try {
+                        serverSocket1 = new DatagramSocket(7070);
+                    } catch (SocketException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    System.out.println("Waiting for Client 1 on Port "
+                            + serverSocket1.getLocalPort());
+
+                    // receive Data
+                    DatagramPacket receivePacket = new DatagramPacket(new byte[1024], 1024);
+                    try {
+                        serverSocket1.receive(receivePacket);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    String message = new String(receivePacket.getData());
+
+                    if(message.trim().equals("ONLINE"))
+                    {
+                        System.out.println("CLIENT1> " + message.trim());
+                        CLIENT1_STATE = true;
+                        SendData("RECEIVED".getBytes() ,receivePacket.getAddress(),receivePacket.getPort() );
+                    }
+
+                    serverSocket1.close();
+                }
+                if(!CLIENT2_STATE)
+                {
+                    DatagramSocket serverSocket2 = null;
+                    try {
+                        serverSocket2 = new DatagramSocket(7070);
+                    } catch (SocketException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    System.out.println("Waiting for Client 2 on Port "
+                            + serverSocket2.getLocalPort());
+
+                    // receive Data
+                    DatagramPacket receivePacket = new DatagramPacket(new byte[1024], 1024);
+                    try {
+                        serverSocket2.receive(receivePacket);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    String message = new String(receivePacket.getData());
+                    System.out.println("CLIENT2> " + message);
+
+                    if(message.trim().equals("ONLINE"))
+                    {
+                        CLIENT2_STATE = true;
+                        SendData("RECIEVED".getBytes() ,receivePacket.getAddress(),7070 );
+                    }
+
+                    serverSocket2.close();
+                }
+
+
+
+            }
             /*byte[] data = new byte[1024];
             DatagramPacket packet = new DatagramPacket(data , data.length);
 

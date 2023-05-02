@@ -98,9 +98,9 @@ public class GraphicHandler extends JPanel
             double scaledWidth = (float)(canvas.getSize().getWidth() / ScreenSize.getWidth());
             double scaledHeight = (float)(canvas.getSize().getHeight() / ScreenSize.getHeight());
 
-            System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
-            System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
-            System.out.println("java.lang.Math.min(scaledHeight , scaledWidth):  " + java.lang.Math.min(scaledHeight , scaledWidth));
+           // System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
+            //System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
+            //System.out.println("java.lang.Math.min(scaledHeight , scaledWidth):  " + java.lang.Math.min(scaledHeight , scaledWidth));
 
             return java.lang.Math.min(scaledHeight , scaledWidth);
         }
