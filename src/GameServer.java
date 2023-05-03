@@ -40,8 +40,8 @@ public class GameServer extends Thread
                 {
                     DatagramSocket serverSocket1 = null;
                     try {
-                        serverSocket1 = new DatagramSocket(7070);
-                    } catch (SocketException e) {
+                        serverSocket1 = new DatagramSocket(7070,InetAddress.getByName("192.168.0.107"));
+                    } catch (SocketException | UnknownHostException e) {
                         throw new RuntimeException(e);
                     }
 
@@ -70,8 +70,8 @@ public class GameServer extends Thread
                 {
                     DatagramSocket serverSocket2 = null;
                     try {
-                        serverSocket2 = new DatagramSocket(7070);
-                    } catch (SocketException e) {
+                        serverSocket2 = new DatagramSocket(7070,InetAddress.getByName("192.168.0.107"));
+                    } catch (SocketException | UnknownHostException e) {
                         throw new RuntimeException(e);
                     }
 

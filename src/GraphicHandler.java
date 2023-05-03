@@ -90,13 +90,13 @@ public class GraphicHandler extends JPanel
             return new Color(red, green, blue, alpha);
         }
 
-        public static double GetScreenScaleCoefficient(JFrame frame , Canvas canvas , Dimension ScreenSize)
+        public static float GetScreenScaleCoefficient(JFrame frame , Canvas canvas , Dimension ScreenSize)
         {
             //double scaledWidth = (float)(frame.getSize().getWidth() / ScreenSize.getWidth());
             //double scaledHeight = (float)(frame.getSize().getHeight() / ScreenSize.getHeight());
 
-            double scaledWidth = (float)(canvas.getSize().getWidth() / ScreenSize.getWidth());
-            double scaledHeight = (float)(canvas.getSize().getHeight() / ScreenSize.getHeight());
+            float scaledWidth = (float)(frame.getContentPane().getWidth() / ScreenSize.getWidth());
+            float scaledHeight = (float)(frame.getContentPane().getHeight() / ScreenSize.getHeight());
 
            // System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
             //System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());

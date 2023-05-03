@@ -72,6 +72,8 @@ public class GameClient extends Thread
                     System.out.println("SERVER> " + message);
                     STATEINFORM = true;
                 }
+
+                socket.close();
             }
 
         }

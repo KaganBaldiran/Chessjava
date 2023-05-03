@@ -63,6 +63,7 @@ public class Game extends JPanel implements Runnable
 
 
     JButton button = new JButton("random button");
+    UI ui;
 
 
     Game() throws IOException {
@@ -138,7 +139,7 @@ public class Game extends JPanel implements Runnable
 
         frame.setFocusable(true);
 
-
+        this.ui = new UI(frame);
 
         current_canvas = new Canvas();
         //current_canvas.setPreferredSize();
@@ -146,10 +147,9 @@ public class Game extends JPanel implements Runnable
         current_canvas.setFocusable(true);
         current_canvas.requestFocus();
 
-        button.setSize(100, 50); // set size to 100x50 pixels
-        button.setLocation((int) (ScreenSize.getHeight()), 0); // set location to (10, 10) pixels
+        //button.setSize(100, 50); // set size to 100x50 pixels
+        //button.setLocation((int) (ScreenSize.getHeight()), 0); // set location to (10, 10) pixels
         frame.add(button); // add button to GraphicHandler panel
-
 
 
 
@@ -169,7 +169,7 @@ public class Game extends JPanel implements Runnable
 
         Boundry_size.SetValues((float) (frame.getWidth()- ScreenSize.getWidth()), (float) (frame.getHeight() - ScreenSize.getHeight()));
 
-        current_canvas.setSize(new Dimension((int)frame.getWidth(), (int)frame.getHeight()));
+        current_canvas.setSize(new Dimension((int)frame.getContentPane().getWidth(), (int)frame.getContentPane().getHeight()));
         //frame.setSize((int)(frame.getWidth() * 0.95f), (int)(frame.getHeh() * 0.95f));
 
 
@@ -214,7 +214,6 @@ public class Game extends JPanel implements Runnable
 
         while (isRunning) {
 
-
             
             whiteplayer.GetPosssibleMoves();
 
@@ -230,13 +229,16 @@ public class Game extends JPanel implements Runnable
 
 
 
+
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();
 
             Graphics2D bufferedGraphics = bufferedImage.createGraphics();
 
-            gh.Update();
+            //gh.Update();
             gh.paintComponent(bufferedGraphics);
+            ui.paintComponent(graphics);
+
             ///button.paint(bufferedGraphics);
 
             //button.paint(bufferedGraphics);
@@ -244,21 +246,26 @@ public class Game extends JPanel implements Runnable
 
 
 
-            double final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
+            float final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
 
 
 
-            float scaledWidth = (float) (bufferedImage.getWidth() * final_scale_coeffi);
-            float scaledHeight = (float) (bufferedImage.getHeight() * final_scale_coeffi);
+            float scaledWidth = bufferedImage.getWidth() * final_scale_coeffi;
+            float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
+
+            System.out.println("FLOAT:  " + scaledHeight + "INT: " + (int)scaledHeight);
+
 
 
             //FBO_position.SetValues(frame.getWidth() - scaledWidth , frame.getHeight() - scaledHeight);
             //FBO_position.SetValues(current_canvas.getWidth() - scaledWidth , current_canvas.getHeight() - scaledHeight);
-            FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , (current_canvas.getHeight()/2) - (scaledHeight/2));
+            FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
+
+            ui.setUIsize(current_canvas.getWidth(),current_canvas.getHeight(),scaledWidth,scaledHeight);
 
             //System.out.println("FBO_position X: "+FBO_position.x + " Y: " + FBO_position.y);
 
-            Board.UpdateSquareSize(scaledHeight);
+            Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
 
             this.chessBoard.UpdateCollisionBoxes(FBO_position);
 
@@ -270,9 +277,15 @@ public class Game extends JPanel implements Runnable
 
 
 
+
+            System.out.println("CURRENT CANVAS X: " + current_canvas.getWidth() + " Y: " + current_canvas.getHeight());
+            System.out.println("POSITION X: " + FBO_position.x + " Y: " + FBO_position.y);
+
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
-            button.setLocation((int) (FBO_position.x.intValue() + scaledWidth * 0.90f),FBO_position.y.intValue());
-            button.setSize((int) (100 * final_scale_coeffi), (int) (50 * final_scale_coeffi));
+
+
+            //graphics.drawImage(bufferedImage, 0, 0, (int)scaledWidth, (int)scaledHeight, current_canvas);
+            //graphics.drawImage(bufferedImage, 0, 0, (int)scaledWidth, (int)scaledHeight, current_canvas);
 
 
             for(piece piece : whiteplayer.pieces)
@@ -288,6 +301,12 @@ public class Game extends JPanel implements Runnable
             bufferstrategy.show();
 
 
+
+            ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi);
+            ui.Update();
+
+            frame.revalidate();
+            frame.repaint();
 
         }
 
