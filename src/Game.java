@@ -182,6 +182,8 @@ public class Game extends JPanel implements Runnable
 
         InitNetworking();
 
+
+
     }
 
     public synchronized void InitNetworking() throws IOException {
@@ -202,6 +204,7 @@ public class Game extends JPanel implements Runnable
         //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
         client = new GameClient(this, InetAddress.getByName("192.168.0.107"),55516);
         client.start();
+        client.doPortForwarding();
         //this.ChessClient = new ChessClient("192.168.56.1", 1331);
         //ChessClient.start();
     }
