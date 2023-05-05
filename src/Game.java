@@ -1,4 +1,7 @@
+import org.xml.sax.SAXException;
+
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -180,7 +183,10 @@ public class Game extends JPanel implements Runnable
 
         System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
+
         InitNetworking();
+
+
 
     }
 
@@ -202,6 +208,7 @@ public class Game extends JPanel implements Runnable
         //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
         client = new GameClient(this, InetAddress.getByName("192.168.0.107"),55516);
         client.start();
+
         //this.ChessClient = new ChessClient("192.168.56.1", 1331);
         //ChessClient.start();
     }
@@ -253,7 +260,7 @@ public class Game extends JPanel implements Runnable
             float scaledWidth = bufferedImage.getWidth() * final_scale_coeffi;
             float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
 
-            System.out.println("FLOAT:  " + scaledHeight + "INT: " + (int)scaledHeight);
+            //System.out.println("FLOAT:  " + scaledHeight + "INT: " + (int)scaledHeight);
 
 
 
@@ -278,8 +285,8 @@ public class Game extends JPanel implements Runnable
 
 
 
-            System.out.println("CURRENT CANVAS X: " + current_canvas.getWidth() + " Y: " + current_canvas.getHeight());
-            System.out.println("POSITION X: " + FBO_position.x + " Y: " + FBO_position.y);
+           // System.out.println("CURRENT CANVAS X: " + current_canvas.getWidth() + " Y: " + current_canvas.getHeight());
+            //System.out.println("POSITION X: " + FBO_position.x + " Y: " + FBO_position.y);
 
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
 

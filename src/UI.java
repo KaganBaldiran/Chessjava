@@ -48,7 +48,7 @@ public class UI extends JPanel
 
 
 
-        System.out.println("BUTTON SIZE X: " + button.getSize().getWidth() + " Y: " + button.getSize().getHeight());
+        //System.out.println("BUTTON SIZE X: " + button.getSize().getWidth() + " Y: " + button.getSize().getHeight());
     }
     @Override
     protected void paintComponent(Graphics g) {

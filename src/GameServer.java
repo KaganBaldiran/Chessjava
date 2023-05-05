@@ -1,4 +1,9 @@
+import org.bitlet.weupnp.GatewayDevice;
+import org.bitlet.weupnp.GatewayDiscover;
+import org.xml.sax.SAXException;
+
 import javax.naming.spi.Resolver;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.*;
 import java.util.Map;
@@ -13,6 +18,12 @@ public class GameServer extends Thread
     public Boolean CLIENT1_STATE = false;
     public Boolean CLIENT2_STATE = false;
 
+    int internalPort = 8080;
+    int externalPort = 8080;
+    String protocol = "UDP";
+
+    boolean success = false;
+
     public GameServer(Game game , int port) throws UnknownHostException, SocketException
     {
         this.game = game;
@@ -20,6 +31,7 @@ public class GameServer extends Thread
         try
         {
             this.socket = new DatagramSocket(port);
+            PortMapping();
             //System.out.println("Waiting for client 1 on Port " + socket.getLocalPort());
 
 
@@ -27,6 +39,8 @@ public class GameServer extends Thread
         catch (SocketException e)
         {
             e.printStackTrace();
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -40,7 +54,7 @@ public class GameServer extends Thread
                 {
                     DatagramSocket serverSocket1 = null;
                     try {
-                        serverSocket1 = new DatagramSocket(7070,InetAddress.getByName("192.168.0.107"));
+                        serverSocket1 = new DatagramSocket(8080,InetAddress.getByName("192.168.0.107"));
                     } catch (SocketException | UnknownHostException e) {
                         throw new RuntimeException(e);
                     }
@@ -70,7 +84,7 @@ public class GameServer extends Thread
                 {
                     DatagramSocket serverSocket2 = null;
                     try {
-                        serverSocket2 = new DatagramSocket(7070,InetAddress.getByName("192.168.0.107"));
+                        serverSocket2 = new DatagramSocket(8080,InetAddress.getByName("192.168.0.107"));
                     } catch (SocketException | UnknownHostException e) {
                         throw new RuntimeException(e);
                     }
@@ -124,6 +138,49 @@ public class GameServer extends Thread
             }
 */
         }
+    }
+
+    public GatewayDevice PortMapping() throws IOException, ParserConfigurationException, SAXException {
+        // Discover the IGD on the network
+        GatewayDiscover discover = new GatewayDiscover();
+        discover.discover();
+        GatewayDevice d = discover.getValidGateway();
+        if (d == null) {
+            System.err.println("No IGD found");
+            System.exit(1);
+        }
+        System.out.println("Found IGD: " + d.getFriendlyName());
+
+        // Get the external IP address of the IGD
+        String externalIpAddress = d.getExternalIPAddress();
+        System.out.println("External IP address: " + externalIpAddress);
+
+        // Add a port mapping to the IGD
+        String description = "My Port Forwarding Rule";
+        InetAddress localAddress = InetAddress.getLocalHost();
+        success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
+        if (success) {
+            System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
+        } else {
+            System.err.println("Failed to add port mapping");
+        }
+
+        return d;
+    }
+
+    public void DeletePortMapping(GatewayDevice d , int externalPort , String protocol)
+    {
+        try {
+            success = d.deletePortMapping(externalPort, protocol);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+        if (success) {
+            System.out.println("Port mapping removed");
+        } else {
+            System.err.println("Failed to remove port mapping");
+        }
+
     }
 
     public void SendData(byte[] data , InetAddress ipAddress , int port)

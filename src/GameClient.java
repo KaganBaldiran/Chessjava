@@ -2,6 +2,17 @@ import java.io.IOException;
 import java.net.*;
 import java.util.Objects;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.bitlet.weupnp.GatewayDevice;
+import org.bitlet.weupnp.GatewayDiscover;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+
 public class GameClient extends Thread
 {
 
@@ -15,6 +26,11 @@ public class GameClient extends Thread
     String DataTosend = new String("Is it coming?");
 
     int port;
+    int internalPort = 8080;
+    int externalPort = 8080;
+    String protocol = "UDP";
+
+    boolean success = false;
 
     public GameClient(Game game , InetAddress ipAddress , int port) throws UnknownHostException, SocketException {
         this.game = game;
@@ -51,7 +67,7 @@ public class GameClient extends Thread
                 DatagramPacket sendpacket;
 
                 try {
-                    sendpacket = new DatagramPacket(senddata, senddata.length,ipAddress, 7070);
+                    sendpacket = new DatagramPacket(senddata, senddata.length,ipAddress, externalPort);
                     this.clientsocket.send(sendpacket);
                 } catch (RuntimeException | IOException e) {
                     e.printStackTrace();
@@ -77,6 +93,49 @@ public class GameClient extends Thread
             }
 
         }
+    }
+
+    public GatewayDevice PortMapping() throws IOException, ParserConfigurationException, SAXException {
+        // Discover the IGD on the network
+        GatewayDiscover discover = new GatewayDiscover();
+        discover.discover();
+        GatewayDevice d = discover.getValidGateway();
+        if (d == null) {
+            System.err.println("No IGD found");
+            System.exit(1);
+        }
+        System.out.println("Found IGD: " + d.getFriendlyName());
+
+        // Get the external IP address of the IGD
+        String externalIpAddress = d.getExternalIPAddress();
+        System.out.println("External IP address: " + externalIpAddress);
+
+        // Add a port mapping to the IGD
+        String description = "My Port Forwarding Rule";
+        InetAddress localAddress = InetAddress.getLocalHost();
+        success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
+        if (success) {
+            System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
+        } else {
+            System.err.println("Failed to add port mapping");
+        }
+
+        return d;
+    }
+
+    public void DeletePortMapping(GatewayDevice d , int externalPort , String protocol)
+    {
+        try {
+            success = d.deletePortMapping(externalPort, protocol);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+        if (success) {
+            System.out.println("Port mapping removed");
+        } else {
+            System.err.println("Failed to remove port mapping");
+        }
+
     }
 
     public void SendInfoToServer() throws IOException {
