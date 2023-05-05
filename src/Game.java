@@ -194,7 +194,7 @@ public class Game extends JPanel implements Runnable
 
         if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
 
-            server = new GameServer(this,55516);
+            server = new GameServer(this,8080);
             server.start();
         }
 

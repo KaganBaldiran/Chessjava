@@ -91,6 +91,17 @@ public class GameClient extends Thread
 
                 socket.close();
             }
+            else
+            {
+                DatagramPacket sendpacket;
+
+                try {
+                    sendpacket = new DatagramPacket(this.DataTosend.getBytes(), this.DataTosend.getBytes().length,ipAddress, externalPort);
+                    this.clientsocket.send(sendpacket);
+                } catch (RuntimeException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
         }
     }

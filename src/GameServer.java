@@ -30,7 +30,7 @@ public class GameServer extends Thread
 
         try
         {
-            this.socket = new DatagramSocket(port);
+            this.socket = new DatagramSocket(port,InetAddress.getByName("192.168.0.107"));
             PortMapping();
             //System.out.println("Waiting for client 1 on Port " + socket.getLocalPort());
 
@@ -53,11 +53,9 @@ public class GameServer extends Thread
                 if (!CLIENT1_STATE)
                 {
                     DatagramSocket serverSocket1 = null;
-                    try {
-                        serverSocket1 = new DatagramSocket(8080,InetAddress.getByName("192.168.0.107"));
-                    } catch (SocketException | UnknownHostException e) {
-                        throw new RuntimeException(e);
-                    }
+
+                    serverSocket1 = this.socket;
+
 
                     System.out.println("Waiting for Client 1 on Port "
                             + serverSocket1.getLocalPort());
@@ -78,19 +76,37 @@ public class GameServer extends Thread
                         SendData("RECEIVED".getBytes() ,receivePacket.getAddress(),receivePacket.getPort() );
                     }
 
-                    serverSocket1.close();
+
                 }
+                else
+                {
+
+                    DatagramPacket receivePacket = new DatagramPacket(new byte[1024], 1024);
+                    try {
+                        this.socket.receive(receivePacket);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    String message = new String(receivePacket.getData());
+
+                    if(!message.trim().isEmpty())
+                    {
+                        System.out.println("CLIENT1> " + message.trim());
+                        //CLIENT1_STATE = true;
+                        //SendData("RECEIVED".getBytes() ,receivePacket.getAddress(),receivePacket.getPort() );
+                    }
+
+                }
+
                 if(!CLIENT2_STATE)
                 {
                     DatagramSocket serverSocket2 = null;
-                    try {
-                        serverSocket2 = new DatagramSocket(8080,InetAddress.getByName("192.168.0.107"));
-                    } catch (SocketException | UnknownHostException e) {
-                        throw new RuntimeException(e);
-                    }
 
-                    System.out.println("Waiting for Client 2 on Port "
-                            + serverSocket2.getLocalPort());
+                    serverSocket2 = this.socket;
+
+
+                    //System.out.println("Waiting for Client 2 on Port "
+                           // + serverSocket2.getLocalPort());
 
                     // receive Data
                     DatagramPacket receivePacket = new DatagramPacket(new byte[1024], 1024);
@@ -108,7 +124,7 @@ public class GameServer extends Thread
                         SendData("RECEIVED".getBytes() ,receivePacket.getAddress(),receivePacket.getPort() );
                     }
 
-                    serverSocket2.close();
+
                 }
 
 
