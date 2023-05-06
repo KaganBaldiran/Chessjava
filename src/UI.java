@@ -6,18 +6,19 @@ import java.awt.event.ComponentEvent;
 public class UI extends JPanel
 {
 
-    JButton button = new JButton("random button");
+    JButton button = new JButton("CREATE GAME");
     JFrame frame_reference;
     Math.Vec2<Float> BoardSize = new Math.Vec2<>(0.0f,0.0f);
-    Math.Vec2<Float> BoardLocation = new Math.Vec2<>();
+    Math.Vec2<Float> BoardLocation = new Math.Vec2<>(0.0f,0.0f);
 
-    Math.Vec2<Float> UIsize = new Math.Vec2<>();
+    Math.Vec2<Float> UIsize = new Math.Vec2<>(0.0f,0.0f);
 
 
     float scale_coeffic = 0;
 
     UI(JFrame frame) {
-        button.setSize(100, 50); // set size to 100x50 pixels
+        button.setSize(100, 50);
+        button.setFont(new Font("Arial", Font.PLAIN, 9));
         button.setLocation(0, 0);
         frame_reference = frame;
         frame_reference.add(button);
@@ -32,7 +33,8 @@ public class UI extends JPanel
     }
 
     public void setUIsize(int FrameWidth , int FrameHeight , float BoardWidth , float BoardHeight) {
-        this.UIsize.SetValues(FrameWidth - BoardWidth, FrameHeight - BoardHeight);
+        this.UIsize.SetValues(FrameWidth - BoardWidth, BoardHeight);
+        //System.out.println("UI SIZE x: " + UIsize.x + " Y: " + UIsize.y);
     }
 
     public void Update()
@@ -54,7 +56,11 @@ public class UI extends JPanel
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(Color.RED);
-        g.fillRect(BoardSize.x.intValue() , 0 , 100,100);
+        /*g.setColor(Color.GRAY.darker());
+        g.fillRect((int) (BoardLocation.x.intValue() + BoardSize.x), BoardLocation.y.intValue() , UIsize.x.intValue(),UIsize.y.intValue());
+        g.setColor(Color.GRAY);
+        g.fillRoundRect((int) (BoardLocation.x.intValue() + BoardSize.x), BoardLocation.y.intValue() , (int) (UIsize.x * 0.90f),(int) (UIsize.y * 0.90f),100,100);*/
+
+
     }
 }

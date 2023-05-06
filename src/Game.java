@@ -1,3 +1,7 @@
+import de.javawi.jstun.attribute.MappedAddress;
+import de.javawi.jstun.attribute.MessageAttributeParsingException;
+import de.javawi.jstun.util.UtilityException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -78,13 +82,11 @@ public class Game extends JPanel implements Runnable
         gh = new GraphicHandler(chessBoard, this.whiteplayer,this.blackplayer , null);
 
 
-
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
         frame.setVisible(true);
 
-        System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
-        System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
+        //System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
+        //System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
 
         this.input_handler = new InputHandler();
 
@@ -126,13 +128,17 @@ public class Game extends JPanel implements Runnable
 
         System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
-        InitNetworking();
+        try {
+            InitNetworking();
+        } catch (UtilityException e) {
+            throw new RuntimeException(e);
+        }
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
 
-                server.DeletePortMapping(server.device,server.externalPort,server.protocol);
+                //server.DeletePortMapping(server.device,server.externalPort,server.protocol);
                 isRunning = false;
 
             }
@@ -140,20 +146,22 @@ public class Game extends JPanel implements Runnable
 
     }
 
-    public synchronized void InitNetworking() throws IOException {
+    public synchronized void InitNetworking() throws IOException, UtilityException {
 
+
+        MappedAddress ma = new MappedAddress();
+        try {
+            ma = GameClient.SendRequestToSTUNserver();
+        } catch (UtilityException | MessageAttributeParsingException e) {
+            throw new RuntimeException(e);
+        }
 
         if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
 
-            server = new GameServer(this,50100);
+            server = new GameServer(this,ma.getPort());
             server.start();
-            try {
-                server.DeConstructLink(server.ConstructLink());
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
+        }
             InetAddress[] inet = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
             System.out.println("HOST NAME: " + InetAddress.getLocalHost().getHostName() );
 
@@ -161,9 +169,9 @@ public class Game extends JPanel implements Runnable
             System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
             GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
-            //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
-            client = new GameClient(this, InetAddress.getByName("10.20.2.73"),50100);
+            client = new GameClient(this, server.GameLink,ma.getPort());
             client.start();
+
     }
     
     @Override
@@ -179,12 +187,6 @@ public class Game extends JPanel implements Runnable
             whiteplayer.MovePlayerPieces();
 
 
-            //blackplayer.GetPosssibleMoves();
-
-
-            //blackplayer.MovePlayerPieces();
-
-
 
 
 
@@ -193,9 +195,19 @@ public class Game extends JPanel implements Runnable
 
             Graphics2D bufferedGraphics = bufferedImage.createGraphics();
 
-            //gh.Update();
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(0, 0 , current_canvas.getWidth(), current_canvas.getHeight());
+
+            ui.paintComponent(bufferedGraphics);
+
+            bufferedGraphics.setColor(Color.GRAY.darker());
+            bufferedGraphics.fillRect(Board.SQUARE_SIZE * 8, 0, (int) (ScreenSize.getWidth() * 0.20f), (int) ScreenSize.getHeight());
+            bufferedGraphics.setColor(Color.GRAY);
+            bufferedGraphics.fillRoundRect((int) ((((ScreenSize.getWidth() * 0.20f) - (ScreenSize.getWidth() * 0.15f)) /2) + Board.SQUARE_SIZE * 8), 0, (int) (ScreenSize.getWidth() * 0.15f), (int) (ScreenSize.getHeight() * 0.90f),50,50);
+            //bufferedGraphics.setColor(Color.GRAY);
+            //bufferedGraphics.fillRoundRect((int) (BoardLocation.x.intValue() + BoardSize.x), BoardLocation.y.intValue() , (int) (UIsize.x * 0.90f),(int) (UIsize.y * 0.90f),100,100);
             gh.paintComponent(bufferedGraphics);
-            ui.paintComponent(graphics);
+
 
 
 
@@ -206,39 +218,24 @@ public class Game extends JPanel implements Runnable
             float scaledWidth = bufferedImage.getWidth() * final_scale_coeffi;
             float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
 
-            //System.out.println("FLOAT:  " + scaledHeight + "INT: " + (int)scaledHeight);
 
-
-
-            //FBO_position.SetValues(frame.getWidth() - scaledWidth , frame.getHeight() - scaledHeight);
-            //FBO_position.SetValues(current_canvas.getWidth() - scaledWidth , current_canvas.getHeight() - scaledHeight);
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
 
-            ui.setUIsize(current_canvas.getWidth(),current_canvas.getHeight(),scaledWidth,scaledHeight);
 
-            //System.out.println("FBO_position X: "+FBO_position.x + " Y: " + FBO_position.y);
+
+
 
             Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
 
             this.chessBoard.UpdateCollisionBoxes(FBO_position);
 
-            //System.out.println("BOARD SQUARE_SIZE SCALE * 8: " + Board.SQUARE_SIZE * 8);
-            //FBO_position.y = (float) 0;
-
-
-            //System.out.println("scaledWidth: " +scaledWidth+ " scaledHeight: " + scaledHeight);
+            ui.setUIsize(((int) scaledWidth), (int) scaledHeight,ScreenSize.height * final_scale_coeffi,ScreenSize.height * final_scale_coeffi);
 
 
 
 
-           // System.out.println("CURRENT CANVAS X: " + current_canvas.getWidth() + " Y: " + current_canvas.getHeight());
-            //System.out.println("POSITION X: " + FBO_position.x + " Y: " + FBO_position.y);
 
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
-
-
-            //graphics.drawImage(bufferedImage, 0, 0, (int)scaledWidth, (int)scaledHeight, current_canvas);
-            //graphics.drawImage(bufferedImage, 0, 0, (int)scaledWidth, (int)scaledHeight, current_canvas);
 
 
             for(piece piece : whiteplayer.pieces)

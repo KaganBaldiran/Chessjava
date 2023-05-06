@@ -48,6 +48,8 @@ public class GraphicHandler extends JPanel
         //button.paint(g);
         player1.paintComponent(g);
 
+
+
        //UIpanel.setLocation(1000,1000);
 
 

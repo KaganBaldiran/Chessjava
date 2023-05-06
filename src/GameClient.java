@@ -1,11 +1,15 @@
 import java.io.IOException;
 import java.net.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
+import de.javawi.jstun.attribute.*;
+import de.javawi.jstun.header.MessageHeader;
+import de.javawi.jstun.util.UtilityException;
 import org.bitlet.weupnp.GatewayDevice;
 import org.bitlet.weupnp.GatewayDiscover;
 import org.xml.sax.SAXException;
@@ -15,6 +19,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class GameClient extends Thread
 {
+
+    InetAddress STUNip;
+    int Stunport;
+
+
 
     private InetAddress ipAddress;
     private InetAddress otherclient_ipAddress;
@@ -32,23 +41,57 @@ public class GameClient extends Thread
 
     boolean success = false;
 
-    public GameClient(Game game , InetAddress ipAddress , int port) throws UnknownHostException, SocketException
+    public GameClient(Game game , String ipAddress , int port) throws UnknownHostException, SocketException
     {
         this.game = game;
         this.port = port;
+        this.externalPort = port;
+        this.internalPort = port;
 
         try
         {
             this.clientsocket = new DatagramSocket();
-            this.ipAddress = ipAddress;
+            this.ipAddress = InetAddress.getByName(GameServer.DeConstructLink(ipAddress));
         }
-        catch (SocketException e)
+        catch (SocketException | NoSuchAlgorithmException e)
         {
             e.printStackTrace();
         }
 
     }
 
+    public static MappedAddress SendRequestToSTUNserver() throws UtilityException, IOException, MessageAttributeParsingException {
+
+        MessageHeader sendMH = new MessageHeader(MessageHeader.MessageHeaderType.BindingRequest);
+
+        ChangeRequest changeRequest = new ChangeRequest();
+        sendMH.addMessageAttribute(changeRequest);
+
+        byte[] data = sendMH.getBytes();
+
+        DatagramSocket s = new DatagramSocket();
+        s.setReuseAddress(true);
+
+        DatagramPacket p = new DatagramPacket(data, data.length, InetAddress.getByName("stun.l.google.com"), 19302);
+        s.send(p);
+
+        DatagramPacket rp;
+
+        rp = new DatagramPacket(new byte[32], 32);
+
+        s.receive(rp);
+        MessageHeader receiveMH = new MessageHeader(MessageHeader.MessageHeaderType.BindingResponse);
+
+        receiveMH.parseAttributes(rp.getData());
+        MappedAddress ma = (MappedAddress) receiveMH
+                .getMessageAttribute(MessageAttribute.MessageAttributeType.MappedAddress);
+        System.out.println(ma.getAddress()+" "+ma.getPort());
+
+        s.close();
+
+        return ma;
+
+    }
     public void run()
     {
         while(true)

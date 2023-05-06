@@ -24,6 +24,8 @@ public class GameServer extends Thread
     public GatewayDevice device;
 
 
+    String GameLink;
+
 
     boolean success = false;
     boolean ServerisRequested = false;
@@ -40,13 +42,14 @@ public class GameServer extends Thread
         {
             this.socket = new DatagramSocket(port,InetAddress.getByName("192.168.0.107"));
             device = PortMapping();
+            this.GameLink = ConstructLink(externalIpAddress);
             //System.out.println("Waiting for client 1 on Port " + socket.getLocalPort());
 
         }
         catch (SocketException e)
         {
             e.printStackTrace();
-        } catch (IOException | ParserConfigurationException | SAXException e) {
+        } catch (IOException | ParserConfigurationException | SAXException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
 
@@ -158,18 +161,16 @@ public class GameServer extends Thread
 
     private static final String KEY = "Prty3Whjvnmd458l";
 
-    public String ConstructLink() throws NoSuchAlgorithmException {
+    public static String ConstructLink(String ip_address) throws NoSuchAlgorithmException {
 
         String FinalString = "";
 
-        if (success)
-        {
-            for (int i = 0; i < externalIpAddress.length(); i++) {
+            for (int i = 0; i < ip_address.length(); i++) {
 
-                if(!this.externalIpAddress.trim().substring(i,i+1).equalsIgnoreCase("."))
+                if(!ip_address.trim().substring(i,i+1).equalsIgnoreCase("."))
                 {
-                    FinalString += KEY.substring(Integer.parseInt(this.externalIpAddress.trim().substring(i,i+1)),
-                                                 Integer.parseInt(this.externalIpAddress.trim().substring(i,i+1))+1);
+                    FinalString += KEY.substring(Integer.parseInt(ip_address.trim().substring(i,i+1)),
+                                                 Integer.parseInt(ip_address.trim().substring(i,i+1))+1);
 
                 }
                 else
@@ -182,16 +183,13 @@ public class GameServer extends Thread
             System.out.println("CONSTRUCTED: "+ FinalString);
 
             return FinalString;
-        }
 
-        return null;
     }
 
-    public String DeConstructLink(String Link) throws NoSuchAlgorithmException {
+    public static String DeConstructLink(String Link) throws NoSuchAlgorithmException {
 
         String FinalString = "";
-        if (success)
-        {
+
             for (int i = "www.chessjava/".length(); i < Link.length() - ".com".length(); i++) {
 
                 String substring = Link.trim().substring(i, i + 1);
@@ -212,8 +210,7 @@ public class GameServer extends Thread
             }
             System.out.println("DECONSTRUCTED: "+ FinalString);
             return FinalString;
-        }
-        return null;
+
     }
 
     public String checkIps() {
