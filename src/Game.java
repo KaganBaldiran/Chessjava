@@ -86,7 +86,6 @@ public class Game extends JPanel implements Runnable
         System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
         System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
 
-
         this.input_handler = new InputHandler();
 
         this.isRunning = true;
@@ -121,9 +120,7 @@ public class Game extends JPanel implements Runnable
 
         current_canvas.setSize(new Dimension((int)frame.getContentPane().getWidth(), (int)frame.getContentPane().getHeight()));
 
-
         current_canvas.createBufferStrategy(3);
-
 
         bufferedImage = new BufferedImage(this.current_canvas.getWidth(), this.current_canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
