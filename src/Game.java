@@ -1,20 +1,14 @@
-import org.xml.sax.SAXException;
-
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.Arrays;
+import java.security.NoSuchAlgorithmException;
 
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+import static java.lang.System.exit;
 
 
 public class Game extends JPanel implements Runnable
@@ -31,7 +25,7 @@ public class Game extends JPanel implements Runnable
     BufferedImage bufferedImage;
 
     boolean isRunning;
-    
+
     MouseInputListener mouseListener;
 
     Player whiteplayer;
@@ -151,31 +145,37 @@ public class Game extends JPanel implements Runnable
 
     public synchronized void InitNetworking() throws IOException {
 
+
         if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
 
             server = new GameServer(this,8080);
             server.start();
+            try {
+                server.DeConstructLink(server.ConstructLink());
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
         }
+        if (server.ServerisRequested && server.success)
+        {
+            InetAddress[] inet = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
+            System.out.println("HOST NAME: " + InetAddress.getLocalHost().getHostName() );
 
-        InetAddress[] inet = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
-        System.out.println("HOST NAME: " + InetAddress.getLocalHost().getHostName() );
+            assert GameServer.getIPv4Addresses(inet) != null;
+            System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
+            GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
-        assert GameServer.getIPv4Addresses(inet) != null;
-        System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
-        GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
-        //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
-        client = new GameClient(this, InetAddress.getByName("192.168.0.107"),8080);
-        client.start();
-
+            //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
+            client = new GameClient(this, InetAddress.getByName("192.168.0.107"),8080);
+            client.start();
+        }
 
     }
     
     @Override
     public void run()
     {
-
-        //System.out.println("this.current_canvas.getWidth()rr X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
         while (isRunning) {
 
@@ -203,11 +203,6 @@ public class Game extends JPanel implements Runnable
             //gh.Update();
             gh.paintComponent(bufferedGraphics);
             ui.paintComponent(graphics);
-
-            ///button.paint(bufferedGraphics);
-
-            //button.paint(bufferedGraphics);
-
 
 
 
@@ -275,10 +270,9 @@ public class Game extends JPanel implements Runnable
 
         }
 
-
-            System.out.println("GAME CLOSED");
+            System.out.println("Game Terminated");
             frame.dispose();
-
+            exit(1);
     }
 
 }

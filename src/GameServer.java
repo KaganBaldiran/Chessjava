@@ -2,45 +2,43 @@ import org.bitlet.weupnp.GatewayDevice;
 import org.bitlet.weupnp.GatewayDiscover;
 import org.xml.sax.SAXException;
 
-import javax.naming.spi.Resolver;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
 import java.io.IOException;
 import java.net.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
-import java.util.Map;
-import java.util.Vector;
+import java.security.MessageDigest;
 
 
 public class GameServer extends Thread
 {
-
     private DatagramSocket socket;
     private Game game;
-
     public Boolean CLIENT1_STATE = false;
     public Boolean CLIENT2_STATE = false;
-
     public int internalPort = 8080;
     public int externalPort = 8080;
     public String protocol = "UDP";
 
+    String externalIpAddress;
     public GatewayDevice device;
 
 
 
     boolean success = false;
+    boolean ServerisRequested = false;
+
 
     public GameServer(Game game , int port) throws UnknownHostException, SocketException
     {
         this.game = game;
+        ServerisRequested = true;
 
         try
         {
             this.socket = new DatagramSocket(port,InetAddress.getByName("192.168.0.107"));
             device = PortMapping();
             //System.out.println("Waiting for client 1 on Port " + socket.getLocalPort());
-
 
         }
         catch (SocketException e)
@@ -153,32 +151,68 @@ public class GameServer extends Thread
                 }
 
 
-
-
-            /*byte[] data = new byte[1024];
-            DatagramPacket packet = new DatagramPacket(data , data.length);
-
-            try
-            {
-                socket.receive(packet);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            String message = new String(packet.getData());
-            System.out.println("CLIENT [" + packet.getAddress().getHostAddress() + " port: " + packet.getPort() +  "] > " + message);
-            if(!message.isEmpty())
-            {
-                SendData("Pong".getBytes(),packet.getAddress(), packet.getPort());
-            }*/
-/*
-            try {
-                HolePunching();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-*/
         }
+    }
+
+    private static final String KEY = "Prty3Whjvnmd458l";
+
+    public String ConstructLink() throws NoSuchAlgorithmException {
+
+        String FinalString = "";
+
+        if (success)
+        {
+            for (int i = 0; i < externalIpAddress.length(); i++) {
+
+                if(!this.externalIpAddress.trim().substring(i,i+1).equalsIgnoreCase("."))
+                {
+                    FinalString += KEY.substring(Integer.parseInt(this.externalIpAddress.trim().substring(i,i+1)),
+                                                 Integer.parseInt(this.externalIpAddress.trim().substring(i,i+1))+1);
+
+                }
+                else
+                {
+                    FinalString += "/";
+                }
+            }
+            FinalString = "www.chessjava/"+FinalString+".checkmate";
+
+            System.out.println("CONSTRUCTED: "+ FinalString);
+
+
+            return FinalString;
+        }
+
+        return null;
+    }
+
+    public String DeConstructLink(String Link) throws NoSuchAlgorithmException {
+
+        String FinalString = "";
+        if (success)
+        {
+            for (int i = "www.chessjava/".length(); i < Link.length() - ".checkmate".length(); i++) {
+
+                String substring = Link.trim().substring(i, i + 1);
+                if(!substring.equalsIgnoreCase("/"))
+                {
+                    for (int j = 0; j < KEY.length(); j++)
+                    {
+                        if(KEY.substring(j,j+1).equals(substring))
+                        {
+                            FinalString += String.valueOf(j);
+                        }
+                    }
+                }
+                else
+                {
+                    FinalString += ".";
+                }
+            }
+            System.out.println("DECONSTRUCTED: "+ FinalString);
+            return FinalString;
+        }
+        return null;
     }
 
     public String checkIps() {
@@ -220,9 +254,6 @@ public class GameServer extends Thread
 
 
     public GatewayDevice PortMapping() throws IOException, ParserConfigurationException, SAXException {
-        // Discover the IGD on the
-
-
 
         System.out.println("MY INTERFACE: " + this.checkIps());
 
@@ -235,20 +266,20 @@ public class GameServer extends Thread
         System.out.println("IS EMPTY?????: " + discover.getAllGateways().isEmpty());
         if (d == null) {
             System.err.println("No IGD found");
-            System.exit(1);
+            System.err.println("Server cannot be initialized");
+            //System.exit(1);
         }
         System.out.println("Found IGD: " + d.getFriendlyName());
 
-        // Get the external IP address of the IGD
-        String externalIpAddress = d.getExternalIPAddress();
-        System.out.println("External IP address: " + externalIpAddress);
+        this.externalIpAddress = d.getExternalIPAddress();
+        System.out.println("External IP address: " + this.externalIpAddress);
 
         // Add a port mapping to the IGD
         String description = "My Port Forwarding Rule";
         InetAddress localAddress = InetAddress.getLocalHost();
         success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
         if (success) {
-            System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
+            System.out.println("Port mapping added: " + this.externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
         } else {
             System.err.println("Failed to add port mapping");
         }
