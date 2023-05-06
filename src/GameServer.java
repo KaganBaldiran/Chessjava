@@ -4,9 +4,12 @@ import org.xml.sax.SAXException;
 
 import javax.naming.spi.Resolver;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.IOException;
 import java.net.*;
+import java.util.Enumeration;
 import java.util.Map;
+import java.util.Vector;
 
 
 public class GameServer extends Thread
@@ -18,9 +21,13 @@ public class GameServer extends Thread
     public Boolean CLIENT1_STATE = false;
     public Boolean CLIENT2_STATE = false;
 
-    int internalPort = 8080;
-    int externalPort = 8080;
-    String protocol = "UDP";
+    public int internalPort = 8080;
+    public int externalPort = 8080;
+    public String protocol = "UDP";
+
+    public GatewayDevice device;
+
+
 
     boolean success = false;
 
@@ -31,7 +38,7 @@ public class GameServer extends Thread
         try
         {
             this.socket = new DatagramSocket(port,InetAddress.getByName("192.168.0.107"));
-            PortMapping();
+            device = PortMapping();
             //System.out.println("Waiting for client 1 on Port " + socket.getLocalPort());
 
 
@@ -104,9 +111,8 @@ public class GameServer extends Thread
 
                     serverSocket2 = this.socket;
 
-
-                    //System.out.println("Waiting for Client 2 on Port "
-                           // + serverSocket2.getLocalPort());
+                    System.out.println("Waiting for Client 2 on Port "
+                           + serverSocket2.getLocalPort());
 
                     // receive Data
                     DatagramPacket receivePacket = new DatagramPacket(new byte[1024], 1024);
@@ -124,6 +130,25 @@ public class GameServer extends Thread
                         SendData("RECEIVED".getBytes() ,receivePacket.getAddress(),receivePacket.getPort() );
                     }
 
+
+                }
+                else
+                {
+
+                    DatagramPacket receivePacket = new DatagramPacket(new byte[1024], 1024);
+                    try {
+                        this.socket.receive(receivePacket);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    String message = new String(receivePacket.getData());
+
+                    if(!message.trim().isEmpty())
+                    {
+                        System.out.println("CLIENT2> " + message.trim());
+                        //CLIENT1_STATE = true;
+                        //SendData("RECEIVED".getBytes() ,receivePacket.getAddress(),receivePacket.getPort() );
+                    }
 
                 }
 
@@ -156,11 +181,58 @@ public class GameServer extends Thread
         }
     }
 
+    public String checkIps() {
+        Enumeration<NetworkInterface> interfaces;
+        Enumeration<InetAddress> addresses;
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface ni = interfaces.nextElement();
+                addresses = ni.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+                    if (!address.isLinkLocalAddress() && !address.isLoopbackAddress() && address instanceof Inet4Address)
+                        return address.getHostAddress();
+                }
+            }
+        } catch (SocketException e) {
+            System.out.println("Could not get network interfaces.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static String getWirelessInterfaceName() throws SocketException {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface iface = interfaces.nextElement();
+            if (iface.isUp() && iface.getName().startsWith("w")) {
+                Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress addr = addresses.nextElement();
+                    if (!addr.isLinkLocalAddress() && !addr.isLoopbackAddress() && addr.getAddress().length == 4) {
+                        return iface.getName();
+                    }
+                }
+            }
+        }
+        throw new SocketException("No wireless interface found");
+    }
+
+
     public GatewayDevice PortMapping() throws IOException, ParserConfigurationException, SAXException {
-        // Discover the IGD on the network
+        // Discover the IGD on the
+
+
+
+        System.out.println("MY INTERFACE: " + this.checkIps());
+
+        //System.out.println("MY WIFI INTERFACE: " + getWirelessInterfaceName());
+
         GatewayDiscover discover = new GatewayDiscover();
         discover.discover();
+
         GatewayDevice d = discover.getValidGateway();
+        System.out.println("IS EMPTY?????: " + discover.getAllGateways().isEmpty());
         if (d == null) {
             System.err.println("No IGD found");
             System.exit(1);

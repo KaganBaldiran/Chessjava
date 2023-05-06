@@ -3,13 +3,10 @@ import org.xml.sax.SAXException;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-import java.awt.event.MouseAdapter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -34,8 +31,7 @@ public class Game extends JPanel implements Runnable
     BufferedImage bufferedImage;
 
     boolean isRunning;
-
-    //MouseInputListener mouseListener = new MouseInputListener();
+    
     MouseInputListener mouseListener;
 
     Player whiteplayer;
@@ -56,9 +52,6 @@ public class Game extends JPanel implements Runnable
     ChessServer ChessServer;
     ChessClient ChessClient;
 
-
-
-
     javax.swing.JFrame frame;
 
     String Yourname = new String();
@@ -71,26 +64,11 @@ public class Game extends JPanel implements Runnable
 
     Game() throws IOException {
 
-
         chessBoard = new Board();
-
-
-
-
 
         frame = new javax.swing.JFrame("Chess");
         MouseInputListener mouseListener = new MouseInputListener(frame);
         this.mouseListener = mouseListener;
-
-
-
-
-
-
-
-
-
-
 
         frame.addMouseListener(mouseListener);
 
@@ -99,35 +77,20 @@ public class Game extends JPanel implements Runnable
         ScreenSize.setSize(ScreenSize.getHeight() * 0.90f + ScreenSize.getHeight() * 0.20f , ScreenSize.getHeight() * 0.90f);
 
 
-
-
-
-
-
-
         this.whiteplayer = new Player(Tile.WHITE,this.chessBoard,this.mouseListener);
         this.blackplayer = new Player(Tile.BLACK,this.chessBoard,this.mouseListener);
-
-
-
-
 
 
         gh = new GraphicHandler(chessBoard, this.whiteplayer,this.blackplayer , null);
 
 
 
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-
-
-
-        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
         System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
         System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
-
-
 
 
         this.input_handler = new InputHandler();
@@ -137,24 +100,17 @@ public class Game extends JPanel implements Runnable
         this.allow_click = new boolean[4];
 
 
-        //gh = new GraphicHandler(chessBoard, newqueen, newknight, newPawn, newrook, newking, newBishop);
-        //this.newBishop = (Bishop) whiteplayer.pieces.get(1);
-
         frame.setFocusable(true);
 
         this.ui = new UI(frame);
 
         current_canvas = new Canvas();
-        //current_canvas.setPreferredSize();
+
         current_canvas.setSize(new Dimension((int)ScreenSize.getWidth(), (int)ScreenSize.getHeight()));
         current_canvas.setFocusable(true);
         current_canvas.requestFocus();
 
-        //button.setSize(100, 50); // set size to 100x50 pixels
-        //button.setLocation((int) (ScreenSize.getHeight()), 0); // set location to (10, 10) pixels
-        frame.add(button); // add button to GraphicHandler panel
-
-
+        frame.add(button);
 
         frame.addKeyListener(input_handler);
 
@@ -163,17 +119,13 @@ public class Game extends JPanel implements Runnable
         frame.add(current_canvas);
 
 
-
         current_canvas.addMouseListener(mouseListener);
-
-
 
         frame.pack();
 
         Boundry_size.SetValues((float) (frame.getWidth()- ScreenSize.getWidth()), (float) (frame.getHeight() - ScreenSize.getHeight()));
 
         current_canvas.setSize(new Dimension((int)frame.getContentPane().getWidth(), (int)frame.getContentPane().getHeight()));
-        //frame.setSize((int)(frame.getWidth() * 0.95f), (int)(frame.getHeh() * 0.95f));
 
 
         current_canvas.createBufferStrategy(3);
@@ -183,10 +135,17 @@ public class Game extends JPanel implements Runnable
 
         System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
-
         InitNetworking();
 
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
 
+                server.DeletePortMapping(server.device,server.externalPort,server.protocol);
+                isRunning = false;
+
+            }
+        });
 
     }
 
@@ -206,11 +165,10 @@ public class Game extends JPanel implements Runnable
         GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
         //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
-        client = new GameClient(this, InetAddress.getByName("192.168.0.107"),55516);
+        client = new GameClient(this, InetAddress.getByName("192.168.0.107"),8080);
         client.start();
 
-        //this.ChessClient = new ChessClient("192.168.56.1", 1331);
-        //ChessClient.start();
+
     }
     
     @Override
@@ -318,13 +276,8 @@ public class Game extends JPanel implements Runnable
         }
 
 
-            this.ChessServer.close();
-            try {
-                this.ChessClient.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
+            System.out.println("GAME CLOSED");
+            frame.dispose();
 
     }
 
