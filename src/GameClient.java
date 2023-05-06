@@ -93,12 +93,12 @@ public class GameClient extends Thread
             {
                 DatagramPacket sendpacket;
 
-                try {
+                /*try {
                     sendpacket = new DatagramPacket(this.DataTosend.getBytes(), this.DataTosend.getBytes().length,ipAddress, externalPort);
                     this.clientsocket.send(sendpacket);
                 } catch (RuntimeException | IOException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
 
         }

@@ -16,8 +16,8 @@ public class GameServer extends Thread
     private Game game;
     public Boolean CLIENT1_STATE = false;
     public Boolean CLIENT2_STATE = false;
-    public int internalPort = 50100;
-    public int externalPort = 50100;
+    public int internalPort;
+    public int externalPort;
     public String protocol = "UDP";
 
     String externalIpAddress;
@@ -33,6 +33,8 @@ public class GameServer extends Thread
     {
         this.game = game;
         ServerisRequested = true;
+        this.externalPort = port;
+        this.internalPort = port;
 
         try
         {
@@ -109,8 +111,8 @@ public class GameServer extends Thread
 
                     serverSocket2 = this.socket;
 
-                    System.out.println("Waiting for Client 2 on Port "
-                           + serverSocket2.getLocalPort());
+                    //System.out.println("Waiting for Client 2 on Port "
+                          // + serverSocket2.getLocalPort());
 
                     // receive Data
                     DatagramPacket receivePacket = new DatagramPacket(new byte[1024], 1024);
@@ -175,7 +177,7 @@ public class GameServer extends Thread
                     FinalString += "/";
                 }
             }
-            FinalString = "www.chessjava/"+FinalString+".checkmate";
+            FinalString = "www.chessjava/"+FinalString+".com";
 
             System.out.println("CONSTRUCTED: "+ FinalString);
 
@@ -190,7 +192,7 @@ public class GameServer extends Thread
         String FinalString = "";
         if (success)
         {
-            for (int i = "www.chessjava/".length(); i < Link.length() - ".checkmate".length(); i++) {
+            for (int i = "www.chessjava/".length(); i < Link.length() - ".com".length(); i++) {
 
                 String substring = Link.trim().substring(i, i + 1);
                 if(!substring.equalsIgnoreCase("/"))
@@ -257,7 +259,6 @@ public class GameServer extends Thread
         System.out.println("MY INTERFACE: " + this.checkIps());
 
         //System.out.println("MY WIFI INTERFACE: " + getWirelessInterfaceName());
-
         GatewayDiscover discover = new GatewayDiscover();
         discover.discover();
 
@@ -268,14 +269,18 @@ public class GameServer extends Thread
             System.err.println("Server cannot be initialized");
             //System.exit(1);
         }
+
+        assert d != null;
         System.out.println("Found IGD: " + d.getFriendlyName());
 
         this.externalIpAddress = d.getExternalIPAddress();
         System.out.println("External IP address: " + this.externalIpAddress);
 
         // Add a port mapping to the IGD
-        String description = "My Port Forwarding Rule";
-        InetAddress localAddress = InetAddress.getLocalHost();
+        String description = "Chessjava gameport";
+
+        InetAddress localAddress = getIPv4Addresses(InetAddress.getAllByName(InetAddress.getLocalHost().getHostName()));
+        assert localAddress != null;
         success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
         if (success) {
             System.out.println("Port mapping added: " + this.externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);

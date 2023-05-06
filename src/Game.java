@@ -164,12 +164,9 @@ public class Game extends JPanel implements Runnable
             System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
             GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
-
             //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
-            client = new GameClient(this, InetAddress.getByName("10.20.2.73"),50100);
+            client = new GameClient(this, InetAddress.getByName(server.externalIpAddress),server.externalPort);
             client.start();
-
-
     }
     
     @Override

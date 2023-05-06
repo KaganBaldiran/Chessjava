@@ -208,7 +208,7 @@ public class King extends piece
 
         if(this.Side > LEFT_DOWN)
         {
-            System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
+            //System.out.println("QUEEN POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = UP;
             this.ClearPossibleMoves = true;
             return this.Possible_Moves;

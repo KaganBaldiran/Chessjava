@@ -46,7 +46,7 @@ public class Rook extends piece{
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates)
     {
 
-        System.out.println("INSIDE ROOK IS EMPTY: " + isTileEmpty);
+        //System.out.println("INSIDE ROOK IS EMPTY: " + isTileEmpty);
 
         if(!this.Possible_Moves.isEmpty() && this.ClearPossibleMoves)
         {
@@ -76,7 +76,7 @@ public class Rook extends piece{
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
 
-            System.out.println("REAL TILE: " + tileTracer.x +" "+ tileTracer.y+ " FETCHED TILE : "+this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates.x +" "+ this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates.y );
+            //System.out.println("REAL TILE: " + tileTracer.x +" "+ tileTracer.y+ " FETCHED TILE : "+this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates.x +" "+ this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates.y );
 
         }
         else if (this.Side == DOWN  && input_Coordinates.y > 1 && isTileEmpty)
