@@ -179,7 +179,6 @@ public class GameServer extends Thread
 
             System.out.println("CONSTRUCTED: "+ FinalString);
 
-
             return FinalString;
         }
 

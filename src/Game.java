@@ -167,7 +167,7 @@ public class Game extends JPanel implements Runnable
 
 
             //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
-            client = new GameClient(this, InetAddress.getByName("192.168.0.107"),8080);
+            client = new GameClient(this, InetAddress.getByName("10.20.2.73"),8080);
             client.start();
         }
 
