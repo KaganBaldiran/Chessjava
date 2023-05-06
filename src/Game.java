@@ -148,7 +148,7 @@ public class Game extends JPanel implements Runnable
 
         if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
 
-            server = new GameServer(this,8080);
+            server = new GameServer(this,50100);
             server.start();
             try {
                 server.DeConstructLink(server.ConstructLink());
@@ -156,8 +156,7 @@ public class Game extends JPanel implements Runnable
                 throw new RuntimeException(e);
             }
         }
-        if (server.ServerisRequested && server.success)
-        {
+
             InetAddress[] inet = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
             System.out.println("HOST NAME: " + InetAddress.getLocalHost().getHostName() );
 
@@ -167,9 +166,9 @@ public class Game extends JPanel implements Runnable
 
 
             //client = new GameClient(this, GameServer.getIPv4Addresses(inet),55516);
-            client = new GameClient(this, InetAddress.getByName("10.20.2.73"),8080);
+            client = new GameClient(this, InetAddress.getByName("10.20.2.73"),50100);
             client.start();
-        }
+
 
     }
     

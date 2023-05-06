@@ -16,8 +16,8 @@ public class GameServer extends Thread
     private Game game;
     public Boolean CLIENT1_STATE = false;
     public Boolean CLIENT2_STATE = false;
-    public int internalPort = 8080;
-    public int externalPort = 8080;
+    public int internalPort = 50100;
+    public int externalPort = 50100;
     public String protocol = "UDP";
 
     String externalIpAddress;

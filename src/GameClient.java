@@ -26,13 +26,14 @@ public class GameClient extends Thread
     String DataTosend = new String("Is it coming?");
 
     int port;
-    int internalPort = 8080;
-    int externalPort = 8080;
+    int internalPort = 50100;
+    int externalPort = 50100;
     String protocol = "UDP";
 
     boolean success = false;
 
-    public GameClient(Game game , InetAddress ipAddress , int port) throws UnknownHostException, SocketException {
+    public GameClient(Game game , InetAddress ipAddress , int port) throws UnknownHostException, SocketException
+    {
         this.game = game;
         this.port = port;
 
@@ -45,9 +46,6 @@ public class GameClient extends Thread
         {
             e.printStackTrace();
         }
-
-
-
 
     }
 
@@ -93,14 +91,14 @@ public class GameClient extends Thread
             }
             else
             {
-//                DatagramPacket sendpacket;
-//
-//                try {
-//                    sendpacket = new DatagramPacket(this.DataTosend.getBytes(), this.DataTosend.getBytes().length,ipAddress, externalPort);
-//                    this.clientsocket.send(sendpacket);
-//                } catch (RuntimeException | IOException e) {
-//                    e.printStackTrace();
-//                }
+                DatagramPacket sendpacket;
+
+                try {
+                    sendpacket = new DatagramPacket(this.DataTosend.getBytes(), this.DataTosend.getBytes().length,ipAddress, externalPort);
+                    this.clientsocket.send(sendpacket);
+                } catch (RuntimeException | IOException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
