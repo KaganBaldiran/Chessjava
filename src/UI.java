@@ -2,7 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 
 public class UI extends JPanel
 {
@@ -14,6 +17,22 @@ public class UI extends JPanel
 
     Math.Vec2<Float> UIsize = new Math.Vec2<>(0.0f,0.0f);
 
+    public static class UIcomponents
+    {
+        public BufferedImage componentImage;
+        public Graphics2D bufferedGraphics;
+        UIcomponents(int width , int height , int imagetype)
+        {
+            this.componentImage = new BufferedImage(width,height,imagetype);
+            bufferedGraphics = componentImage.createGraphics();
+        }
+        public void drawUIcomponent(Graphics g , int x , int y , int width , int height , ImageObserver observer)
+        {
+            bufferedGraphics = componentImage.createGraphics();
+            g.drawImage(this.componentImage,x,y,width,height,observer);
+
+        }
+    }
 
     public static class SliderBar extends JPanel
     {
@@ -43,9 +62,11 @@ public class UI extends JPanel
             this.color = new Color(0);
             this.mouselistenerReference = Mouselistener;
         }
+
+        int slided_x_position = 0;
         public void SetCollisionAttribs(int x , int y , int width , int height)
         {
-            this.collisionBox.SetValues(x, y, width, height);
+            this.collisionBox.SetValues(x+ slided_x_position, y, width, height);
         }
         public void SetDrawingAttribs(int x , int y , int width , int height , Color color)
         {
@@ -57,21 +78,45 @@ public class UI extends JPanel
             return this.collisionBox.CheckCollisionBoxMouse(this.mouselistenerReference.GetMousePos());
         }
 
+        boolean pressed = false;
+        boolean released = false;
+
+        double last_size = 1.0;
+
+
         public Double SlideAmount()
         {
-            if(IsClicked())
+
+
+            if(this.mouselistenerReference.isReleased(MouseEvent.BUTTON1))
+            {
+                released = true;
+                pressed = false;
+            }
+
+            if(IsClicked() && this.mouselistenerReference.isClicked(MouseEvent.BUTTON1))
             {
                 ClickkedInitialPosition.SetValues(this.mouselistenerReference.GetMousePos());
+                pressed = true;
+                released = false;
             }
 
-            if (ClickkedInitialPosition.x != null)
+            if (ClickkedInitialPosition.x != null && pressed && !released)
             {
+
                 System.out.println("SLIDE AMOUNT: " + (this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x));
 
-                return this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
+                if (this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x != 0.0)
+                {
+                    slided_x_position += ((last_size - slided_x_position)/3);
+                    last_size = this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
+
+                    return this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
+                }
+
             }
 
-            return 1.0;
+            return last_size;
 
         }
         @Override
@@ -92,11 +137,11 @@ public class UI extends JPanel
                 {
                     throw new RuntimeException("Roundness value is too small :: SliderBar");
                 }
-                g.fillRoundRect(Drawingattrib.x,Drawingattrib.y , Drawingattrib.z, Drawingattrib.w, roundness , roundness);
+                g.fillRoundRect(Drawingattrib.x + slided_x_position,Drawingattrib.y , Drawingattrib.z, Drawingattrib.w, roundness , roundness);
             }
             else if(Shape == SHARP)
             {
-                g.fillRect(Drawingattrib.x,Drawingattrib.y , Drawingattrib.z, Drawingattrib.w);
+                g.fillRect(Drawingattrib.x + slided_x_position,Drawingattrib.y , Drawingattrib.z, Drawingattrib.w);
             }
         }
     }
@@ -143,22 +188,11 @@ public class UI extends JPanel
                                                (int)(UIsize.x * 0.10f),
                                                2* UIsize.y.intValue());
 
-
-
-       // UIsliderBar.SlideAmount();
-
-        //System.out.println("BUTTON SIZE X: " + button.getSize().getWidth() + " Y: " + button.getSize().getHeight());
     }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         UIsliderBar.paintComponent(g);
-        /*g.setColor(Color.GRAY.darker());
-        g.fillRect((int) (BoardLocation.x.intValue() + BoardSize.x), BoardLocation.y.intValue() , UIsize.x.intValue(),UIsize.y.intValue());
-        g.setColor(Color.GRAY);
-        g.fillRoundRect((int) (BoardLocation.x.intValue() + BoardSize.x), BoardLocation.y.intValue() , (int) (UIsize.x * 0.90f),(int) (UIsize.y * 0.90f),100,100);*/
-
-
     }
 }

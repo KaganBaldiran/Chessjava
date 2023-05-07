@@ -13,6 +13,7 @@ public class Board extends JPanel
 
     //public static final int SQUARE_SIZE = (int)((screenSize.getHeight() * 0.90f) / 8.0f);
     public static int SQUARE_SIZE = (int)(((screenSize.getHeight() * 0.90f) / 8.0f)) + 1;
+    public static int SQUARE_SIZE_UI = (int)(((screenSize.getHeight() * 0.90f) / 8.0f)) + 1;
     public static int SQUARE_SIZE_non_GUI = (int)(((screenSize.getHeight() * 0.90f) / 8.0f));
 
 

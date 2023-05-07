@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 
 public class GraphicHandler extends JPanel
 {
@@ -17,6 +19,7 @@ public class GraphicHandler extends JPanel
     {
         this.current_board = br;
     }
+
 
     GraphicHandler(Board br ,Player player1 , Player player2)
     {
@@ -99,10 +102,6 @@ public class GraphicHandler extends JPanel
 
             float scaledWidth = (float)(frame.getContentPane().getWidth() / ScreenSize.getWidth());
             float scaledHeight = (float)(frame.getContentPane().getHeight() / ScreenSize.getHeight());
-
-           // System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
-            //System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
-            //System.out.println("java.lang.Math.min(scaledHeight , scaledWidth):  " + java.lang.Math.min(scaledHeight , scaledWidth));
 
             return java.lang.Math.min(scaledHeight , scaledWidth);
         }

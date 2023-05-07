@@ -43,7 +43,6 @@ public class Game extends JPanel implements Runnable
 
     Math.Vec2<Float> Boundry_size = new Math.Vec2<>();
 
-
     GameServer server;
     GameClient client;
 
@@ -53,6 +52,8 @@ public class Game extends JPanel implements Runnable
     javax.swing.JFrame frame;
 
     String Yourname = new String();
+
+    UI.UIcomponents leftComponent;
 
 
 
@@ -85,8 +86,7 @@ public class Game extends JPanel implements Runnable
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setVisible(true);
 
-        //System.out.println("FRAME WIDTH: " + frame.getWidth() + " FRAME HEIGHT: " + frame.getHeight());
-        //System.out.println("SCREEN WIDTH: " + ScreenSize.getWidth() + " SCREEN HEIGHT: " + ScreenSize.getHeight());
+
 
         this.input_handler = new InputHandler();
 
@@ -127,6 +127,8 @@ public class Game extends JPanel implements Runnable
         bufferedImage = new BufferedImage(this.current_canvas.getWidth(), this.current_canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
         System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
+
+        this.leftComponent = new UI.UIcomponents((int) (ScreenSize.getWidth() * 0.90f), (int) (ScreenSize.getWidth() * 0.90f),BufferedImage.TYPE_INT_ARGB);
 
         try {
             InitNetworking();
@@ -211,20 +213,31 @@ public class Game extends JPanel implements Runnable
             bufferedGraphics.fillRoundRect((int) ((((ScreenSize.getWidth() * 0.20f) - (ScreenSize.getWidth() * 0.15f)) /2) + Board.SQUARE_SIZE * 8), 0, (int) (ScreenSize.getWidth() * 0.15f), (int) (ScreenSize.getHeight() * 0.90f),50,50);
 
 
-            //bufferedGraphics.setColor(Color.GRAY);
-            //bufferedGraphics.fillRoundRect((int) (BoardLocation.x.intValue() + BoardSize.x), BoardLocation.y.intValue() , (int) (UIsize.x * 0.90f),(int) (UIsize.y * 0.90f),100,100);
-            gh.paintComponent(bufferedGraphics);
-
-
-
 
 
             float final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
 
+            //gh.paintComponent(bufferedGraphics);
+            gh.paintComponent(leftComponent.bufferedGraphics);
 
+            float scaleamount = (float) (ui.UIsliderBar.SlideAmount() / 500);
 
             float scaledWidth = bufferedImage.getWidth() * final_scale_coeffi;
             float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
+
+
+            leftComponent.drawUIcomponent(bufferedGraphics, (int) ((ScreenSize.getWidth() - (leftComponent.componentImage.getWidth() * scaleamount))/2),(int) ((ScreenSize.getHeight() - (leftComponent.componentImage.getHeight() * scaleamount))/2),
+                                       (int) (leftComponent.componentImage.getWidth() * scaleamount), (int) (leftComponent.componentImage.getHeight() * scaleamount),current_canvas);
+
+
+            //leftComponent.drawUIcomponent(bufferedGraphics,0 ,0, 300, 300,current_canvas);
+
+
+
+
+
+
+
 
 
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
@@ -263,15 +276,21 @@ public class Game extends JPanel implements Runnable
 
             ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi);
             ui.Update();
-            Board.UpdateDrawingSquareSize(ui.UIsliderBar.SlideAmount());
+
 
             ui.paintComponent(graphics);
 
-            graphics.dispose();
-            bufferstrategy.show();
+
+
+
+            bufferedGraphics.setBackground(Color.WHITE);
+            bufferedGraphics.clearRect(0,0, 3000, 4000);
 
             frame.revalidate();
             frame.repaint();
+
+            graphics.dispose();
+            bufferstrategy.show();
 
         }
 
