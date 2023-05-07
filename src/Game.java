@@ -97,7 +97,7 @@ public class Game extends JPanel implements Runnable
 
         frame.setFocusable(true);
 
-        this.ui = new UI(frame);
+        this.ui = new UI(frame,mouseListener);
 
         current_canvas = new Canvas();
 
@@ -195,18 +195,26 @@ public class Game extends JPanel implements Runnable
 
             Graphics2D bufferedGraphics = bufferedImage.createGraphics();
 
+
+
+
             graphics.setColor(Color.WHITE);
             graphics.fillRect(0, 0 , current_canvas.getWidth(), current_canvas.getHeight());
 
-            ui.paintComponent(bufferedGraphics);
+
+
 
             bufferedGraphics.setColor(Color.GRAY.darker());
             bufferedGraphics.fillRect(Board.SQUARE_SIZE * 8, 0, (int) (ScreenSize.getWidth() * 0.20f), (int) ScreenSize.getHeight());
+
             bufferedGraphics.setColor(Color.GRAY);
             bufferedGraphics.fillRoundRect((int) ((((ScreenSize.getWidth() * 0.20f) - (ScreenSize.getWidth() * 0.15f)) /2) + Board.SQUARE_SIZE * 8), 0, (int) (ScreenSize.getWidth() * 0.15f), (int) (ScreenSize.getHeight() * 0.90f),50,50);
+
+
             //bufferedGraphics.setColor(Color.GRAY);
             //bufferedGraphics.fillRoundRect((int) (BoardLocation.x.intValue() + BoardSize.x), BoardLocation.y.intValue() , (int) (UIsize.x * 0.90f),(int) (UIsize.y * 0.90f),100,100);
             gh.paintComponent(bufferedGraphics);
+
 
 
 
@@ -238,6 +246,8 @@ public class Game extends JPanel implements Runnable
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
 
 
+
+
             for(piece piece : whiteplayer.pieces)
             {
                 if(piece.Selected)
@@ -247,13 +257,18 @@ public class Game extends JPanel implements Runnable
 
             }
 
-            graphics.dispose();
-            bufferstrategy.show();
+
 
 
 
             ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi);
             ui.Update();
+            Board.UpdateDrawingSquareSize(ui.UIsliderBar.SlideAmount());
+
+            ui.paintComponent(graphics);
+
+            graphics.dispose();
+            bufferstrategy.show();
 
             frame.revalidate();
             frame.repaint();

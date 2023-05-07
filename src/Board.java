@@ -55,6 +55,11 @@ public class Board extends JPanel
         SQUARE_SIZE_non_GUI = (int)((buffered_image_height / 8.0f));
     }
 
+    public static void UpdateDrawingSquareSize(double slideAmount)
+    {
+        SQUARE_SIZE = (int) (SQUARE_SIZE * slideAmount);
+    }
+
     public void UpdateCollisionBoxes(Math.Vec2<Float> position)
     {
         for (Tile tile : Tiles)

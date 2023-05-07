@@ -86,12 +86,7 @@ public class CollisionBox
 
         if ((MousePos.x < (this.x + (this.width) / 2)) && (MousePos.x > (this.x - (this.width) / 2)))
         {
-            if ((MousePos.y < (this.y + (this.height) / 2)) && (MousePos.y > (this.y - (this.height) / 2)))
-            {
-
-                return true;
-
-            }
+            return (MousePos.y < (this.y + (this.height) / 2)) && (MousePos.y > (this.y - (this.height) / 2));
         }
         return false;
     }
