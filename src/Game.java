@@ -140,7 +140,7 @@ public class Game extends JPanel implements Runnable
             @Override
             public void windowClosing(WindowEvent e) {
 
-                //server.DeletePortMapping(server.device,server.externalPort,server.protocol);
+                server.DeletePortMapping(server.device,server.externalPort,server.protocol);
                 isRunning = false;
 
             }
@@ -160,7 +160,7 @@ public class Game extends JPanel implements Runnable
 
         if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
 
-            server = new GameServer(this,ma.getPort());
+            server = new GameServer(this,8080);
             server.start();
 
         }
@@ -171,7 +171,7 @@ public class Game extends JPanel implements Runnable
             System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
             GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
-            client = new GameClient(this, server.GameLink,ma.getPort());
+            client = new GameClient(this, server.GameLink,8080);
             client.start();
 
     }
@@ -217,7 +217,7 @@ public class Game extends JPanel implements Runnable
 
             float final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
 
-            //gh.paintComponent(bufferedGraphics);
+
             gh.paintComponent(leftComponent.bufferedGraphics);
 
             float scaleamount = (float) (ui.UIsliderBar.SlideAmount() / 500);
@@ -226,7 +226,7 @@ public class Game extends JPanel implements Runnable
             float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
 
 
-            leftComponent.drawUIcomponent(bufferedGraphics, (int) ((ScreenSize.getWidth() - (leftComponent.componentImage.getWidth() * scaleamount))/2),(int) ((ScreenSize.getHeight() - (leftComponent.componentImage.getHeight() * scaleamount))/2),
+            leftComponent.drawUIcomponent(bufferedGraphics, (int) ((ui.UIsliderBar.collisionBox.x - (leftComponent.componentImage.getWidth() * scaleamount))/2),(int) ((ScreenSize.getHeight() - (leftComponent.componentImage.getHeight() * scaleamount))/2),
                                        (int) (leftComponent.componentImage.getWidth() * scaleamount), (int) (leftComponent.componentImage.getHeight() * scaleamount),current_canvas);
 
 

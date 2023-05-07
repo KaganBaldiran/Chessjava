@@ -167,10 +167,11 @@ public class GameServer extends Thread
 
             for (int i = 0; i < ip_address.length(); i++) {
 
-                if(!ip_address.trim().substring(i,i+1).equalsIgnoreCase("."))
+                String substring = ip_address.trim().substring(i, i + 1);
+                if(!substring.equalsIgnoreCase("."))
                 {
-                    FinalString += KEY.substring(Integer.parseInt(ip_address.trim().substring(i,i+1)),
-                                                 Integer.parseInt(ip_address.trim().substring(i,i+1))+1);
+                    FinalString += KEY.substring(Integer.parseInt(substring),
+                                                 Integer.parseInt(substring)+1);
 
                 }
                 else
@@ -274,9 +275,10 @@ public class GameServer extends Thread
         System.out.println("External IP address: " + this.externalIpAddress);
 
         // Add a port mapping to the IGD
-        String description = "Chessjava gameport";
+        String description = "Port mapping";
 
-        InetAddress localAddress = getIPv4Addresses(InetAddress.getAllByName(InetAddress.getLocalHost().getHostName()));
+        InetAddress localAddress = InetAddress.getLocalHost();
+        System.out.println("LOCAL IP address: " + localAddress.getHostAddress());
         assert localAddress != null;
         success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
         if (success) {

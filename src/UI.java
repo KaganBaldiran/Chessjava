@@ -92,6 +92,7 @@ public class UI extends JPanel
             {
                 released = true;
                 pressed = false;
+                slided_x_position = 0;
             }
 
             if(IsClicked() && this.mouselistenerReference.isClicked(MouseEvent.BUTTON1))
@@ -108,7 +109,7 @@ public class UI extends JPanel
 
                 if (this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x != 0.0)
                 {
-                    slided_x_position += ((last_size - slided_x_position)/3);
+                    slided_x_position += (((this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x) - last_size));
                     last_size = this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
 
                     return this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
