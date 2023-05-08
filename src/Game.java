@@ -140,7 +140,7 @@ public class Game extends JPanel implements Runnable
             @Override
             public void windowClosing(WindowEvent e) {
 
-                server.DeletePortMapping(server.device,server.externalPort,server.protocol);
+                //server.DeletePortMapping(server.device,server.externalPort,server.protocol);
                 isRunning = false;
 
             }
@@ -148,10 +148,15 @@ public class Game extends JPanel implements Runnable
 
     }
 
+    KryonetClient krclient;
+    KryonetServer krserver;
+
     public synchronized void InitNetworking() throws IOException, UtilityException {
 
 
-        MappedAddress ma = new MappedAddress();
+        krserver = new KryonetServer(54555, 54777);
+        krclient = new KryonetClient(5000, "192.168.0.107", 54555, 54777);
+        /*MappedAddress ma = new MappedAddress();
         try {
             ma = GameClient.SendRequestToSTUNserver();
         } catch (UtilityException | MessageAttributeParsingException e) {
@@ -172,7 +177,7 @@ public class Game extends JPanel implements Runnable
             GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
 
             client = new GameClient(this, server.GameLink,8080);
-            client.start();
+            client.start();*/
 
     }
     
@@ -265,7 +270,7 @@ public class Game extends JPanel implements Runnable
             {
                 if(piece.Selected)
                 {
-                    this.client.setDataTosend(String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y));
+                   // this.client.setDataTosend(String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y));
                 }
 
             }

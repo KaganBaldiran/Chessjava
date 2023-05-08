@@ -1,3 +1,6 @@
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Server;
 import org.bitlet.weupnp.GatewayDevice;
 import org.bitlet.weupnp.GatewayDiscover;
 import org.xml.sax.SAXException;
@@ -31,8 +34,7 @@ public class GameServer extends Thread
     boolean ServerisRequested = false;
 
 
-    public GameServer(Game game , int port) throws UnknownHostException, SocketException
-    {
+    public GameServer(Game game , int port) throws IOException {
         this.game = game;
         ServerisRequested = true;
         this.externalPort = port;
@@ -114,8 +116,8 @@ public class GameServer extends Thread
 
                     serverSocket2 = this.socket;
 
-                    //System.out.println("Waiting for Client 2 on Port "
-                          // + serverSocket2.getLocalPort());
+                    System.out.println("Waiting for Client 2 on Port "
+                           + serverSocket2.getLocalPort());
 
                     // receive Data
                     DatagramPacket receivePacket = new DatagramPacket(new byte[1024], 1024);

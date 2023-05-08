@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="weupnp-0.1.4" level="application" />
     <orderEntry type="library" name="jstun-0.7.4" level="application" />
+    <orderEntry type="library" name="kryonet-2.21-all" level="application" />
   </component>
 </module>

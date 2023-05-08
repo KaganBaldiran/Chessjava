@@ -7,6 +7,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import de.javawi.jstun.attribute.*;
 import de.javawi.jstun.header.MessageHeader;
 import de.javawi.jstun.util.UtilityException;
@@ -41,12 +44,31 @@ public class GameClient extends Thread
 
     boolean success = false;
 
-    public GameClient(Game game , String ipAddress , int port) throws UnknownHostException, SocketException
-    {
+    Client kryoclient;
+
+    public GameClient(Game game , String ipAddress , int port) throws IOException {
         this.game = game;
         this.port = port;
         this.externalPort = port;
         this.internalPort = port;
+
+        Client kryoclient = new Client();
+        kryoclient.start();
+        kryoclient.connect(5000, "192.168.0.107", 54555, 54777);
+
+        kryoclient.addListener(new Listener() {
+            public void received(Connection connection, Object object) {
+                if (object instanceof String) {
+                    String message = (String)object;
+                    System.out.println("Received message from server: " + message);
+                }
+            }
+        });
+
+
+
+
+
 
         try
         {
@@ -143,6 +165,9 @@ public class GameClient extends Thread
                     e.printStackTrace();
                 }*/
             }
+
+
+
 
         }
     }

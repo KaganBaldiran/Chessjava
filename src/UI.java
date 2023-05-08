@@ -47,6 +47,10 @@ public class UI extends JPanel
 
         Math.Vec2<Double> ClickkedInitialPosition = new Math.Vec2<>();
 
+        boolean initialized = false;
+
+        Math.Vec2<Integer> initialXvalues = new Math.Vec2<>(0,0);
+
         SliderBar(int Shape , MouseInputListener Mouselistener)
         {
             collisionBox = new CollisionBox();
@@ -64,15 +68,47 @@ public class UI extends JPanel
         }
 
         int slided_x_position = 0;
-        public void SetCollisionAttribs(int x , int y , int width , int height)
+        int permanent_slide_position = 0;
+        public void SetCollisionAttribs(int x , int y , int width , int height )
         {
-            this.collisionBox.SetValues(x+ slided_x_position, y, width, height);
+            this.collisionBox.SetValues(x, y, width, height);
+            initialXvalues.x = x;
         }
-        public void SetDrawingAttribs(int x , int y , int width , int height , Color color)
+        public void SetDrawingAttribs(int x , int y , int width , int height , Color color )
         {
-            this.Drawingattrib.SetValues(x,y,width,height);
+            this.Drawingattrib.SetValues(x ,y,width,height);
+            initialXvalues.y = x;
             this.color = color;
         }
+
+        public void Update(float scalecoeff)
+        {
+
+
+
+            if(SlideAmount() != 0.0)
+            {
+                slided_x_position = (int) (SlideAmount() * scalecoeff);
+            }
+
+
+            collisionBox.x = initialXvalues.x+ slided_x_position;
+            this.Drawingattrib.x = initialXvalues.y + slided_x_position;
+
+
+            //ReverseUpdate();
+
+            System.out.println("SLIDE AMOUNT: " + slided_x_position);
+
+        }
+
+        public void ReverseUpdate()
+        {
+            collisionBox.x = collisionBox.x - slided_x_position;
+            this.Drawingattrib.x = this.Drawingattrib.x - slided_x_position;
+
+        }
+
         public boolean IsClicked()
         {
             return this.collisionBox.CheckCollisionBoxMouse(this.mouselistenerReference.GetMousePos());
@@ -81,21 +117,21 @@ public class UI extends JPanel
         boolean pressed = false;
         boolean released = false;
 
-        double last_size = 1.0;
+        double last_size = 0.0;
 
 
         public Double SlideAmount()
         {
 
+            System.out.println("IS CLICKED : " + IsClicked());
 
             if(this.mouselistenerReference.isReleased(MouseEvent.BUTTON1))
             {
                 released = true;
                 pressed = false;
-                slided_x_position = 0;
             }
 
-            if(IsClicked() && this.mouselistenerReference.isClicked(MouseEvent.BUTTON1))
+            if(IsClicked() && this.mouselistenerReference.isClicked(MouseEvent.BUTTON1) && released)
             {
                 ClickkedInitialPosition.SetValues(this.mouselistenerReference.GetMousePos());
                 pressed = true;
@@ -105,19 +141,15 @@ public class UI extends JPanel
             if (ClickkedInitialPosition.x != null && pressed && !released)
             {
 
-                System.out.println("SLIDE AMOUNT: " + (this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x));
-
                 if (this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x != 0.0)
                 {
-                    slided_x_position += (((this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x) - last_size));
                     last_size = this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
-
                     return this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
                 }
 
             }
 
-            return last_size;
+            return 0.0;
 
         }
         @Override
@@ -138,11 +170,13 @@ public class UI extends JPanel
                 {
                     throw new RuntimeException("Roundness value is too small :: SliderBar");
                 }
-                g.fillRoundRect(Drawingattrib.x + slided_x_position,Drawingattrib.y , Drawingattrib.z, Drawingattrib.w, roundness , roundness);
+
+                g.fillRoundRect(Drawingattrib.x ,Drawingattrib.y , Drawingattrib.z, Drawingattrib.w, roundness , roundness);
             }
             else if(Shape == SHARP)
             {
-                g.fillRect(Drawingattrib.x + slided_x_position,Drawingattrib.y , Drawingattrib.z, Drawingattrib.w);
+                g.fillRect(Drawingattrib.x ,Drawingattrib.y , Drawingattrib.z, Drawingattrib.w);
+
             }
         }
     }
@@ -171,23 +205,35 @@ public class UI extends JPanel
 
     public void setUIsize(int FrameWidth , int FrameHeight , float BoardWidth , float BoardHeight) {
         this.UIsize.SetValues(FrameWidth - BoardWidth, BoardHeight);
-        //System.out.println("UI SIZE x: " + UIsize.x + " Y: " + UIsize.y);
     }
+
+
 
     public void Update()
     {
+
+        if (!UIsliderBar.initialized)
+        {
+            UIsliderBar.SetDrawingAttribs((int) (BoardLocation.x.intValue() + BoardSize.x ) ,
+                    BoardLocation.y.intValue(),(int)(UIsize.x * 0.10f),
+                    UIsize.y.intValue(),
+                    Color.BLACK);
+
+            UIsliderBar.SetCollisionAttribs((int) ((BoardLocation.x.intValue() + BoardSize.x ) + ((UIsize.x * 0.10f)/2)) ,
+                    (int) ((BoardLocation.y.intValue() + BoardSize.y ) + ((UIsize.y * 0.10f)/2)),
+                    (int)(UIsize.x * 0.10f),
+                    2* UIsize.y.intValue());
+
+            UIsliderBar.initialized = true;
+        }
+
         button.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 2));
-        //button.setLocation(BoardSize.x.intValue(), (int) (BoardLocation.y + BoardSize.y / 2));
-        //button.setSize((int) (100 * scale_coeffic), (int) (50 * scale_coeffic));
 
         button.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
         button.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
 
-        UIsliderBar.SetDrawingAttribs((int) (BoardLocation.x.intValue() + BoardSize.x ) ,BoardLocation.y.intValue(),(int)(UIsize.x * 0.10f),UIsize.y.intValue(), Color.BLACK);
-        UIsliderBar.SetCollisionAttribs((int) ((BoardLocation.x.intValue() + BoardSize.x ) + ((UIsize.x * 0.10f)/2)),
-                                              (int) ((BoardLocation.y.intValue() + BoardSize.y ) + ((UIsize.y * 0.10f)/2)),
-                                               (int)(UIsize.x * 0.10f),
-                                               2* UIsize.y.intValue());
+        UIsliderBar.Update(scale_coeffic);
+
 
     }
     @Override
