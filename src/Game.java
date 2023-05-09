@@ -4,12 +4,14 @@ import de.javawi.jstun.util.UtilityException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
 import static java.lang.System.exit;
@@ -154,7 +156,13 @@ public class Game extends JPanel implements Runnable
     public synchronized void InitNetworking() throws IOException, UtilityException {
 
 
-        krserver = new KryonetServer(54555, 54777);
+        if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
+
+            krserver = new KryonetServer(54555, 54777);
+
+
+        }
+
         krclient = new KryonetClient(5000, "192.168.0.107", 54555, 54777);
         /*MappedAddress ma = new MappedAddress();
         try {
@@ -194,6 +202,11 @@ public class Game extends JPanel implements Runnable
             whiteplayer.MovePlayerPieces();
 
 
+            if(this.input_handler.isPressed(KeyEvent.VK_S))
+            {
+                krclient.sendTCP("FUCK YOU");
+            }
+
 
 
 
@@ -212,7 +225,7 @@ public class Game extends JPanel implements Runnable
 
 
             bufferedGraphics.setColor(Color.GRAY.darker());
-            bufferedGraphics.fillRect(Board.SQUARE_SIZE * 8, 0, (int) (ScreenSize.getWidth() * 0.20f), (int) ScreenSize.getHeight());
+            bufferedGraphics.fillRect(ui.UIsliderBar.ComponentSizes.z, 0, ui.UIsliderBar.ComponentSizes.x, (int) ScreenSize.getHeight());
 
             bufferedGraphics.setColor(Color.GRAY);
             bufferedGraphics.fillRoundRect((int) ((((ScreenSize.getWidth() * 0.20f) - (ScreenSize.getWidth() * 0.15f)) /2) + Board.SQUARE_SIZE * 8), 0, (int) (ScreenSize.getWidth() * 0.15f), (int) (ScreenSize.getHeight() * 0.90f),50,50);
@@ -231,8 +244,10 @@ public class Game extends JPanel implements Runnable
             float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
 
 
-            leftComponent.drawUIcomponent(bufferedGraphics, (int) ((ui.UIsliderBar.collisionBox.x - (leftComponent.componentImage.getWidth() * scaleamount))/2),(int) ((ScreenSize.getHeight() - (leftComponent.componentImage.getHeight() * scaleamount))/2),
-                                       (int) (leftComponent.componentImage.getWidth() * scaleamount), (int) (leftComponent.componentImage.getHeight() * scaleamount),current_canvas);
+            leftComponent.drawUIcomponent(bufferedGraphics, (int)((ui.UIsliderBar.ComponentSizes.w + ((leftComponent.componentImage.getWidth() * ui.UIsliderBar.ScaleCoefBoardSizeLeftCom)/4))/2),
+                    (int) ((ScreenSize.getHeight() - (leftComponent.componentImage.getHeight() * ui.UIsliderBar.ScaleCoefBoardSizeLeftCom))/2),
+                                       (int) (leftComponent.componentImage.getWidth() * ui.UIsliderBar.ScaleCoefBoardSizeLeftCom),
+                    (int) (leftComponent.componentImage.getHeight() * ui.UIsliderBar.ScaleCoefBoardSizeLeftCom),current_canvas);
 
 
             //leftComponent.drawUIcomponent(bufferedGraphics,0 ,0, 300, 300,current_canvas);
@@ -288,7 +303,7 @@ public class Game extends JPanel implements Runnable
 
 
 
-            bufferedGraphics.setBackground(Color.WHITE);
+            bufferedGraphics.setBackground(Color.GRAY);
             bufferedGraphics.clearRect(0,0, 3000, 4000);
 
             frame.revalidate();
