@@ -57,7 +57,7 @@ public class UI extends JPanel
         {
             collisionBox = new CollisionBox();
             this.Shape = Shape;
-            this.color = new Color(0);
+            this.color = new Color(0x000000);
             this.mouselistenerReference = Mouselistener;
         }
         SliderBar(int Shape , int roundness , MouseInputListener Mouselistener)
@@ -65,7 +65,7 @@ public class UI extends JPanel
             collisionBox = new CollisionBox();
             this.Shape = Shape;
             this.roundness = roundness;
-            this.color = new Color(0);
+            this.color = new Color(0x000000);
             this.mouselistenerReference = Mouselistener;
         }
 
@@ -83,35 +83,35 @@ public class UI extends JPanel
             this.color = color;
         }
 
-        public void Update(float scalecoeff , int BoarddSizeX , )
+        Math.Vec2<Integer> UnchangingComponentSizes = new Math.Vec2<>(0,0);
+
+        public void Update(float scalecoeff , int BoarddSizeX)
         {
-
-
 
             if(SlideAmount() != 0.0)
             {
-                slided_x_position = SlideAmount().intValue();
+                slided_x_position = (int) (SlideAmount().intValue());
 
             }
 
-            float coefficent = (float) slided_x_position / (BoarddSizeX * scalecoeff);
+            float coefficent = (float) slided_x_position / BoarddSizeX;
 
-            collisionBox.x = collisionBox.x + (int)(BoarddSizeX * coefficent);
-            this.Drawingattrib.x = Drawingattrib.x + (int)(BoarddSizeX * coefficent);
+            collisionBox.x = collisionBox.x + (int)(slided_x_position * scalecoeff);
+            this.Drawingattrib.x = Drawingattrib.x + (int)(slided_x_position * scalecoeff);
 
 
-            //ReverseUpdate();
 
-            System.out.println("SLIDE AMOUNT: " + BoarddSizeX);
+
+            System.out.println("SLIDE AMOUNT: " + slided_x_position * scalecoeff);
 
         }
 
         float ScaleCoefBoardSizeLeftCom = 0.0f;
 
-        public void CalculateComponentSizes(int BoardSize_x , int BoardSize_y)
+        public void CalculateComponentSizes(int BoardSize_x , int BoardLocationX )
         {
             ComponentSizes.x = BoardSize_x - Drawingattrib.x;
-            ComponentSizes.z = (Drawingattrib.x-BoardSize_y);
+            ComponentSizes.z = (Drawingattrib.x-BoardLocationX);
 
             ScaleCoefBoardSizeLeftCom = ComponentSizes.z.floatValue() / BoardSize_x;
 

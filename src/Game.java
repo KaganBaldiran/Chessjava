@@ -224,16 +224,19 @@ public class Game extends JPanel implements Runnable
 
 
 
+
+
+
+            float final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
+
+
             bufferedGraphics.setColor(Color.GRAY.darker());
-            bufferedGraphics.fillRect(ui.UIsliderBar.ComponentSizes.z, 0, ui.UIsliderBar.ComponentSizes.x, (int) ScreenSize.getHeight());
+            bufferedGraphics.fillRect((int) (ui.UIsliderBar.ComponentSizes.z * final_scale_coeffi), 0, ui.UIsliderBar.ComponentSizes.x, (int) ScreenSize.getHeight());
 
             bufferedGraphics.setColor(Color.GRAY);
             bufferedGraphics.fillRoundRect((int) ((((ScreenSize.getWidth() * 0.20f) - (ScreenSize.getWidth() * 0.15f)) /2) + Board.SQUARE_SIZE * 8), 0, (int) (ScreenSize.getWidth() * 0.15f), (int) (ScreenSize.getHeight() * 0.90f),50,50);
 
 
-
-
-            float final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
 
 
             gh.paintComponent(leftComponent.bufferedGraphics);
