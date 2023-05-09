@@ -85,7 +85,7 @@ public class UI extends JPanel
 
         Math.Vec2<Integer> UnchangingComponentSizes = new Math.Vec2<>(0,0);
 
-        public void Update(float scalecoeff , int BoarddSizeX)
+        public void Update(float scalecoeff , int BoarddSizeX , Dimension screenSize)
         {
 
             if(SlideAmount() != 0.0)
@@ -94,11 +94,8 @@ public class UI extends JPanel
 
             }
 
-            float coefficent = (float) slided_x_position / BoarddSizeX;
-
             collisionBox.x = collisionBox.x + (int)(slided_x_position * scalecoeff);
             this.Drawingattrib.x = Drawingattrib.x + (int)(slided_x_position * scalecoeff);
-
 
 
 
@@ -108,12 +105,21 @@ public class UI extends JPanel
 
         float ScaleCoefBoardSizeLeftCom = 0.0f;
 
-        public void CalculateComponentSizes(int BoardSize_x , int BoardLocationX )
+        float UnchangingScaleSlideBoardRatio = 0.0f;
+
+        public void CalculateComponentSizes(int BoardSize_x , int BoardLocationX , Dimension screenSize , float scalecoeff)
         {
             ComponentSizes.x = BoardSize_x - Drawingattrib.x;
             ComponentSizes.z = (Drawingattrib.x-BoardLocationX);
 
             ScaleCoefBoardSizeLeftCom = ComponentSizes.z.floatValue() / BoardSize_x;
+
+            UnchangingComponentSizes.x = (int) (slided_x_position + (screenSize.width * 0.80f));
+            UnchangingComponentSizes.y = (int) (screenSize.width - (slided_x_position + (screenSize.width * 0.80f)));
+
+
+            System.out.println("UnchangingComponentSizes.y: " + UnchangingComponentSizes.y);
+            System.out.println("UnchangingComponentSizes.x: " + UnchangingComponentSizes.x);
 
             System.out.println("COMPONENT 1 SIZE X: " + ComponentSizes.x);
             System.out.println("COMPONENT 2 SIZE X: " + ComponentSizes.z);
@@ -214,11 +220,14 @@ public class UI extends JPanel
         //this.add(button);
     }
 
-    public void UpdateBoardAttribs(Math.Vec2<Float> Location , float scale_coeffi)
+    Dimension ScreenSize = new Dimension(0,0);
+
+    public void UpdateBoardAttribs(Math.Vec2<Float> Location , float scale_coeffi , Dimension screensize)
     {
         this.BoardSize.SetValues((float) (Board.SQUARE_SIZE_non_GUI * 8), (float) (Board.SQUARE_SIZE_non_GUI * 8));
         this.BoardLocation = Location;
         this.scale_coeffic = scale_coeffi;
+        ScreenSize.setSize(screensize);
     }
 
     public void setUIsize(int FrameWidth , int FrameHeight , float BoardWidth , float BoardHeight) {
@@ -249,9 +258,9 @@ public class UI extends JPanel
         button.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
         button.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
 
-        UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() + (int)((BoardSize.x/9)*2));
+        UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() + (int)((BoardSize.x/9)*2), ScreenSize);
 
-        UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() );
+        UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
 
 
     }

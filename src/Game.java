@@ -231,7 +231,7 @@ public class Game extends JPanel implements Runnable
 
 
             bufferedGraphics.setColor(Color.GRAY.darker());
-            bufferedGraphics.fillRect((int) (ui.UIsliderBar.ComponentSizes.z * final_scale_coeffi), 0, ui.UIsliderBar.ComponentSizes.x, (int) ScreenSize.getHeight());
+            bufferedGraphics.fillRect((int) (ui.UIsliderBar.UnchangingComponentSizes.x), 0, ui.UIsliderBar.UnchangingComponentSizes.y, (int) ScreenSize.getHeight());
 
             bufferedGraphics.setColor(Color.GRAY);
             bufferedGraphics.fillRoundRect((int) ((((ScreenSize.getWidth() * 0.20f) - (ScreenSize.getWidth() * 0.15f)) /2) + Board.SQUARE_SIZE * 8), 0, (int) (ScreenSize.getWidth() * 0.15f), (int) (ScreenSize.getHeight() * 0.90f),50,50);
@@ -297,7 +297,7 @@ public class Game extends JPanel implements Runnable
 
 
 
-            ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi);
+            ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi , ScreenSize);
             ui.Update();
 
 
