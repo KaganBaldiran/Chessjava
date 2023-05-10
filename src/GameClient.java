@@ -107,6 +107,7 @@ public class GameClient extends Thread
         receiveMH.parseAttributes(rp.getData());
         MappedAddress ma = (MappedAddress) receiveMH
                 .getMessageAttribute(MessageAttribute.MessageAttributeType.MappedAddress);
+
         System.out.println(ma.getAddress()+" "+ma.getPort());
 
         s.close();

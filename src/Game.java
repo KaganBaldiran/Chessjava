@@ -130,7 +130,7 @@ public class Game extends JPanel implements Runnable
 
         System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
-        this.leftComponent = new UI.UIcomponents((int) (ScreenSize.getWidth() * 0.90f), (int) (ScreenSize.getWidth() * 0.90f),BufferedImage.TYPE_INT_ARGB);
+        this.leftComponent = new UI.UIcomponents((int) (ScreenSize.getWidth() * 0.80f), (int) (ScreenSize.getWidth() * 0.80f),BufferedImage.TYPE_INT_ARGB);
 
         try {
             InitNetworking();
@@ -163,7 +163,9 @@ public class Game extends JPanel implements Runnable
 
         }
 
-        krclient = new KryonetClient(5000, "192.168.0.107", 54555, 54777);
+
+
+        krclient = new KryonetClient(5000, "localhost", 54555, 54777);
         /*MappedAddress ma = new MappedAddress();
         try {
             ma = GameClient.SendRequestToSTUNserver();
@@ -241,16 +243,18 @@ public class Game extends JPanel implements Runnable
 
             gh.paintComponent(leftComponent.bufferedGraphics);
 
-            float scaleamount = (float) (ui.UIsliderBar.SlideAmount() / 500);
+
 
             float scaledWidth = bufferedImage.getWidth() * final_scale_coeffi;
             float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
 
 
-            leftComponent.drawUIcomponent(bufferedGraphics, (int)((ui.UIsliderBar.ComponentSizes.w + ((leftComponent.componentImage.getWidth() * ui.UIsliderBar.ScaleCoefBoardSizeLeftCom)/4))/2),
-                    (int) ((ScreenSize.getHeight() - (leftComponent.componentImage.getHeight() * ui.UIsliderBar.ScaleCoefBoardSizeLeftCom))/2),
-                                       (int) (leftComponent.componentImage.getWidth() * ui.UIsliderBar.ScaleCoefBoardSizeLeftCom),
-                    (int) (leftComponent.componentImage.getHeight() * ui.UIsliderBar.ScaleCoefBoardSizeLeftCom),current_canvas);
+            leftComponent.drawUIcomponent(bufferedGraphics,
+                    0,
+                    (int)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2) ,
+                    ui.UIsliderBar.UnchangingComponentSizes.x,
+                    ui.UIsliderBar.UnchangingComponentSizes.x,
+                    current_canvas);
 
 
             //leftComponent.drawUIcomponent(bufferedGraphics,0 ,0, 300, 300,current_canvas);
