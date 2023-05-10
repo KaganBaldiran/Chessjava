@@ -130,7 +130,7 @@ public class Game extends JPanel implements Runnable
 
         System.out.println("this.current_canvas.getWidth() X :  " + this.current_canvas.getWidth() + " Y: " + this.current_canvas.getHeight());
 
-        this.leftComponent = new UI.UIcomponents((int) (ScreenSize.getWidth() * 0.80f), (int) (ScreenSize.getWidth() * 0.80f),BufferedImage.TYPE_INT_ARGB);
+        this.leftComponent = new UI.UIcomponents((int) (ScreenSize.getWidth() * 0.82f), (int) (ScreenSize.getWidth() * 0.82f),BufferedImage.TYPE_INT_ARGB);
 
         try {
             InitNetworking();
@@ -275,7 +275,9 @@ public class Game extends JPanel implements Runnable
 
             Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
 
-            this.chessBoard.UpdateCollisionBoxes(FBO_position);
+            Board.UpdateSQUARESIZEUI(ui.UIsliderBar.UnchangingComponentSizes.x);
+
+            this.chessBoard.UpdateCollisionBoxes(new Math.Vec2<>(FBO_position.x,(float)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2)) );
 
             ui.setUIsize(((int) scaledWidth), (int) scaledHeight,ScreenSize.height * final_scale_coeffi,ScreenSize.height * final_scale_coeffi);
 

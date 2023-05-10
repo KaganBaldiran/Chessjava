@@ -86,26 +86,28 @@ public class UI extends JPanel
         Math.Vec2<Integer> UnchangingComponentSizes = new Math.Vec2<>(0,0);
 
         int TotalSlideX = 0;
+        int prevslidedposition = 0;
 
-        public void Update(float scalecoeff , int BoarddSizeX , Dimension screenSize)
+        public void Update(float scalecoeff , int BoarddSizeX , Dimension screenSize, int BoardLocationX)
         {
 
-            int prevslidedposition = TotalSlideX;
+            prevslidedposition = slided_x_position;
 
             System.out.println("PREV SLIDE AMOUNT: " + prevslidedposition);
 
-            if(SlideAmount(scalecoeff) != 0.0)
-            {
-                slided_x_position = (int) (SlideAmount(scalecoeff).intValue());
+            Double ScaleAmount = SlideAmount(scalecoeff);
 
+            if(ScaleAmount != 0.0 && Drawingattrib.x <= BoarddSizeX)
+            {
+                slided_x_position = ScaleAmount.intValue();
             }
 
-            TotalSlideX += (int)((slided_x_position - prevslidedposition) * scalecoeff);
+           // TotalSlideX += (int)((slided_x_position - prevslidedposition) * scalecoeff);
 
             System.out.println("SLIDE AMOUNT: " + TotalSlideX);
 
             collisionBox.x = collisionBox.x ;
-            this.Drawingattrib.x = Drawingattrib.x + TotalSlideX;
+            this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
 
 
 
@@ -124,8 +126,8 @@ public class UI extends JPanel
 
             ScaleCoefBoardSizeLeftCom = ComponentSizes.z.floatValue() / BoardSize_x;
 
-            UnchangingComponentSizes.x = (int) (slided_x_position + (screenSize.width * 0.82f)) ;
-            UnchangingComponentSizes.y = (int) (screenSize.width - (slided_x_position + (screenSize.width * 0.82f)));
+            UnchangingComponentSizes.x = (int) (TotalSlideX + (screenSize.width * 0.82f)) ;
+            UnchangingComponentSizes.y = (int) (screenSize.width - (TotalSlideX + (screenSize.width * 0.82f)));
 
 
             System.out.println("UnchangingComponentSizes.y: " + UnchangingComponentSizes.y);
@@ -161,6 +163,11 @@ public class UI extends JPanel
 
             if(this.mouselistenerReference.isReleased(MouseEvent.BUTTON1))
             {
+                if(pressed)
+                {
+                    TotalSlideX += slided_x_position * scalecoeff;
+                }
+
                 released = true;
                 pressed = false;
             }
@@ -227,7 +234,7 @@ public class UI extends JPanel
         frame_reference = frame;
         frame_reference.add(button);
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
-        //this.add(button);
+
     }
 
     Dimension ScreenSize = new Dimension(0,0);
@@ -257,7 +264,7 @@ public class UI extends JPanel
                     UIsize.y.intValue(),
                     Color.BLACK);
 
-            UIsliderBar.SetCollisionAttribs((int) ((BoardLocation.x.intValue() + BoardSize.x ) + ((UIsize.x * 0.10f)/2)) + UIsliderBar.TotalSlideX ,
+            UIsliderBar.SetCollisionAttribs((int) ((BoardLocation.x.intValue() + BoardSize.x ) + ((UIsize.x * 0.10f)/2) + (UIsliderBar.TotalSlideX * scale_coeffic) ),
                     (int) ((BoardLocation.y.intValue() + BoardSize.y ) + ((UIsize.y * 0.10f)/2)),
                     (int)(UIsize.x * 0.10f),
                     2* UIsize.y.intValue());
@@ -270,7 +277,7 @@ public class UI extends JPanel
         button.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
         button.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
 
-        UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() + (int)((BoardSize.x/9)*2), ScreenSize);
+        UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() + (int)((BoardSize.x/9)*2), ScreenSize , BoardLocation.x.intValue());
 
         UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
 
