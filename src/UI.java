@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
@@ -227,12 +224,24 @@ public class UI extends JPanel
 
     float scale_coeffic = 0;
 
+    boolean button1Pressed = false;
+
     UI(JFrame frame ,MouseInputListener Mouselistener) {
         button.setSize(100, 50);
         button.setFont(new Font("Arial", Font.PLAIN, 9));
         button.setLocation(0, 0);
+
+        button.addMouseListener(Mouselistener);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("BUTTON PRESSED!");
+            }
+        });
+
         frame_reference = frame;
         frame_reference.add(button);
+        
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
 
     }
