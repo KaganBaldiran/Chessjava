@@ -4,8 +4,13 @@ import com.esotericsoftware.kryonet.Listener;
 
 
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 
 public class KryonetClient extends Client {
+
+    Boolean STATEINFORM = false;
 
    KryonetClient(int timeout, String host, int tcpPort, int udpPort) throws IOException {
        super();
@@ -17,27 +22,42 @@ public class KryonetClient extends Client {
                if (object instanceof String) {
                    String message = (String)object;
                    System.out.println("Received message from server: " + message);
+
+                   loop(message);
+
                }
            }
        });
 
        sendTCP("Hello, server!");
 
-
-
    }
+
+    public void loop(String message)
+    {
+        if (!STATEINFORM) {
+
+            if (message.equalsIgnoreCase("RECEIVED")) {
+
+                System.out.println("SERVER> " + message);
+                STATEINFORM = true;
+            }
+            else
+            {
+                sendTCP("ONLINE");
+            }
+
+        }
+        else
+        {
+
+        }
+    }
 
     @Override
     public void run() {
 
         super.run();
-
-       while(true)
-       {
-           sendTCP("Hello, server!");
-       }
-
-
 
     }
 }

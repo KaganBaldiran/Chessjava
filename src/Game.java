@@ -275,7 +275,7 @@ public class Game extends JPanel implements Runnable
 
             Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
 
-            Board.UpdateSQUARESIZEUI(ui.UIsliderBar.UnchangingComponentSizes.x);
+            Board.UpdateSQUARESIZEUI(ui.UIsliderBar.ComponentSizes.z);
 
             this.chessBoard.UpdateCollisionBoxes(new Math.Vec2<>(FBO_position.x,(float)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2)) );
 

@@ -16,6 +16,8 @@ import java.net.InetAddress;
 public class KryonetServer extends Server {
 
     MappedAddress StunAddress;
+    public Boolean CLIENT1_STATE = false;
+    public Boolean CLIENT2_STATE = false;
 
     KryonetServer(int tcp_port , int udp_port) throws IOException {
         super();
@@ -34,9 +36,12 @@ public class KryonetServer extends Server {
         //54555, 54777
         addListener(new Listener() {
             public void received(Connection connection, Object object) {
+
                 if (object instanceof String message) {
                     System.out.println("Received message from client: " + message);
                     connection.sendTCP("Server received message: " + message);
+
+                    loop(message , connection);
                 }
             }
         });
@@ -76,6 +81,42 @@ public class KryonetServer extends Server {
 
         return ma;
 
+    }
+
+    public void loop(String message , Connection connection)
+    {
+        if(!CLIENT1_STATE) {
+            if (message.trim().equals("ONLINE")) {
+                System.out.println("CLIENT1> " + message.trim());
+                CLIENT1_STATE = true;
+
+                connection.sendTCP("RECEIVED");
+
+                message = "";
+            }
+        }
+        else
+        {
+            if (!message.trim().isEmpty()) {
+                System.out.println("CLIENT1> " + message.trim());
+            }
+        }
+        if(!CLIENT2_STATE)
+        {
+            if (message.trim().equals("ONLINE")) {
+                System.out.println("CLIENT2> " + message.trim());
+                CLIENT1_STATE = true;
+
+                connection.sendTCP("RECEIVED");
+                message = "";
+            }
+        }
+        else
+        {
+            if (!message.trim().isEmpty()) {
+                System.out.println("CLIENT2> " + message.trim());
+            }
+        }
     }
 
     @Override
