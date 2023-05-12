@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.awt.datatransfer.*;
 
 public class UI extends JPanel
 {
@@ -253,7 +254,7 @@ public class UI extends JPanel
         JComboBox<String> comboBox;
         DropDownMenu(JFrame frame)
         {
-            options = new String[]{"Option 1", "Option 2", "Option 3"};
+            options = new String[]{"LAN Online", "WAN Online", "Offline"};
             comboBox = new JComboBox<String>(options);
             comboBox.setBounds(50, 50, 200, 30);
             comboBox.setSelectedIndex(0);
@@ -319,9 +320,13 @@ public class UI extends JPanel
         this.UIsize.SetValues(FrameWidth - BoardWidth, BoardHeight);
     }
 
-
-
-
+    public void CopyToClipBoard(String StringToCopy)
+    {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection stringSelection = new StringSelection(StringToCopy);
+        clipboard.setContents(stringSelection, null);
+        System.out.println("String copied to clipboard! :: " + StringToCopy);
+    }
 
     public void Update()
     {
@@ -342,6 +347,12 @@ public class UI extends JPanel
 
         button.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
         button.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
+
+        CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.20f)));
+
+
+        CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
+
 
         UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() + (int)((BoardSize.x/9)*2), ScreenSize , BoardLocation.x.intValue());
 
