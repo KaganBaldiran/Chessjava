@@ -85,29 +85,39 @@ public class UI extends JPanel
         int TotalSlideX = 0;
         int prevslidedposition = 0;
 
+        boolean resetprevslidedposition = false;
+
         public void Update(float scalecoeff , int BoarddSizeX , Dimension screenSize, int BoardLocationX)
         {
 
-            prevslidedposition = slided_x_position;
+            if(resetprevslidedposition)
+            {
+                resetprevslidedposition = false;
+                prevslidedposition = 0;
+            }
+            else
+            {
+                prevslidedposition = slided_x_position;
+            }
+
 
             System.out.println("PREV SLIDE AMOUNT: " + prevslidedposition);
 
             Double ScaleAmount = SlideAmount(scalecoeff);
 
-            if(ScaleAmount != 0.0 && Drawingattrib.x <= BoarddSizeX)
-            {
-                slided_x_position = ScaleAmount.intValue();
+
+            if(this.Drawingattrib.x <= BoardLocationX + (BoarddSizeX * 0.82f)) {
+                if (ScaleAmount != 0.0 && Drawingattrib.x <= BoarddSizeX) {
+                    slided_x_position = ScaleAmount.intValue();
+                }
+
+                TotalSlideX += ((slided_x_position - prevslidedposition) * scalecoeff);
+
+                System.out.println("SLIDE AMOUNT: " + TotalSlideX);
+
+                collisionBox.x = collisionBox.x;
+                this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
             }
-
-           // TotalSlideX += (int)((slided_x_position - prevslidedposition) * scalecoeff);
-
-            System.out.println("SLIDE AMOUNT: " + TotalSlideX);
-
-            collisionBox.x = collisionBox.x ;
-            this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
-
-
-
 
 
         }
@@ -160,10 +170,6 @@ public class UI extends JPanel
 
             if(this.mouselistenerReference.isReleased(MouseEvent.BUTTON1))
             {
-                if(pressed)
-                {
-                    TotalSlideX += slided_x_position * scalecoeff;
-                }
 
                 released = true;
                 pressed = false;
@@ -171,6 +177,10 @@ public class UI extends JPanel
 
             if(IsClicked() && this.mouselistenerReference.isClicked(MouseEvent.BUTTON1) && released)
             {
+
+                resetprevslidedposition = true;
+
+
                 ClickkedInitialPosition.SetValues(this.mouselistenerReference.GetMousePos());
                 pressed = true;
                 released = false;
@@ -219,12 +229,59 @@ public class UI extends JPanel
         }
     }
 
+    public static class MainMenu
+    {
+        public JMenuBar menuBar;
+        public JMenu filemenu;
+        public JMenuItem filemenuitem;
+
+        MainMenu(JFrame frame)
+        {
+            menuBar = new JMenuBar();
+            filemenu = new JMenu("File");
+            filemenuitem = new JMenuItem("Open");
+            filemenu.add(filemenuitem);
+            menuBar.add(filemenu);
+            frame.setJMenuBar(menuBar);
+        }
+
+    }
+
+    public static class DropDownMenu
+    {
+        String[] options;
+        JComboBox<String> comboBox;
+        DropDownMenu(JFrame frame)
+        {
+            options = new String[]{"Option 1", "Option 2", "Option 3"};
+            comboBox = new JComboBox<String>(options);
+            comboBox.setBounds(50, 50, 200, 30);
+            comboBox.setSelectedIndex(0);
+            frame.add(comboBox);
+        }
+        public int GetSelectedItemIndex()
+        {
+            return comboBox.getSelectedIndex();
+        }
+        public String GetSelectedItem()
+        {
+            return options[comboBox.getSelectedIndex()];
+        }
+        public void SetPosition(int x , int y)
+        {
+            comboBox.setLocation(x , y);
+        }
+        public void SetSize(int width , int height)
+        {
+            comboBox.setSize(width, height);
+        }
+    }
+
     SliderBar UIsliderBar;
-
-
     float scale_coeffic = 0;
-
     boolean button1Pressed = false;
+    MainMenu gamemenu;
+    DropDownMenu CreateGameMenu;
 
     UI(JFrame frame ,MouseInputListener Mouselistener) {
         button.setSize(100, 50);
@@ -241,8 +298,10 @@ public class UI extends JPanel
 
         frame_reference = frame;
         frame_reference.add(button);
-        
+
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
+        gamemenu = new MainMenu(frame_reference);
+        CreateGameMenu = new DropDownMenu(frame_reference);
 
     }
 
@@ -277,8 +336,6 @@ public class UI extends JPanel
                     (int) ((BoardLocation.y.intValue() + BoardSize.y ) + ((UIsize.y * 0.10f)/2)),
                     (int)(UIsize.x * 0.10f),
                     2* UIsize.y.intValue());
-
-
 
 
         button.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 2));
