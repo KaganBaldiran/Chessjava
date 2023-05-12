@@ -4,5 +4,5 @@ Online chess game that is currently under development in java for a semester pro
 
 Current look:
 
-![image](https://user-images.githubusercontent.com/80681941/234940113-9ceef255-9cce-4e57-86e2-f4762a846826.png)
+![image](https://github.com/KaganBaldiran/Chessjava/assets/80681941/a9bdcf97-0af9-4456-9112-d91fcc1dc3d4)
 
