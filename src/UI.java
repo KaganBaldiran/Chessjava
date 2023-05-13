@@ -102,7 +102,7 @@ public class UI extends JPanel
             }
 
 
-            System.out.println("PREV SLIDE AMOUNT: " + prevslidedposition);
+            //System.out.println("PREV SLIDE AMOUNT: " + prevslidedposition);
 
             Double ScaleAmount = SlideAmount(scalecoeff);
 
@@ -114,7 +114,7 @@ public class UI extends JPanel
 
                 TotalSlideX += ((slided_x_position - prevslidedposition) * scalecoeff);
 
-                System.out.println("SLIDE AMOUNT: " + TotalSlideX);
+                //System.out.println("SLIDE AMOUNT: " + TotalSlideX);
 
                 collisionBox.x = collisionBox.x;
                 this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
@@ -138,11 +138,11 @@ public class UI extends JPanel
             UnchangingComponentSizes.y = (int) (screenSize.width - (TotalSlideX + (screenSize.width * 0.82f)));
 
 
-            System.out.println("UnchangingComponentSizes.y: " + UnchangingComponentSizes.y);
-            System.out.println("UnchangingComponentSizes.x: " + UnchangingComponentSizes.x);
+            //System.out.println("UnchangingComponentSizes.y: " + UnchangingComponentSizes.y);
+            //System.out.println("UnchangingComponentSizes.x: " + UnchangingComponentSizes.x);
 
-            System.out.println("COMPONENT 1 SIZE X: " + ComponentSizes.x);
-            System.out.println("COMPONENT 2 SIZE X: " + ComponentSizes.z);
+            //System.out.println("COMPONENT 1 SIZE X: " + ComponentSizes.x);
+            //System.out.println("COMPONENT 2 SIZE X: " + ComponentSizes.z);
 
         }
 
@@ -167,7 +167,7 @@ public class UI extends JPanel
         public Double SlideAmount(float scalecoeff)
         {
 
-            System.out.println("IS CLICKED : " + IsClicked());
+            //System.out.println("IS CLICKED : " + IsClicked());
 
             if(this.mouselistenerReference.isReleased(MouseEvent.BUTTON1))
             {

@@ -5,6 +5,7 @@ import de.javawi.jstun.util.UtilityException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -195,6 +196,9 @@ public class Game extends JPanel implements Runnable
             client.start();*/
 
     }
+
+
+    boolean AddNewGame = false;
     
     @Override
     public void run()
@@ -203,7 +207,19 @@ public class Game extends JPanel implements Runnable
         while (isRunning)
         {
 
+            if(this.mouseListener.isClicked(MouseEvent.BUTTON2))
+            {
+                AddNewGame = false;
+                Games.AddGameEvent();
+                System.out.println("GAME ADDED!");
+            }
+
+
             Games.GetGameEvent(0).GameLoop();
+
+
+
+
 
             if(this.input_handler.isPressed(KeyEvent.VK_S))
             {

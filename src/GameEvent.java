@@ -13,11 +13,11 @@ public class GameEvent
     Player player2;
     GraphicHandler graphicHandler;
 
-    GameEvent(MouseInputListener mouseListener) throws IOException
+    GameEvent(MouseInputListener mouseListener)
     {
         this.GameBoard = new Board();
         player1 = new Player(Tile.WHITE , GameBoard,mouseListener);
-        player2 = new Player(Tile.WHITE , GameBoard,mouseListener);
+        player2 = new Player(Tile.BLACK , GameBoard,mouseListener);
         this.graphicHandler = new GraphicHandler(GameBoard,player1,player2);
     }
     public void UpdateBoardUtilities(Dimension ScreenSize , float final_scale_coeffi , Math.Vec2<Float> FBO_position , BufferedImage bufferedImage , UI ui)

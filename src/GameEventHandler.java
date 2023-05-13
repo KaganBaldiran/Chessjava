@@ -1,18 +1,15 @@
-import java.io.IOException;
 import java.util.Vector;
 
 public class GameEventHandler
 {
-    private Vector<GameEvent> Games = new Vector<>();
-
+    private final Vector<GameEvent> Games = new Vector<>();
     MouseInputListener mouseInputListenerReference;
-
     GameEventHandler(MouseInputListener mouseListener)
     {
          this.mouseInputListenerReference = mouseListener;
     }
 
-    public void AddGameEvent() throws IOException
+    public void AddGameEvent()
     {
        if(!Games.isEmpty())
        {

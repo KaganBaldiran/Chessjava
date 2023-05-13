@@ -14,13 +14,34 @@ public class Player extends JPanel
 
     MouseInputListener mouselistenerreference;
 
+    String[] WhitePlayerTexturesFilePaths = {"pawn_white.png","knight_white.png",
+                                             "rook_white.png" , "bishop_white.png",
+                                              "Queen_white.png" ,"King_white.png"};
+    String[] BlackPlayerTexturesFilePaths = {"pawn.png","Chess_cdt45.png",
+                                             "rookpng.png" , "Chess_tile_bd.png",
+                                             "queen_black.png" ,"King_black.png"};
 
-    Texture pawn_texture = new Texture("resources\\Rescaled_versions_256\\pawn.png");
-
+    String RelativeFilePath = "resources/Rescaled_versions_256/";
+    String[] CurrentTextures;
+    Texture pawn_texture;
     int Color;
 
-    Player(int color , Board current_board , MouseInputListener current_mouse_listener) throws IOException {
+    Player(int color , Board current_board , MouseInputListener current_mouse_listener)
+    {
         this.Color = color;
+
+        if (this.Color == Tile.BLACK)
+        {
+            CurrentTextures = BlackPlayerTexturesFilePaths;
+        }
+        else if (this.Color == Tile.WHITE)
+        {
+            CurrentTextures = WhitePlayerTexturesFilePaths;
+        }
+
+        pawn_texture = new Texture( RelativeFilePath + CurrentTextures[0]);
+
+        System.out.println(BlackPlayerTexturesFilePaths[0]);
 
         this.Current_Board_Reference = current_board;
 
@@ -37,23 +58,19 @@ public class Player extends JPanel
         {
             pieces.add(new Pawn(x,7,this.Color,current_board.FetchTile(x,7),this.Current_Board_Reference,pawn_texture,current_mouse_listener,this));
         }
-
-        //BufferedImage originalImage = ImageIO.read(new File("path/to/image.png"));
-
-
-
-        pieces.add(new Knight(2,8,this.Color,current_board.FetchTile(2,8),this.Current_Board_Reference,"resources\\Rescaled_versions_256\\Chess_cdt45.png",current_mouse_listener,this));
+        
+        pieces.add(new Knight(2,8,this.Color,current_board.FetchTile(2,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[1],current_mouse_listener,this));
         pieces.add(new Knight(7,8,this.Color,current_board.FetchTile(7,8),this.Current_Board_Reference,pieces.get(pieces.size()-1).piecetexture,current_mouse_listener,this));
 
-        pieces.add(new Rook(8,8,this.Color,current_board.FetchTile(8,8),this.Current_Board_Reference,"resources\\Rescaled_versions_256\\rookpng.png",current_mouse_listener,this));
+        pieces.add(new Rook(8,8,this.Color,current_board.FetchTile(8,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[2],current_mouse_listener,this));
         pieces.add(new Rook(1,8,this.Color,current_board.FetchTile(1,8),this.Current_Board_Reference,pieces.get(pieces.size()-1).piecetexture,current_mouse_listener,this));
 
-        pieces.add(new Bishop(3,8,this.Color,current_board.FetchTile(3,8),this.Current_Board_Reference,"resources\\Rescaled_versions_256\\Chess_tile_bd.png",current_mouse_listener,this));
+        pieces.add(new Bishop(3,8,this.Color,current_board.FetchTile(3,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[3],current_mouse_listener,this));
         pieces.add(new Bishop(6,8,this.Color,current_board.FetchTile(6,8),this.Current_Board_Reference,pieces.get(pieces.size()-1).piecetexture,current_mouse_listener,this));
 
-        pieces.add(new Queen(4,8,this.Color,current_board.FetchTile(6,8),this.Current_Board_Reference,"resources\\Rescaled_versions_256\\queen_black.png",current_mouse_listener,this));
+        pieces.add(new Queen(4,8,this.Color,current_board.FetchTile(6,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[4],current_mouse_listener,this));
 
-        pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,"resources\\Rescaled_versions_256\\King_black.png",current_mouse_listener,this));
+        pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[5],current_mouse_listener,this));
 
 
         if (this.Color == Tile.BLACK)
@@ -100,11 +117,10 @@ public class Player extends JPanel
     {
         super.paintComponent(g);
 
-        for (int i = 0; i < this.pieces.size(); i++)
-        {
-            pieces.get(i).paintComponent(g);
+        for (piece piece : this.pieces) {
+            piece.paintComponent(g);
         }
 
-        g.dispose();
+       // g.dispose();
     }
 }

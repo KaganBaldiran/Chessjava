@@ -48,22 +48,11 @@ public class GraphicHandler extends JPanel
 
 
         this.current_board.paintComponent(g);
-        //button.paint(g);
+
         player1.paintComponent(g);
-
-
-
-       //UIpanel.setLocation(1000,1000);
-
-
-
-
-
-       //player2.paintComponent(g);
+        player2.paintComponent(g);
 
        g.dispose();
-
-
     }
 
     public void Update()
