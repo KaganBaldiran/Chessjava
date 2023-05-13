@@ -64,7 +64,7 @@ public class Game extends JPanel implements Runnable
     UI ui;
 
 
-    Vector<GameEvent> Games = new Vector<>();
+    GameEventHandler Games;
 
 
     Game() throws IOException {
@@ -152,8 +152,8 @@ public class Game extends JPanel implements Runnable
             }
         });
 
-        Games.add(new GameEvent(this.mouseListener));
-
+        Games = new GameEventHandler(mouseListener);
+        Games.AddGameEvent();
     }
 
     KryonetClient krclient;
@@ -200,40 +200,23 @@ public class Game extends JPanel implements Runnable
     public void run()
     {
 
-        while (isRunning) {
+        while (isRunning)
+        {
 
-            
-            //whiteplayer.GetPosssibleMoves();
-
-
-            //whiteplayer.MovePlayerPieces();
-
-            Games.get(0).GameLoop();
-
+            Games.GetGameEvent(0).GameLoop();
 
             if(this.input_handler.isPressed(KeyEvent.VK_S))
             {
                 krclient.sendTCP("FUCK YOU");
             }
 
-
-
-
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();
 
             Graphics2D bufferedGraphics = bufferedImage.createGraphics();
 
-
-
-
             graphics.setColor(Color.WHITE);
             graphics.fillRect(0, 0 , current_canvas.getWidth(), current_canvas.getHeight());
-
-
-
-
-
 
 
             float final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
@@ -249,7 +232,7 @@ public class Game extends JPanel implements Runnable
 
 
             //gh.paintComponent(leftComponent.bufferedGraphics);
-            Games.get(0).DrawGame(leftComponent.bufferedGraphics);
+            Games.GetGameEvent(0).DrawGame(leftComponent.bufferedGraphics);
 
 
 
@@ -268,18 +251,7 @@ public class Game extends JPanel implements Runnable
             //leftComponent.drawUIcomponent(bufferedGraphics,0 ,0, 300, 300,current_canvas);
 
 
-
-
-
-
-
-
-
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
-
-
-
-
 
             /*Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
 
@@ -287,7 +259,7 @@ public class Game extends JPanel implements Runnable
 
             this.chessBoard.UpdateCollisionBoxes(new Math.Vec2<>(FBO_position.x,(float)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2)) );*/
 
-            Games.get(0).UpdateBoardUtilities(ScreenSize,final_scale_coeffi,FBO_position,bufferedImage,ui);
+            Games.GetGameEvent(0).UpdateBoardUtilities(ScreenSize,final_scale_coeffi,FBO_position,bufferedImage,ui);
 
             ui.setUIsize(((int) scaledWidth), (int) scaledHeight,ScreenSize.height * final_scale_coeffi,ScreenSize.height * final_scale_coeffi);
 
@@ -310,16 +282,11 @@ public class Game extends JPanel implements Runnable
             }
 
 
-
-
-
             ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi , ScreenSize);
             ui.Update();
 
 
             ui.paintComponent(graphics);
-
-
 
 
             bufferedGraphics.setBackground(Color.GRAY);
