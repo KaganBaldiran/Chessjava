@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.Vector;
 
 import static java.lang.System.exit;
 
@@ -61,6 +62,9 @@ public class Game extends JPanel implements Runnable
 
     JButton button = new JButton("random button");
     UI ui;
+
+
+    Vector<GameEvent> Games = new Vector<>();
 
 
     Game() throws IOException {
@@ -148,6 +152,8 @@ public class Game extends JPanel implements Runnable
             }
         });
 
+        Games.add(new GameEvent(this.mouseListener));
+
     }
 
     KryonetClient krclient;
@@ -197,10 +203,12 @@ public class Game extends JPanel implements Runnable
         while (isRunning) {
 
             
-            whiteplayer.GetPosssibleMoves();
+            //whiteplayer.GetPosssibleMoves();
 
 
-            whiteplayer.MovePlayerPieces();
+            //whiteplayer.MovePlayerPieces();
+
+            Games.get(0).GameLoop();
 
 
             if(this.input_handler.isPressed(KeyEvent.VK_S))
@@ -240,7 +248,8 @@ public class Game extends JPanel implements Runnable
 
 
 
-            gh.paintComponent(leftComponent.bufferedGraphics);
+            //gh.paintComponent(leftComponent.bufferedGraphics);
+            Games.get(0).DrawGame(leftComponent.bufferedGraphics);
 
 
 
@@ -272,11 +281,13 @@ public class Game extends JPanel implements Runnable
 
 
 
-            Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
+            /*Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
 
             Board.UpdateSQUARESIZEUI(ui.UIsliderBar.ComponentSizes.z);
 
-            this.chessBoard.UpdateCollisionBoxes(new Math.Vec2<>(FBO_position.x,(float)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2)) );
+            this.chessBoard.UpdateCollisionBoxes(new Math.Vec2<>(FBO_position.x,(float)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2)) );*/
+
+            Games.get(0).UpdateBoardUtilities(ScreenSize,final_scale_coeffi,FBO_position,bufferedImage,ui);
 
             ui.setUIsize(((int) scaledWidth), (int) scaledHeight,ScreenSize.height * final_scale_coeffi,ScreenSize.height * final_scale_coeffi);
 
