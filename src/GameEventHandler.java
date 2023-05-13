@@ -2,6 +2,9 @@ import java.util.Vector;
 
 public class GameEventHandler
 {
+    public final static int LAN_GAME_EVENT = 3333;
+    public final static int OFFLINE_GAME_EVENT = 4444;
+    public final static int WAN_GAME_EVENT = 5555;
     private final Vector<GameEvent> Games = new Vector<>();
     MouseInputListener mouseInputListenerReference;
     GameEventHandler(MouseInputListener mouseListener)
@@ -9,13 +12,17 @@ public class GameEventHandler
          this.mouseInputListenerReference = mouseListener;
     }
 
-    public void AddGameEvent()
+    public void AddGameEvent(int GameType)
     {
        if(!Games.isEmpty())
        {
            Games.clear();
        }
-       Games.add(new GameEvent(mouseInputListenerReference));
+       if(GameType == LAN_GAME_EVENT)
+       {
+           Games.add(new GameEvent.LANGameEvent(mouseInputListenerReference));
+       }
+
     }
 
     public GameEvent GetGameEvent(int index)

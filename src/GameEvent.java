@@ -1,12 +1,17 @@
+import de.javawi.jstun.util.UtilityException;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 
-public class GameEvent
+public abstract class GameEvent
 {
     public final static int FIRST_PLAYER = 1;
     public final static int SECOND_PLAYER = 2;
+
+
     int Winner = 0;
     Board GameBoard;
     Player player1;
@@ -26,11 +31,8 @@ public class GameEvent
         Board.UpdateSQUARESIZEUI(ui.UIsliderBar.ComponentSizes.z);
         this.GameBoard.UpdateCollisionBoxes(new Math.Vec2<>(FBO_position.x,(float)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2)) );
     }
-    public void GameLoop()
-    {
-        player1.GetPosssibleMoves();
-        player1.MovePlayerPieces();
-    }
+    public abstract void GameLoop();
+
     public void EndGame()
     {
 
@@ -40,6 +42,45 @@ public class GameEvent
         graphicHandler.paintComponent(graphics);
     }
 
+
+    public static class LANGameEvent extends GameEvent
+    {
+        KryonetServer Server;
+        KryonetClient Client;
+
+        LANGameEvent(MouseInputListener mouseListener)
+        {
+            super(mouseListener);
+
+            try
+            {
+                InitNetworking();
+            }
+            catch (IOException | UtilityException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public synchronized void InitNetworking() throws IOException, UtilityException
+        {
+            if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
+
+                Server = new KryonetServer(54555, 54777);
+
+            }
+            Client = new KryonetClient(5000, "localhost", 54555, 54777);
+        }
+
+        @Override
+        public void GameLoop()
+        {
+            player1.GetPosssibleMoves();
+            player1.MovePlayerPieces();
+            Client.loop();
+        }
+
+    }
 
 
 }

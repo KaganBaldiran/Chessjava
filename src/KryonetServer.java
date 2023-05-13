@@ -101,7 +101,7 @@ public class KryonetServer extends Server {
                 System.out.println("CLIENT1> " + message.trim());
             }
         }
-        if(!CLIENT2_STATE)
+        if(!CLIENT2_STATE && CLIENT1_STATE)
         {
             if (message.trim().equals("ONLINE")) {
                 System.out.println("CLIENT2> " + message.trim());
@@ -117,6 +117,11 @@ public class KryonetServer extends Server {
                 System.out.println("CLIENT2> " + message.trim());
             }
         }
+    }
+
+    public boolean AreBothPlayersOnline()
+    {
+        return CLIENT1_STATE & CLIENT2_STATE;
     }
 
     @Override

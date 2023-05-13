@@ -137,12 +137,6 @@ public class Game extends JPanel implements Runnable
 
         this.leftComponent = new UI.UIcomponents((int) (ScreenSize.getWidth() * 0.82f), (int) (ScreenSize.getWidth() * 0.82f),BufferedImage.TYPE_INT_ARGB);
 
-        try {
-            InitNetworking();
-        } catch (UtilityException e) {
-            throw new RuntimeException(e);
-        }
-
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -154,49 +148,8 @@ public class Game extends JPanel implements Runnable
         });
 
         Games = new GameEventHandler(mouseListener);
-        Games.AddGameEvent();
+        Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
     }
-
-    KryonetClient krclient;
-    KryonetServer krserver;
-
-    public synchronized void InitNetworking() throws IOException, UtilityException {
-
-
-        if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
-
-            krserver = new KryonetServer(54555, 54777);
-
-        }
-
-
-
-        krclient = new KryonetClient(5000, "localhost", 54555, 54777);
-        /*MappedAddress ma = new MappedAddress();
-        try {
-            ma = GameClient.SendRequestToSTUNserver();
-        } catch (UtilityException | MessageAttributeParsingException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
-
-            server = new GameServer(this,8080);
-            server.start();
-
-        }
-            InetAddress[] inet = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
-            System.out.println("HOST NAME: " + InetAddress.getLocalHost().getHostName() );
-
-            assert GameServer.getIPv4Addresses(inet) != null;
-            System.out.println(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
-            GameServer.ReverseDSN(GameServer.getIPv4Addresses(inet).getHostAddress().trim());
-
-            client = new GameClient(this, server.GameLink,8080);
-            client.start();*/
-
-    }
-
 
     boolean AddNewGame = false;
     
@@ -210,20 +163,16 @@ public class Game extends JPanel implements Runnable
             if(this.mouseListener.isClicked(MouseEvent.BUTTON2))
             {
                 AddNewGame = false;
-                Games.AddGameEvent();
+                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
                 System.out.println("GAME ADDED!");
             }
-
 
             Games.GetGameEvent(0).GameLoop();
 
 
-
-
-
             if(this.input_handler.isPressed(KeyEvent.VK_S))
             {
-                krclient.sendTCP("FUCK YOU");
+                //krclient.sendTCP("FUCK YOU");
             }
 
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
@@ -244,10 +193,7 @@ public class Game extends JPanel implements Runnable
             bufferedGraphics.setColor(Color.GRAY);
             bufferedGraphics.fillRoundRect((int) (ui.UIsliderBar.UnchangingComponentSizes.x + ((ui.UIsliderBar.UnchangingComponentSizes.y * 0.10f) / 2))  , 10, (int) (ui.UIsliderBar.UnchangingComponentSizes.y * 0.90f), (int) (bufferedImage.getHeight() * 0.980f),30,30);
 
-
-
-
-            //gh.paintComponent(leftComponent.bufferedGraphics);
+            
             Games.GetGameEvent(0).DrawGame(leftComponent.bufferedGraphics);
 
 
@@ -264,16 +210,9 @@ public class Game extends JPanel implements Runnable
                     current_canvas);
 
 
-            //leftComponent.drawUIcomponent(bufferedGraphics,0 ,0, 300, 300,current_canvas);
-
 
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
 
-            /*Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
-
-            Board.UpdateSQUARESIZEUI(ui.UIsliderBar.ComponentSizes.z);
-
-            this.chessBoard.UpdateCollisionBoxes(new Math.Vec2<>(FBO_position.x,(float)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2)) );*/
 
             Games.GetGameEvent(0).UpdateBoardUtilities(ScreenSize,final_scale_coeffi,FBO_position,bufferedImage,ui);
 
@@ -281,11 +220,7 @@ public class Game extends JPanel implements Runnable
 
 
 
-
-
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
-
-
 
 
             for(piece piece : whiteplayer.pieces)
@@ -296,7 +231,6 @@ public class Game extends JPanel implements Runnable
                 }
 
             }
-
 
             ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi , ScreenSize);
             ui.Update();

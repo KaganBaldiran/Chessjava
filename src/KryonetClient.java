@@ -19,12 +19,17 @@ public class KryonetClient extends Client {
 
        addListener(new Listener() {
            public void received(Connection connection, Object object) {
+
                if (object instanceof String) {
                    String message = (String)object;
+
+                   if (message.equalsIgnoreCase("RECEIVED")) {
+
+                       System.out.println("SERVER> " + message);
+                       STATEINFORM = true;
+                   }
+
                    System.out.println("Received message from server: " + message);
-
-                   loop(message);
-
                }
            }
        });
@@ -33,25 +38,13 @@ public class KryonetClient extends Client {
 
    }
 
-    public void loop(String message)
+    public void loop()
     {
-        if (!STATEINFORM) {
-
-            if (message.equalsIgnoreCase("RECEIVED")) {
-
-                System.out.println("SERVER> " + message);
-                STATEINFORM = true;
-            }
-            else
-            {
-                sendTCP("ONLINE");
-            }
-
-        }
-        else
+        if (!STATEINFORM)
         {
-
+            sendTCP("ONLINE");
         }
+
     }
 
     @Override

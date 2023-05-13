@@ -24,6 +24,8 @@ public class Player extends JPanel
     String RelativeFilePath = "resources/Rescaled_versions_256/";
     String[] CurrentTextures;
     Texture pawn_texture;
+
+    boolean IsPlayersTurn = false;
     int Color;
 
     Player(int color , Board current_board , MouseInputListener current_mouse_listener)
@@ -58,7 +60,7 @@ public class Player extends JPanel
         {
             pieces.add(new Pawn(x,7,this.Color,current_board.FetchTile(x,7),this.Current_Board_Reference,pawn_texture,current_mouse_listener,this));
         }
-        
+
         pieces.add(new Knight(2,8,this.Color,current_board.FetchTile(2,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[1],current_mouse_listener,this));
         pieces.add(new Knight(7,8,this.Color,current_board.FetchTile(7,8),this.Current_Board_Reference,pieces.get(pieces.size()-1).piecetexture,current_mouse_listener,this));
 
@@ -122,5 +124,12 @@ public class Player extends JPanel
         }
 
        // g.dispose();
+    }
+    public boolean isPlayersTurn() {
+        return IsPlayersTurn;
+    }
+    public void SetTurnState(boolean newState)
+    {
+        this.IsPlayersTurn = newState;
     }
 }
