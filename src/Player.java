@@ -71,7 +71,7 @@ public class Player extends JPanel
         pieces.add(new Bishop(3,8,this.Color,current_board.FetchTile(3,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[3],current_mouse_listener,this));
         pieces.add(new Bishop(6,8,this.Color,current_board.FetchTile(6,8),this.Current_Board_Reference,pieces.get(pieces.size()-1).piecetexture,current_mouse_listener,this));
 
-        pieces.add(new Queen(4,8,this.Color,current_board.FetchTile(6,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[4],current_mouse_listener,this));
+        pieces.add(new Queen(4,8,this.Color,current_board.FetchTile(4,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[4],current_mouse_listener,this));
 
         pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[5],current_mouse_listener,this));
 

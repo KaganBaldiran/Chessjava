@@ -67,6 +67,8 @@ public class Game extends JPanel implements Runnable
 
     GameEventHandler Games;
 
+    Color LeftComponentColor = GraphicHandler.HexToRgba("#787F8F");
+
 
     Game() throws IOException {
 
@@ -239,7 +241,7 @@ public class Game extends JPanel implements Runnable
             ui.paintComponent(graphics);
 
 
-            bufferedGraphics.setBackground(Color.GRAY);
+            bufferedGraphics.setBackground(LeftComponentColor);
             bufferedGraphics.clearRect(0,0, 3000, 4000);
 
             frame.revalidate();

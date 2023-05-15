@@ -107,6 +107,7 @@ public abstract class piece extends JPanel
                             this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() == this.Coordinates.x.intValue() &&
                             this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue() == this.Coordinates.y.intValue()) {
 
+                        this.Possible_Moves.clear();
                         boolean permitted = true;
                         for(piece piece : player_this_piece_belongs.pieces)
                         {
