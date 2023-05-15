@@ -42,11 +42,11 @@ public abstract class GameEvent
         graphicHandler.paintComponent(graphics);
     }
 
-
     public static class LANGameEvent extends GameEvent
     {
         KryonetServer Server;
         KryonetClient Client;
+        Player PlayerOnThisMachine;
 
         LANGameEvent(MouseInputListener mouseListener)
         {
@@ -60,14 +60,22 @@ public abstract class GameEvent
             {
                 throw new RuntimeException(e);
             }
+
+            if (Server != null)
+            {
+                this.PlayerOnThisMachine = player1;
+            }
+            else
+            {
+                this.PlayerOnThisMachine = player2;
+            }
         }
 
         public synchronized void InitNetworking() throws IOException, UtilityException
         {
-            if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0) {
-
+            if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0)
+            {
                 Server = new KryonetServer(54555, 54777);
-
             }
             Client = new KryonetClient(5000, "localhost", 54555, 54777);
         }
@@ -75,12 +83,10 @@ public abstract class GameEvent
         @Override
         public void GameLoop()
         {
-            player1.GetPosssibleMoves();
-            player1.MovePlayerPieces();
-            Client.loop();
+            PlayerOnThisMachine.GetPosssibleMoves();
+            PlayerOnThisMachine.MovePlayerPieces();
+            Client.loop(PlayerOnThisMachine);
         }
 
     }
-
-
 }

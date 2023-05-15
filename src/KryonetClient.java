@@ -2,11 +2,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
 
 public class KryonetClient extends Client {
 
@@ -38,12 +34,24 @@ public class KryonetClient extends Client {
 
    }
 
-    public void loop()
+    public void loop(Player CurrentPlayer)
     {
         if (!STATEINFORM)
         {
             sendTCP("ONLINE");
         }
+        else
+        {
+            for(piece piece : CurrentPlayer.pieces)
+            {
+                if(piece.Selected)
+                {
+                    sendTCP(String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y));
+                }
+
+            }
+        }
+
 
     }
 

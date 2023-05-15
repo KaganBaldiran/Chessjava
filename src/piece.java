@@ -4,22 +4,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
-public abstract class piece extends JPanel {
-
+public abstract class piece extends JPanel
+{
     Math.Vec2<Integer> Coordinates = new Math.Vec2<>();
-
     Tile TilePieceStandingOn;
-
     Board CurrentGameBoard;
     Vector<Math.Vec2<Integer>> Possible_Moves = new Vector<>();
-
     boolean ClearPossibleMoves = false;
     int Color;
-
     Texture piecetexture;
-
     boolean Selected = false;
-
     MouseInputListener CurrentMouseListenerReference;
     Player player_this_piece_belongs;
 

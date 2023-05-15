@@ -70,9 +70,8 @@ public class Board extends JPanel
     {
         for (Tile tile : Tiles)
         {
-
             tile.TileCollisionBox.SetValues((tile.Tilecoordinates.x-1) * Board.SQUARE_SIZE_UI + (Board.SQUARE_SIZE_UI / 2) + (position.x.intValue()),
-                    tile.Tilecoordinates.y * Board.SQUARE_SIZE_UI  + (position.y.intValue()),
+                    tile.Tilecoordinates.y * Board.SQUARE_SIZE_UI  + position.y.intValue(),
                     Board.SQUARE_SIZE_UI , Board.SQUARE_SIZE_UI );
         }
 

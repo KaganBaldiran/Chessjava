@@ -76,8 +76,6 @@ public class Rook extends piece{
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
 
-            //System.out.println("REAL TILE: " + tileTracer.x +" "+ tileTracer.y+ " FETCHED TILE : "+this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates.x +" "+ this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates.y );
-
         }
         else if (this.Side == DOWN  && input_Coordinates.y > 1 && isTileEmpty)
         {
@@ -135,7 +133,6 @@ public class Rook extends piece{
 
         if(this.Side > RIGHT)
         {
-            //System.out.println("ROOK POSSIBLE MOVES RETURN THE VALUE: ");
             this.Side = UP;
             this.ClearPossibleMoves = true;
             return this.Possible_Moves;

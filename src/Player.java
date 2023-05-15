@@ -25,6 +25,7 @@ public class Player extends JPanel
     String[] CurrentTextures;
     Texture pawn_texture;
 
+
     boolean IsPlayersTurn = false;
     int Color;
 
@@ -108,10 +109,8 @@ public class Player extends JPanel
             if (piece.Selected)
             {
                 piece.GetPossibleMoves(true, piece.Coordinates);
-
             }
         }
-
     }
 
     @Override
