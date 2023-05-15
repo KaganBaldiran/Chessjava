@@ -16,14 +16,17 @@ public class Queen extends piece
     Queen(int x_cord,int y_cord,int color)
     {
         super(x_cord, y_cord, color);
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
     Queen(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn);
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
     Queen(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path,  MouseInputListener current_mouse_listener, Player player_this_piece_belongs)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn, CurrentBoard,file_path,current_mouse_listener,player_this_piece_belongs);
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
 

@@ -48,7 +48,6 @@ public abstract class piece extends JPanel
         this.CurrentGameBoard = CurrentBoard;
         this.piecetexture = new Texture(texture_file_path);
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
-        //piecetexture.Position.SetValues(100,100);
         piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
         this.CurrentMouseListenerReference = current_mouse_listener;
         this.player_this_piece_belongs = player_this_piece_belongs;

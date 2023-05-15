@@ -17,11 +17,13 @@ public class King extends piece
     {
         super(x_cord, y_cord, color);
         this.CheckMate = false;
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
     King(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String file_path,  MouseInputListener current_mouse_listener, Player player_this_piece_belongs)
     {
         super(x_cord, y_cord, color, TilePieceStandingOn,CurrentBoard,file_path,current_mouse_listener,player_this_piece_belongs);
+        this.TilePieceStandingOn.SetEmptinessState(false);
     }
 
     public boolean isCheckMate() {
@@ -46,6 +48,8 @@ public class King extends piece
 
         input_Coordinates = this.Coordinates;
 
+
+
         if(!this.Possible_Moves.isEmpty() && this.ClearPossibleMoves)
         {
             this.ClearPossibleMoves = false;
@@ -58,11 +62,14 @@ public class King extends piece
             this.SwitchSide = false;
         }
 
-        if (this.Side == UP && input_Coordinates.y < 8 && isTileEmpty)
+        isTileEmpty = CheckTileEmptiness(Side , input_Coordinates);
+
+
+        if (this.Side == UP && input_Coordinates.y > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
-            tileTracer.y++;
+            tileTracer.y--;
 
             if (this.Color == Tile.BLACK)
             {
@@ -75,11 +82,11 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == DOWN  && input_Coordinates.y > 1 && isTileEmpty)
+        else if (this.Side == DOWN  && input_Coordinates.y < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
-            tileTracer.y--;
+            tileTracer.y++;
 
             if (this.Color == Tile.BLACK)
             {
@@ -126,25 +133,7 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8 && isTileEmpty)
-        {
-            tileTracer.SetValues(input_Coordinates);
-
-            tileTracer.x++;
-            tileTracer.y++;
-
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
-            this.SwitchSide = true;
-
-            this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
-
-            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
-        }
-        else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y > 1 && isTileEmpty)
+        else if (this.Side == RIGHT_UP  && input_Coordinates.y > 1  && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
@@ -162,11 +151,11 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y < 8 && isTileEmpty)
+        else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
-            tileTracer.x--;
+            tileTracer.x++;
             tileTracer.y++;
 
             if (this.Color == Tile.BLACK)
@@ -180,12 +169,30 @@ public class King extends piece
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
         }
-        else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y > 1 && isTileEmpty)
+        else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
 
             tileTracer.x--;
             tileTracer.y--;
+
+            if (this.Color == Tile.BLACK)
+            {
+                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
+            }
+
+            this.SwitchSide = true;
+
+            this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
+
+            GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
+        }
+        else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y < 8 && isTileEmpty)
+        {
+            tileTracer.SetValues(input_Coordinates);
+
+            tileTracer.x--;
+            tileTracer.y++;
 
             if (this.Color == Tile.BLACK)
             {
@@ -200,6 +207,7 @@ public class King extends piece
         }
         else if(this.Side <= LEFT_DOWN)
         {
+
             this.SwitchSide = true;
             tileTracer.SetValues(this.Coordinates);
             GetPossibleMoves(true,tileTracer);
@@ -216,4 +224,64 @@ public class King extends piece
         return null;
 
     }
+
+    public boolean CheckTileEmptiness(int Side , Math.Vec2<Integer> Coordinates)
+    {
+         boolean result = false;
+        Math.Vec2<Integer> input_Coordinates = new Math.Vec2<>(Coordinates);
+
+         if(Side <= LEFT_DOWN)
+         {
+             if (this.Side == UP && input_Coordinates.y > 1 )
+             {
+                 input_Coordinates.y--;
+                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+             }
+             else if (this.Side == DOWN  && input_Coordinates.y < 8 )
+             {
+                 input_Coordinates.y++;
+                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+             }
+             else if (this.Side == LEFT  && input_Coordinates.x > 1 )
+             {
+                 input_Coordinates.x--;
+                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+             }
+             else if (this.Side == RIGHT  && input_Coordinates.x < 8 )
+             {
+                 input_Coordinates.x++;
+                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+
+             }
+             else if (this.Side == RIGHT_UP  && input_Coordinates.y > 1  && input_Coordinates.x < 8 )
+             {
+                 input_Coordinates.x++;
+                 input_Coordinates.y--;
+                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+             }
+             else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y < 8 )
+             {
+                 input_Coordinates.x++;
+                 input_Coordinates.y++;
+                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+             }
+             else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y > 1 )
+             {
+                 input_Coordinates.x--;
+                 input_Coordinates.y--;
+                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+             }
+             else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y < 8 )
+             {
+                 input_Coordinates.x--;
+                 input_Coordinates.y++;
+                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+             }
+
+             System.out.println("IS IT EMPTY SIDE "+ Side + ": " + result);
+
+         }
+        return result;
+    }
+
 }
