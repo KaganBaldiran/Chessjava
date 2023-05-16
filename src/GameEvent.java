@@ -54,12 +54,15 @@ public abstract class GameEvent
         KryonetServer Server;
         KryonetClient Client;
         Player PlayerOnThisMachine;
+        Player PlayerOnTheOpponentMachine;
 
         LANGameEvent(MouseInputListener mouseListener)
         {
             super();
 
             this.GameBoard = new Board();
+
+            MoveTheOpponent.SetMutexFalse();
 
             try
             {
@@ -74,17 +77,19 @@ public abstract class GameEvent
             {
                 player1 = new Player(Tile.WHITE , GameBoard,mouseListener , false);
                 player2 = new Player(Tile.BLACK , GameBoard,mouseListener , true);
-
                 this.PlayerOnThisMachine = player1;
+                PlayerOnTheOpponentMachine = player2;
             }
             else
             {
                 player1 = new Player(Tile.WHITE , GameBoard,mouseListener , true);
                 player2 = new Player(Tile.BLACK , GameBoard,mouseListener , false);
                 this.PlayerOnThisMachine = player2;
+                PlayerOnTheOpponentMachine = player1;
             }
 
             this.graphicHandler = new GraphicHandler(GameBoard,player1,player2);
+
         }
 
         public synchronized void InitNetworking() throws IOException, UtilityException
@@ -93,8 +98,10 @@ public abstract class GameEvent
             {
                 Server = new KryonetServer(54555, 54777);
             }
-            Client = new KryonetClient(5000, "localhost", 54555, 54777);
+            Client = new KryonetClient(5000, "localhost", 54555, 54777 , MoveTheOpponent);
         }
+
+        Semaphore MoveTheOpponent = new Semaphore(2);
 
         @Override
         public void GameLoop()
@@ -102,7 +109,15 @@ public abstract class GameEvent
             PlayerOnThisMachine.GetPosssibleMoves();
             PlayerOnThisMachine.MovePlayerPieces();
 
-            Client.loop(PlayerOnThisMachine);
+            Client.loop(PlayerOnThisMachine );
+
+            if (MoveTheOpponent.IsMutexTrue())
+            {
+                PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).Coordinates.SetValues(Math.UV_Tools.Invert_Y_Axis(Client.getOtherPlayerMove() , Tile.WHITE));
+                MoveTheOpponent.SetMutexFalse();
+                System.out.println("MOVED THE OPPONENT TO: " + Client.getOtherPlayerMove().x + " " + Client.OtherPlayerMove.y);
+            }
+
         }
 
     }

@@ -8,10 +8,13 @@ public class KryonetClient extends Client {
 
     Boolean STATEINFORM = false;
     Math.Vec2<Integer> OtherPlayerMove = new Math.Vec2<>(0,0);
+    int OtherPlayerPieceIndex = 0;
+    Semaphore MoveOpponentPlayer;
 
-
-   KryonetClient(int timeout, String host, int tcpPort, int udpPort) throws IOException {
+   KryonetClient(int timeout, String host, int tcpPort, int udpPort , Semaphore MoveOpponentPlayer) throws IOException
+   {
        super();
+       this.MoveOpponentPlayer = MoveOpponentPlayer;
        start();
        connect(timeout,host,tcpPort,udpPort);
 
@@ -31,7 +34,18 @@ public class KryonetClient extends Client {
                        OtherPlayerMove.SetValues(Integer.parseInt(String.valueOf(message.charAt(5))),
                                                  Integer.parseInt(String.valueOf(message.charAt(7))));
 
-                       System.out.println("OtherPlayerMove> " + OtherPlayerMove.x +" "+ OtherPlayerMove.y);
+                       if(message.length() == 11)
+                       {
+                           OtherPlayerPieceIndex = Integer.parseInt(String.valueOf(message.charAt(9) + String.valueOf(message.charAt(10))));
+                       }
+                       else
+                       {
+                           OtherPlayerPieceIndex = Integer.parseInt(String.valueOf(message.charAt(9)));
+                       }
+
+                       MoveOpponentPlayer.SetMutexTrue();
+
+                       System.out.println("OtherPlayerMove> " + OtherPlayerMove.x +" "+ OtherPlayerMove.y + " "+OtherPlayerPieceIndex);
                    }
 
 
@@ -52,11 +66,13 @@ public class KryonetClient extends Client {
         }
         else
         {
-            for(piece piece : CurrentPlayer.pieces)
+            for (int i = 0; i < CurrentPlayer.pieces.size(); i++)
             {
+                piece piece = CurrentPlayer.pieces.get(i);
+
                 if(piece.LastPlayedMove.x != 0 && piece.LastPlayedMove.y != 0)
                 {
-                    sendTCP("MOVE "+ String.valueOf(piece.LastPlayedMove.x) +" "+ String.valueOf(piece.LastPlayedMove.y) + " " + piece.GetPieceType());
+                    sendTCP("MOVE "+ String.valueOf(piece.LastPlayedMove.x) +" "+ String.valueOf(piece.LastPlayedMove.y) + " " + i);
                     piece.LastPlayedMove.SetValues(0,0);
                 }
 
@@ -64,6 +80,15 @@ public class KryonetClient extends Client {
         }
 
 
+    }
+
+    public int getOtherPlayerPieceIndex()
+    {
+        return OtherPlayerPieceIndex;
+    }
+    public Math.Vec2<Integer> getOtherPlayerMove()
+    {
+        return OtherPlayerMove;
     }
 
     @Override
