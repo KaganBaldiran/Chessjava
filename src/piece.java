@@ -18,6 +18,10 @@ public abstract class piece extends JPanel
     Player player_this_piece_belongs;
     String PieceType;
 
+    Math.Vec2<Integer> LastPlayedMove = new Math.Vec2<>(0,0);
+
+
+
 
     public boolean IsInsideBoundries(int x_cord , int y_cord)
     {
@@ -145,6 +149,7 @@ public abstract class piece extends JPanel
                                 this.FirstMove = true;
                                 this.TilePieceStandingOn.SetEmptinessState(true);
                                 Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
+                                LastPlayedMove.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
                                 this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
                                 this.TilePieceStandingOn.SetEmptinessState(false);
                             }

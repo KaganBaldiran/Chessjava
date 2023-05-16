@@ -38,27 +38,27 @@ public class MouseInputListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse Clicked: X=" + e.getX() + ", Y=" + e.getY());
+        //System.out.println("Mouse Clicked: X=" + e.getX() + ", Y=" + e.getY());
         //this.clickked[e.getButton()] = true;
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("Mouse Pressed: X=" + e.getX() + ", Y=" + e.getY());
+        /*System.out.println("Mouse Pressed: X=" + e.getX() + ", Y=" + e.getY());
         if (e.getButton() == MouseEvent.BUTTON1) {
             System.out.println("Left Mouse Button Pressed");
         } else if (e.getButton() == MouseEvent.BUTTON2) {
             System.out.println("Middle Mouse Button Pressed");
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             System.out.println("Right Mouse Button Pressed");
-        }
+        }*/
 
         this.clickked[e.getButton()] = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("Mouse Released: X=" + e.getX() + ", Y=" + e.getY());
+        //System.out.println("Mouse Released: X=" + e.getX() + ", Y=" + e.getY());
         this.clickked[e.getButton()] = false;
     }
 }

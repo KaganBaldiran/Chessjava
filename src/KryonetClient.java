@@ -7,6 +7,8 @@ import java.io.IOException;
 public class KryonetClient extends Client {
 
     Boolean STATEINFORM = false;
+    Math.Vec2<Integer> OtherPlayerMove = new Math.Vec2<>(0,0);
+
 
    KryonetClient(int timeout, String host, int tcpPort, int udpPort) throws IOException {
        super();
@@ -24,9 +26,12 @@ public class KryonetClient extends Client {
                        System.out.println("SERVER> " + message);
                        STATEINFORM = true;
                    }
-                   if(message.substring(0,3).trim().equals("MOVE"))
+                   if(message.substring(0,4).trim().equals("MOVE"))
                    {
-                       System.out.println("MOVE> " + message);
+                       OtherPlayerMove.SetValues(Integer.parseInt(String.valueOf(message.charAt(5))),
+                                                 Integer.parseInt(String.valueOf(message.charAt(7))));
+
+                       System.out.println("OtherPlayerMove> " + OtherPlayerMove.x +" "+ OtherPlayerMove.y);
                    }
 
 
@@ -49,9 +54,10 @@ public class KryonetClient extends Client {
         {
             for(piece piece : CurrentPlayer.pieces)
             {
-                if(piece.Selected)
+                if(piece.LastPlayedMove.x != 0 && piece.LastPlayedMove.y != 0)
                 {
-                    sendTCP("MOVE "+ String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y) + " " + piece.GetPieceType());
+                    sendTCP("MOVE "+ String.valueOf(piece.LastPlayedMove.x) +" "+ String.valueOf(piece.LastPlayedMove.y) + " " + piece.GetPieceType());
+                    piece.LastPlayedMove.SetValues(0,0);
                 }
 
             }
