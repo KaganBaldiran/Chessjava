@@ -32,6 +32,26 @@ public class UI extends JPanel
         }
     }
 
+    public static class ReadOnlyTextField extends JPanel {
+        private JTextField textField;
+        private JFrame frame_Reference;
+
+        public ReadOnlyTextField(String text ,JFrame currentFrame) {
+            textField = new JTextField(text);
+            textField.setEditable(false);
+            textField.setLocation(300,300);
+            textField.setSize(100,30);
+            frame_Reference = currentFrame;
+            frame_Reference.add(textField);
+        }
+
+        public void copyToClipboard() {
+            StringSelection selection = new StringSelection(textField.getText());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, null);
+        }
+    }
+
     public static class SliderBar extends JPanel
     {
         public CollisionBox collisionBox;
@@ -284,6 +304,8 @@ public class UI extends JPanel
     MainMenu gamemenu;
     DropDownMenu CreateGameMenu;
 
+    ReadOnlyTextField ReadOnlyField;
+
     UI(JFrame frame ,MouseInputListener Mouselistener) {
         button.setSize(100, 50);
         button.setFont(new Font("Arial", Font.PLAIN, 9));
@@ -303,6 +325,7 @@ public class UI extends JPanel
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
         gamemenu = new MainMenu(frame_reference);
         CreateGameMenu = new DropDownMenu(frame_reference);
+        //ReadOnlyField = new ReadOnlyTextField("Hello" , frame_reference);
 
     }
 

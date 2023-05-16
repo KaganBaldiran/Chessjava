@@ -29,7 +29,7 @@ public class Player extends JPanel
     boolean IsPlayersTurn = false;
     int Color;
 
-    Player(int color , Board current_board , MouseInputListener current_mouse_listener)
+    Player(int color , Board current_board , MouseInputListener current_mouse_listener , boolean InvertPlaces)
     {
         this.Color = color;
 
@@ -76,7 +76,7 @@ public class Player extends JPanel
         pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[5],current_mouse_listener,this));
 
 
-        if (this.Color == Tile.BLACK)
+        if (InvertPlaces)
         {
             for(piece piece : this.pieces)
             {

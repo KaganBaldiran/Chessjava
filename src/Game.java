@@ -85,8 +85,8 @@ public class Game extends JPanel implements Runnable
         ScreenSize.setSize(ScreenSize.getHeight() * 0.90f + ScreenSize.getHeight() * 0.20f , ScreenSize.getHeight() * 0.90f);
 
 
-        this.whiteplayer = new Player(Tile.WHITE,this.chessBoard,this.mouseListener);
-        this.blackplayer = new Player(Tile.BLACK,this.chessBoard,this.mouseListener);
+        this.whiteplayer = new Player(Tile.WHITE,this.chessBoard,this.mouseListener , false);
+        this.blackplayer = new Player(Tile.BLACK,this.chessBoard,this.mouseListener , false);
 
 
         gh = new GraphicHandler(chessBoard, this.whiteplayer,this.blackplayer , null);
