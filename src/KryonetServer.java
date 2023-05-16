@@ -19,6 +19,9 @@ public class KryonetServer extends Server {
     public Boolean CLIENT1_STATE = false;
     public Boolean CLIENT2_STATE = false;
 
+    Connection clientConnection1;
+    Connection clientConnection2;
+
     KryonetServer(int tcp_port , int udp_port) throws IOException {
         super();
         start();
@@ -90,30 +93,32 @@ public class KryonetServer extends Server {
                 System.out.println("CLIENT1> " + message.trim());
                 CLIENT1_STATE = true;
 
+                clientConnection1 = connection;
                 connection.sendTCP("RECEIVED");
+
+                System.out.println("CLIENT1 CONNECTION> " + clientConnection1.getRemoteAddressTCP());
 
                 message = "";
             }
         }
-        else
-        {
-            if (!message.trim().isEmpty()) {
-                System.out.println("CLIENT1> " + message.trim());
-            }
-        }
-        if(!CLIENT2_STATE && CLIENT1_STATE)
+        if(!CLIENT2_STATE)
         {
             if (message.trim().equals("ONLINE")) {
                 System.out.println("CLIENT2> " + message.trim());
-                CLIENT1_STATE = true;
+                CLIENT2_STATE = true;
 
+                clientConnection2 = connection;
                 connection.sendTCP("RECEIVED");
+                System.out.println("CLIENT2 CONNECTION> " + clientConnection2.getRemoteAddressTCP());
                 message = "";
             }
         }
-        else
+        else if(AreBothPlayersOnline())
         {
-            if (!message.trim().isEmpty()) {
+            if (!message.trim().isEmpty() && connection.getRemoteAddressTCP().equals(clientConnection1.getRemoteAddressTCP())) {
+                System.out.println("CLIENT1> " + message.trim());
+            }
+            if (!message.trim().isEmpty() && connection.getRemoteAddressTCP().equals(clientConnection2.getRemoteAddressTCP())) {
                 System.out.println("CLIENT2> " + message.trim());
             }
         }

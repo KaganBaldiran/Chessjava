@@ -4,7 +4,6 @@ import java.util.Vector;
 public class Pawn extends piece {
 
     boolean First_turn;
-
     Math.Vec2<Integer> tileTracer;
     int Count_of_reco = 0;
 
@@ -78,10 +77,10 @@ public class Pawn extends piece {
 
             tileTracer.y -= 1;
 
-            if (this.Color == Tile.BLACK)
+           /* if (this.Color == Tile.BLACK)
             {
                 tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
+            }*/
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 

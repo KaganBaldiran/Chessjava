@@ -101,7 +101,7 @@ public abstract class GameEvent
         {
             PlayerOnThisMachine.GetPosssibleMoves();
             PlayerOnThisMachine.MovePlayerPieces();
-            
+
             Client.loop(PlayerOnThisMachine);
         }
 

@@ -16,6 +16,7 @@ public abstract class piece extends JPanel
     boolean Selected = false;
     MouseInputListener CurrentMouseListenerReference;
     Player player_this_piece_belongs;
+    String PieceType;
 
 
     public boolean IsInsideBoundries(int x_cord , int y_cord)
@@ -32,6 +33,7 @@ public abstract class piece extends JPanel
        this.Coordinates.SetValues(x_cord,y_cord);
        this.CurrentGameBoard = new Board();
        this.Color = color;
+       this.PieceType = this.getClass().getName();
     }
     piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
     {
@@ -39,6 +41,7 @@ public abstract class piece extends JPanel
         this.Color = color;
         this.TilePieceStandingOn = TilePieceStandingOn;
         this.CurrentGameBoard = new Board();
+        this.PieceType = this.getClass().getName();
     }
     piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String texture_file_path , MouseInputListener current_mouse_listener , Player player_this_piece_belongs)
     {
@@ -51,6 +54,7 @@ public abstract class piece extends JPanel
         piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
         this.CurrentMouseListenerReference = current_mouse_listener;
         this.player_this_piece_belongs = player_this_piece_belongs;
+        this.PieceType = this.getClass().getName();
     }
 
     piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener , Player player_this_piece_belongs)
@@ -65,6 +69,7 @@ public abstract class piece extends JPanel
         piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
         this.CurrentMouseListenerReference = current_mouse_listener;
         this.player_this_piece_belongs = player_this_piece_belongs;
+        this.PieceType = this.getClass().getName();
     }
 
     void ReferenceTile(Tile input_tile)
@@ -199,6 +204,13 @@ public abstract class piece extends JPanel
         piecetexture.paintComponent(g);
 
     }
+
+    public String GetPieceType()
+    {
+        return PieceType;
+    }
+
+
 
 }
 

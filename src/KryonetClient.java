@@ -24,6 +24,11 @@ public class KryonetClient extends Client {
                        System.out.println("SERVER> " + message);
                        STATEINFORM = true;
                    }
+                   if(message.substring(0,3).trim().equals("MOVE"))
+                   {
+                       System.out.println("MOVE> " + message);
+                   }
+
 
                    System.out.println("Received message from server: " + message);
                }
@@ -46,7 +51,7 @@ public class KryonetClient extends Client {
             {
                 if(piece.Selected)
                 {
-                    sendTCP(String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y));
+                    sendTCP("MOVE "+ String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y) + " " + piece.GetPieceType());
                 }
 
             }
