@@ -105,10 +105,13 @@ public abstract class GameEvent
         @Override
         public void GameLoop()
         {
-            if (PlayerOnThisMachine.isPlayersTurn())
+            if(Client.ConnectionState.equalsIgnoreCase("CONNECTED"))
             {
-                PlayerOnThisMachine.GetPosssibleMoves();
-                PlayerOnThisMachine.MovePlayerPieces();
+                if (PlayerOnThisMachine.isPlayersTurn())
+                {
+                    PlayerOnThisMachine.GetPosssibleMoves();
+                    PlayerOnThisMachine.MovePlayerPieces();
+                }
             }
 
             Client.loop(PlayerOnThisMachine , PlayerOnTheOpponentMachine);
@@ -119,6 +122,7 @@ public abstract class GameEvent
                 MoveTheOpponent.SetMutexFalse();
                 System.out.println("MOVED THE OPPONENT TO: " + Client.getOtherPlayerMove().x + " " + Client.OtherPlayerMove.y);
             }
+
 
         }
 

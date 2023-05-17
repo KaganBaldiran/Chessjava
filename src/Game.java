@@ -13,34 +13,17 @@ public class Game extends JPanel implements Runnable
 {
 
     Canvas current_canvas;
-
     Board chessBoard;
-
-    GraphicHandler gh;
-
     InputHandler input_handler;
-
     BufferedImage bufferedImage;
-
     boolean isRunning;
-
     MouseInputListener mouseListener;
-
-    Player whiteplayer;
-    Player blackplayer;
-
     Dimension ScreenSize;
-
     boolean allow_click[];
-
     Math.Vec2<Float> FBO_position = new Math.Vec2<>();
-
     Math.Vec2<Float> Boundry_size = new Math.Vec2<>();
-
     javax.swing.JFrame frame;
-
     UI.UIcomponents leftComponent;
-
     UI ui;
 
 
@@ -66,22 +49,11 @@ public class Game extends JPanel implements Runnable
         ScreenSize.setSize(ScreenSize.getHeight() * 0.90f + ScreenSize.getHeight() * 0.20f , ScreenSize.getHeight() * 0.90f);
 
 
-        this.whiteplayer = new Player(Tile.WHITE,this.chessBoard,this.mouseListener , false);
-        this.blackplayer = new Player(Tile.BLACK,this.chessBoard,this.mouseListener , false);
-
-
-        gh = new GraphicHandler(chessBoard, this.whiteplayer,this.blackplayer , null);
-
-
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setVisible(true);
 
-
-
         this.input_handler = new InputHandler();
-
         this.isRunning = true;
-
         this.allow_click = new boolean[4];
 
 
@@ -97,8 +69,6 @@ public class Game extends JPanel implements Runnable
 
 
         frame.addKeyListener(input_handler);
-
-        gh.add(current_canvas);
 
         frame.add(current_canvas);
 
@@ -180,14 +150,24 @@ public class Game extends JPanel implements Runnable
 
 
 
-            
-            Games.GetGameEvent(0).DrawGame(leftComponent.bufferedGraphics);
+            if(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("CONNECTED"))
+            {
+                Games.GetGameEvent(0).DrawGame(leftComponent.bufferedGraphics);
+            }
+            else if(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("DISCONNECTED"))
+            {
+                bufferedGraphics.setColor(piece.TRANSPARENT_LIGHT_GRAY);
+                bufferedGraphics.fillRect(0,
+                        (int)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2) ,
+                        ui.UIsliderBar.UnchangingComponentSizes.x,
+                        ui.UIsliderBar.UnchangingComponentSizes.x);
+            }
+
 
 
 
             float scaledWidth = bufferedImage.getWidth() * final_scale_coeffi;
             float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
-
 
             leftComponent.drawUIcomponent(bufferedGraphics,
                     0,
