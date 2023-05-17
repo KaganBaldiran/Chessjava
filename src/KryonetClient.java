@@ -11,7 +11,6 @@ public class KryonetClient extends Client {
     Math.Vec2<Integer> OtherPlayerMove = new Math.Vec2<>(0,0);
     int OtherPlayerPieceIndex = 0;
     Semaphore MoveOpponentPlayer;
-
     String ConnectionState = "";
 
    KryonetClient(int timeout, String host, int tcpPort, int udpPort , Semaphore MoveOpponentPlayer) throws IOException
@@ -76,7 +75,7 @@ public class KryonetClient extends Client {
 
    }
 
-    public void loop(Player CurrentPlayer)
+    public void loop(Player CurrentPlayer , Player OpponentPlayer)
     {
         if (!STATEINFORM)
         {
@@ -91,9 +90,18 @@ public class KryonetClient extends Client {
                 if(piece.LastPlayedMove.x != 0 && piece.LastPlayedMove.y != 0)
                 {
                     sendTCP("MOVE "+ String.valueOf(piece.LastPlayedMove.x) +" "+ String.valueOf(piece.LastPlayedMove.y) + " " + i);
+                    CurrentPlayer.SetTurnState(false);
+                    OpponentPlayer.SetTurnState(true);
                     piece.LastPlayedMove.SetValues(0,0);
+                    break;
                 }
 
+            }
+
+            if(MoveOpponentPlayer.IsMutexTrue())
+            {
+                CurrentPlayer.SetTurnState(true);
+                OpponentPlayer.SetTurnState(false);
             }
         }
 

@@ -40,7 +40,7 @@ public class Game extends JPanel implements Runnable
     javax.swing.JFrame frame;
 
     UI.UIcomponents leftComponent;
-    
+
     UI ui;
 
 
@@ -206,7 +206,7 @@ public class Game extends JPanel implements Runnable
 
             ui.setUIsize(((int) scaledWidth), (int) scaledHeight,ScreenSize.height * final_scale_coeffi,ScreenSize.height * final_scale_coeffi);
 
-            ConnectionState.SetPosition((int) (ScreenSize.width * 0.83f), 30);
+            ConnectionState.SetPosition((int) (ScreenSize.width * 0.835f), 30);
 
             ConnectionState.DrawText(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState);
 

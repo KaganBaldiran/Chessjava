@@ -105,10 +105,13 @@ public abstract class GameEvent
         @Override
         public void GameLoop()
         {
-            PlayerOnThisMachine.GetPosssibleMoves();
-            PlayerOnThisMachine.MovePlayerPieces();
+            if (PlayerOnThisMachine.isPlayersTurn())
+            {
+                PlayerOnThisMachine.GetPosssibleMoves();
+                PlayerOnThisMachine.MovePlayerPieces();
+            }
 
-            Client.loop(PlayerOnThisMachine );
+            Client.loop(PlayerOnThisMachine , PlayerOnTheOpponentMachine);
 
             if (MoveTheOpponent.IsMutexTrue())
             {

@@ -26,12 +26,22 @@ public class Player extends JPanel
     Texture pawn_texture;
 
 
-    boolean IsPlayersTurn = false;
+    Semaphore IsPlayersTurn = new Semaphore(2);
     int Color;
 
     Player(int color , Board current_board , MouseInputListener current_mouse_listener , boolean InvertPlaces)
     {
+
         this.Color = color;
+
+        if(this.Color == Tile.BLACK)
+        {
+            IsPlayersTurn.SetMutexFalse();
+        }
+        else if(this.Color == Tile.WHITE)
+        {
+            IsPlayersTurn.SetMutexTrue();
+        }
 
         if (this.Color == Tile.BLACK)
         {
@@ -125,10 +135,18 @@ public class Player extends JPanel
        // g.dispose();
     }
     public boolean isPlayersTurn() {
-        return IsPlayersTurn;
+        return IsPlayersTurn.IsMutexTrue();
     }
     public void SetTurnState(boolean newState)
     {
-        this.IsPlayersTurn = newState;
+        if (newState)
+        {
+            IsPlayersTurn.SetMutexTrue();
+        }
+        else
+        {
+            IsPlayersTurn.SetMutexFalse();
+        }
+
     }
 }
