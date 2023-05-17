@@ -139,18 +139,18 @@ public class Game extends JPanel implements Runnable
 
         this.leftComponent = new UI.UIcomponents((int) (ScreenSize.getWidth() * 0.82f), (int) (ScreenSize.getWidth() * 0.82f),BufferedImage.TYPE_INT_ARGB);
 
+        Games = new GameEventHandler(mouseListener);
+        Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
+
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
 
-                //server.DeletePortMapping(server.device,server.externalPort,server.protocol);
+                ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.Disconnect();
                 isRunning = false;
 
             }
         });
-
-        Games = new GameEventHandler(mouseListener);
-        Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
     }
 
     boolean AddNewGame = false;

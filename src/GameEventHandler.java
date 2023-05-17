@@ -29,4 +29,9 @@ public class GameEventHandler
     {
         return Games.get(index);
     }
+
+    public int GetGameEventCount()
+    {
+        return Games.size();
+    }
 }

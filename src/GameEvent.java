@@ -51,10 +51,10 @@ public abstract class GameEvent
 
     public static class LANGameEvent extends GameEvent
     {
-        KryonetServer Server;
-        KryonetClient Client;
-        Player PlayerOnThisMachine;
-        Player PlayerOnTheOpponentMachine;
+        public KryonetServer Server;
+        public KryonetClient Client;
+        public Player PlayerOnThisMachine;
+        public Player PlayerOnTheOpponentMachine;
 
         LANGameEvent(MouseInputListener mouseListener)
         {
@@ -89,7 +89,6 @@ public abstract class GameEvent
             }
 
             this.graphicHandler = new GraphicHandler(GameBoard,player1,player2);
-
         }
 
         public synchronized void InitNetworking() throws IOException, UtilityException

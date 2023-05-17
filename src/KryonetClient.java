@@ -2,6 +2,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class KryonetClient extends Client {
@@ -47,10 +48,16 @@ public class KryonetClient extends Client {
 
                        System.out.println("OtherPlayerMove> " + OtherPlayerMove.x +" "+ OtherPlayerMove.y + " "+OtherPlayerPieceIndex);
                    }
-
+                   if (message.equalsIgnoreCase("DISCONNECT"))
+                   {
+                       System.out.println("IS CONNECTED1: " + connection.isConnected());
+                       JOptionPane.showMessageDialog(null,"The opponent has disconnected from the game!");
+                       close();
+                   }
 
                    System.out.println("Received message from server: " + message);
                }
+
            }
        });
 
@@ -80,6 +87,11 @@ public class KryonetClient extends Client {
         }
 
 
+    }
+
+    public void Disconnect()
+    {
+        sendTCP("DISCONNECT");
     }
 
     public int getOtherPlayerPieceIndex()

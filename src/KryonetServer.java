@@ -119,12 +119,16 @@ public class KryonetServer extends Server {
             {
                 System.out.println("MOVE> " + message);
 
-                if (connection.getRemoteAddressTCP().equals(clientConnection1.getRemoteAddressTCP())) {
-                    clientConnection2.sendTCP(message);
-                }
-                if (connection.getRemoteAddressTCP().equals(clientConnection2.getRemoteAddressTCP())) {
-                    clientConnection1.sendTCP(message);
-                }
+                SendTheOtherPlayer(connection , message);
+            }
+            if (message.equalsIgnoreCase("DISCONNECT"))
+            {
+                System.out.println("CLIENT1> " + message);
+
+                SendTheOtherPlayer(connection , message);
+
+                close();
+                
             }
 
             if (!message.trim().isEmpty() && connection.getRemoteAddressTCP().equals(clientConnection1.getRemoteAddressTCP())) {
@@ -139,6 +143,16 @@ public class KryonetServer extends Server {
     public boolean AreBothPlayersOnline()
     {
         return CLIENT1_STATE & CLIENT2_STATE;
+    }
+
+    public void SendTheOtherPlayer(Connection connection , String message)
+    {
+        if (connection.getRemoteAddressTCP().equals(clientConnection1.getRemoteAddressTCP())) {
+            clientConnection2.sendTCP(message);
+        }
+        if (connection.getRemoteAddressTCP().equals(clientConnection2.getRemoteAddressTCP())) {
+            clientConnection1.sendTCP(message);
+        }
     }
 
     @Override
