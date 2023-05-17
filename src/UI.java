@@ -50,6 +50,20 @@ public class UI extends JPanel
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, null);
         }
+
+        public void SetText(String text)
+        {
+            textField.setText(text);
+        }
+
+        public void SetSize(int width , int height)
+        {
+            textField.setSize(width, height);
+        }
+        public void SetPosition(int x , int y)
+        {
+            textField.setLocation(x, y);
+        }
     }
 
     public static class SliderBar extends JPanel
@@ -325,7 +339,7 @@ public class UI extends JPanel
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
         gamemenu = new MainMenu(frame_reference);
         CreateGameMenu = new DropDownMenu(frame_reference);
-        //ReadOnlyField = new ReadOnlyTextField("Hello" , frame_reference);
+        ReadOnlyField = new ReadOnlyTextField("GameLink" , frame_reference);
 
     }
 
@@ -372,14 +386,16 @@ public class UI extends JPanel
         button.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
 
         CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.20f)));
-
-
         CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
 
+        ReadOnlyField.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.40f)));
+        ReadOnlyField.SetSize((int) (100 * scale_coeffic), (int) (30 * scale_coeffic));
 
         UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() + (int)((BoardSize.x/9)*2), ScreenSize , BoardLocation.x.intValue());
 
         UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
+
+
 
 
     }

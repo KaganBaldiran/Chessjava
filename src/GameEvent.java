@@ -97,7 +97,7 @@ public abstract class GameEvent
             {
                 Server = new KryonetServer(54555, 54777);
             }
-            Client = new KryonetClient(5000, "localhost", 54555, 54777 , MoveTheOpponent);
+            Client = new KryonetClient(5000, "www.chessjava/rnt/rhv/P/rPj.com", 54555, 54777 , MoveTheOpponent);
         }
 
         Semaphore MoveTheOpponent = new Semaphore(2);

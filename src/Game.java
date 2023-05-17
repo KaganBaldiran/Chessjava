@@ -1,20 +1,11 @@
-import de.javawi.jstun.attribute.MappedAddress;
-import de.javawi.jstun.attribute.MessageAttributeParsingException;
-import de.javawi.jstun.util.UtilityException;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Vector;
 
 import static java.lang.System.exit;
 
@@ -47,15 +38,7 @@ public class Game extends JPanel implements Runnable
 
     Math.Vec2<Float> Boundry_size = new Math.Vec2<>();
 
-    GameServer server;
-    GameClient client;
-
-    ChessServer ChessServer;
-    ChessClient ChessClient;
-
     javax.swing.JFrame frame;
-
-    String Yourname = new String();
 
     UI.UIcomponents leftComponent;
 
@@ -142,6 +125,12 @@ public class Game extends JPanel implements Runnable
         Games = new GameEventHandler(mouseListener);
         Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
 
+        if(  ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server != null)
+        {
+            ui.ReadOnlyField.SetText(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server.GameLink);
+        }
+
+
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -171,11 +160,6 @@ public class Game extends JPanel implements Runnable
 
             Games.GetGameEvent(0).GameLoop();
 
-
-            if(this.input_handler.isPressed(KeyEvent.VK_S))
-            {
-                //krclient.sendTCP("FUCK YOU");
-            }
 
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();
@@ -224,15 +208,6 @@ public class Game extends JPanel implements Runnable
 
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
 
-
-            for(piece piece : whiteplayer.pieces)
-            {
-                if(piece.Selected)
-                {
-                   // this.client.setDataTosend(String.valueOf(piece.Coordinates.x) +" "+ String.valueOf(piece.Coordinates.y));
-                }
-
-            }
 
             ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi , ScreenSize);
             ui.Update();

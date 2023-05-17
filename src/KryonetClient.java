@@ -17,7 +17,10 @@ public class KryonetClient extends Client {
        super();
        this.MoveOpponentPlayer = MoveOpponentPlayer;
        start();
-       connect(timeout,host,tcpPort,udpPort);
+
+       String ipAddress = KryonetServer.DeConstructLink(host);
+
+       connect(timeout,ipAddress,tcpPort,udpPort);
 
        addListener(new Listener() {
            public void received(Connection connection, Object object) {

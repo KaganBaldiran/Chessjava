@@ -22,6 +22,8 @@ public class KryonetServer extends Server {
     Connection clientConnection1;
     Connection clientConnection2;
 
+    String GameLink;
+
     KryonetServer(int tcp_port , int udp_port) throws IOException {
         super();
         start();
@@ -33,6 +35,13 @@ public class KryonetServer extends Server {
         }
 
         System.out.println("STUN SERVER: "+ StunAddress.getAddress() + " " + StunAddress.getPort());
+
+        String ipaddress = InetAddress.getLocalHost().getHostAddress();
+
+
+        GameLink = ConstructLink(ipaddress);
+
+        System.out.println("GameLink: "+ GameLink + " " + ipaddress);
 
         bind(tcp_port, udp_port);
 
@@ -128,7 +137,7 @@ public class KryonetServer extends Server {
                 SendTheOtherPlayer(connection , message);
 
                 close();
-                
+
             }
 
             if (!message.trim().isEmpty() && connection.getRemoteAddressTCP().equals(clientConnection1.getRemoteAddressTCP())) {
@@ -153,6 +162,61 @@ public class KryonetServer extends Server {
         if (connection.getRemoteAddressTCP().equals(clientConnection2.getRemoteAddressTCP())) {
             clientConnection1.sendTCP(message);
         }
+    }
+
+    private static final String KEY = "Prty3Whjvnmd458l";
+
+    public static String ConstructLink(String ip_address) {
+
+        StringBuilder FinalString = new StringBuilder();
+
+        for (int i = 0; i < ip_address.length(); i++) {
+
+            String substring = ip_address.trim().substring(i, i + 1);
+            if(!substring.equalsIgnoreCase("."))
+            {
+                FinalString.append(KEY.charAt(Integer.parseInt(substring)
+                ));
+
+            }
+            else
+            {
+                FinalString.append("/");
+            }
+        }
+        FinalString = new StringBuilder("www.chessjava/" + FinalString + ".com");
+
+        System.out.println("CONSTRUCTED: "+ FinalString);
+
+        return FinalString.toString();
+
+    }
+
+    public static String DeConstructLink(String Link) {
+
+        StringBuilder FinalString = new StringBuilder();
+
+        for (int i = "www.chessjava/".length(); i < Link.length() - ".com".length(); i++) {
+
+            String substring = Link.trim().substring(i, i + 1);
+            if(!substring.equalsIgnoreCase("/"))
+            {
+                for (int j = 0; j < KEY.length(); j++)
+                {
+                    if(KEY.substring(j,j+1).equals(substring))
+                    {
+                        FinalString.append(j);
+                    }
+                }
+            }
+            else
+            {
+                FinalString.append(".");
+            }
+        }
+        System.out.println("DECONSTRUCTED: "+ FinalString);
+        return FinalString.toString();
+
     }
 
     @Override
