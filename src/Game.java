@@ -5,7 +5,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import static java.lang.System.exit;
 
@@ -41,10 +40,7 @@ public class Game extends JPanel implements Runnable
     javax.swing.JFrame frame;
 
     UI.UIcomponents leftComponent;
-
-
-
-    JButton button = new JButton("random button");
+    
     UI ui;
 
 
@@ -52,8 +48,10 @@ public class Game extends JPanel implements Runnable
 
     Color LeftComponentColor = GraphicHandler.HexToRgba("#787F8F");
 
+    UI.Text ConnectionState;
 
-    Game() throws IOException {
+
+    Game() {
 
         chessBoard = new Board();
 
@@ -97,7 +95,6 @@ public class Game extends JPanel implements Runnable
         current_canvas.setFocusable(true);
         current_canvas.requestFocus();
 
-        frame.add(button);
 
         frame.addKeyListener(input_handler);
 
@@ -129,6 +126,8 @@ public class Game extends JPanel implements Runnable
         {
             ui.ReadOnlyField.SetText(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server.GameLink);
         }
+
+        this.ConnectionState = new UI.Text(bufferedImage.getGraphics(),"Arial" ,Font.BOLD, 24 , Color.black);
 
 
         frame.addWindowListener(new WindowAdapter() {
@@ -179,6 +178,8 @@ public class Game extends JPanel implements Runnable
             bufferedGraphics.setColor(Color.GRAY);
             bufferedGraphics.fillRoundRect((int) (ui.UIsliderBar.UnchangingComponentSizes.x + ((ui.UIsliderBar.UnchangingComponentSizes.y * 0.10f) / 2))  , 10, (int) (ui.UIsliderBar.UnchangingComponentSizes.y * 0.90f), (int) (bufferedImage.getHeight() * 0.980f),30,30);
 
+
+
             
             Games.GetGameEvent(0).DrawGame(leftComponent.bufferedGraphics);
 
@@ -197,6 +198,7 @@ public class Game extends JPanel implements Runnable
 
 
 
+
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
 
 
@@ -204,6 +206,9 @@ public class Game extends JPanel implements Runnable
 
             ui.setUIsize(((int) scaledWidth), (int) scaledHeight,ScreenSize.height * final_scale_coeffi,ScreenSize.height * final_scale_coeffi);
 
+            ConnectionState.SetPosition((int) (ScreenSize.width * 0.83f), 30);
+
+            ConnectionState.DrawText(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState);
 
 
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
@@ -212,19 +217,16 @@ public class Game extends JPanel implements Runnable
             ui.UpdateBoardAttribs(FBO_position, final_scale_coeffi , ScreenSize);
             ui.Update();
 
-
             ui.paintComponent(graphics);
 
+            bufferstrategy.show();
+            graphics.dispose();
 
             bufferedGraphics.setBackground(LeftComponentColor);
             bufferedGraphics.clearRect(0,0, 3000, 4000);
 
             frame.revalidate();
             frame.repaint();
-
-            graphics.dispose();
-            bufferstrategy.show();
-
         }
 
             System.out.println("Game Terminated");

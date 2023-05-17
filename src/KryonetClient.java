@@ -12,6 +12,8 @@ public class KryonetClient extends Client {
     int OtherPlayerPieceIndex = 0;
     Semaphore MoveOpponentPlayer;
 
+    String ConnectionState = "";
+
    KryonetClient(int timeout, String host, int tcpPort, int udpPort , Semaphore MoveOpponentPlayer) throws IOException
    {
        super();
@@ -21,6 +23,7 @@ public class KryonetClient extends Client {
        String ipAddress = KryonetServer.DeConstructLink(host);
 
        connect(timeout,ipAddress,tcpPort,udpPort);
+       ConnectionState = "DISCONNECTED";
 
        addListener(new Listener() {
            public void received(Connection connection, Object object) {
@@ -55,7 +58,12 @@ public class KryonetClient extends Client {
                    {
                        System.out.println("IS CONNECTED1: " + connection.isConnected());
                        JOptionPane.showMessageDialog(null,"The opponent has disconnected from the game!");
+                       ConnectionState = "DISCONNECTED";
                        close();
+                   }
+                   if(message.equalsIgnoreCase("BOTH ONLINE"))
+                   {
+                       ConnectionState = "CONNECTED";
                    }
 
                    System.out.println("Received message from server: " + message);
@@ -94,6 +102,7 @@ public class KryonetClient extends Client {
 
     public void Disconnect()
     {
+        ConnectionState = "DISCONNECTED";
         sendTCP("DISCONNECT");
     }
 

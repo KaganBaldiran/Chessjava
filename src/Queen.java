@@ -62,11 +62,6 @@ public class Queen extends piece
 
                 tileTracer.y++;
 
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
-
                 this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
@@ -76,11 +71,6 @@ public class Queen extends piece
                 tileTracer.SetValues(input_Coordinates);
 
                 tileTracer.y--;
-
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
 
                 this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
@@ -92,11 +82,6 @@ public class Queen extends piece
 
                 tileTracer.x--;
 
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
-
                 this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
@@ -106,11 +91,6 @@ public class Queen extends piece
                 tileTracer.SetValues(input_Coordinates);
 
                 tileTracer.x++;
-
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
 
                 this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
@@ -123,11 +103,6 @@ public class Queen extends piece
                 tileTracer.x++;
                 tileTracer.y++;
 
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
-
                 this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
@@ -138,11 +113,6 @@ public class Queen extends piece
 
                 tileTracer.x++;
                 tileTracer.y--;
-
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
 
                 this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
@@ -155,11 +125,6 @@ public class Queen extends piece
                 tileTracer.x--;
                 tileTracer.y++;
 
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
-
                 this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
                 GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
@@ -170,11 +135,6 @@ public class Queen extends piece
 
                 tileTracer.x--;
                 tileTracer.y--;
-
-                if (this.Color == Tile.BLACK)
-                {
-                    tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-                }
 
                 this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 

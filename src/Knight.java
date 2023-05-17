@@ -72,11 +72,6 @@ public class Knight extends piece
             tileTracer.y += 2;
             tileTracer.x--;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.SwitchSide = true;
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
@@ -89,11 +84,6 @@ public class Knight extends piece
 
             tileTracer.y += 2;
             tileTracer.x++;
-
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 
@@ -108,11 +98,6 @@ public class Knight extends piece
             tileTracer.y -= 2;
             tileTracer.x--;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.SwitchSide = true;
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
@@ -125,11 +110,6 @@ public class Knight extends piece
 
             tileTracer.y -= 2;
             tileTracer.x++;
-
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 
@@ -144,11 +124,6 @@ public class Knight extends piece
             tileTracer.x -= 2;
             tileTracer.y++;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.SwitchSide = true;
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
@@ -161,11 +136,6 @@ public class Knight extends piece
 
             tileTracer.x -= 2;
             tileTracer.y--;
-
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 
@@ -180,11 +150,6 @@ public class Knight extends piece
             tileTracer.x += 2;
             tileTracer.y++;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.SwitchSide = true;
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
@@ -197,11 +162,6 @@ public class Knight extends piece
 
             tileTracer.x += 2;
             tileTracer.y--;
-
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 

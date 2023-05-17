@@ -15,6 +15,36 @@ public class UI extends JPanel
 
     Math.Vec2<Float> UIsize = new Math.Vec2<>(0.0f,0.0f);
 
+    public static class Text
+    {
+        Graphics graphics;
+        Font font;
+        Color color;
+        Math.Vec2<Integer> position = new Math.Vec2<>(0,0);
+
+        Text(Graphics graphics , String FontName , int Style , int fontSize , Color Color)
+        {
+            this.graphics = graphics;
+            this.color = Color;
+
+            font = new Font("Arial", Font.BOLD, 24);
+
+            String text = "Hello, Java!";
+
+        }
+        public void SetPosition(int x , int y)
+        {
+            position.SetValues(x,y);
+        }
+        public void DrawText(String text)
+        {
+            graphics.setFont(this.font);
+            graphics.setColor(this.color);
+            graphics.drawString(text, position.x, position.y);
+        }
+    }
+
+
     public static class UIcomponents
     {
         public BufferedImage componentImage;
@@ -337,9 +367,10 @@ public class UI extends JPanel
         frame_reference.add(button);
 
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
+        ReadOnlyField = new ReadOnlyTextField("GameLink" , frame_reference);
         gamemenu = new MainMenu(frame_reference);
         CreateGameMenu = new DropDownMenu(frame_reference);
-        ReadOnlyField = new ReadOnlyTextField("GameLink" , frame_reference);
+
 
     }
 
@@ -395,14 +426,10 @@ public class UI extends JPanel
 
         UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
 
-
-
-
     }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         UIsliderBar.paintComponent(g);
     }
 }

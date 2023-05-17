@@ -62,11 +62,6 @@ public class Bishop extends piece{
             tileTracer.x++;
             tileTracer.y++;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
@@ -77,11 +72,6 @@ public class Bishop extends piece{
 
             tileTracer.x++;
             tileTracer.y--;
-
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
@@ -94,11 +84,6 @@ public class Bishop extends piece{
             tileTracer.x--;
             tileTracer.y++;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 
             GetPossibleMoves(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty(),tileTracer);
@@ -109,11 +94,6 @@ public class Bishop extends piece{
 
             tileTracer.x--;
             tileTracer.y--;
-
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 

@@ -120,7 +120,14 @@ public class KryonetServer extends Server {
                 connection.sendTCP("RECEIVED");
                 System.out.println("CLIENT2 CONNECTION> " + clientConnection2.getRemoteAddressTCP());
                 message = "";
+
+                if (AreBothPlayersOnline())
+                {
+                    clientConnection1.sendTCP("BOTH ONLINE");
+                    clientConnection2.sendTCP("BOTH ONLINE");
+                }
             }
+
         }
         else if(AreBothPlayersOnline())
         {

@@ -71,11 +71,6 @@ public class King extends piece
 
             tileTracer.y--;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.SwitchSide = true;
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
@@ -88,10 +83,6 @@ public class King extends piece
 
             tileTracer.y++;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 
@@ -105,10 +96,6 @@ public class King extends piece
 
             tileTracer.x--;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 
@@ -122,10 +109,6 @@ public class King extends piece
 
             tileTracer.x++;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 
@@ -140,10 +123,6 @@ public class King extends piece
             tileTracer.x++;
             tileTracer.y--;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 
@@ -158,11 +137,6 @@ public class King extends piece
             tileTracer.x++;
             tileTracer.y++;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.SwitchSide = true;
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
@@ -176,11 +150,6 @@ public class King extends piece
             tileTracer.x--;
             tileTracer.y--;
 
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
-
             this.SwitchSide = true;
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
@@ -193,11 +162,6 @@ public class King extends piece
 
             tileTracer.x--;
             tileTracer.y++;
-
-            if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }
 
             this.SwitchSide = true;
 
