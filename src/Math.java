@@ -135,13 +135,12 @@ public class Math {
              {
                  //Tile_to_invert_Cord.y = Board_Size.y - (Tile_to_invert_Cord.y - 1);
                  result.SetValues(Tile_to_invert_Cord.x,Board_Size.y - (Tile_to_invert_Cord.y - 1));
-                 System.out.println("its BLACK");
+
              }
             else if (Current_Up_Color == Tile.WHITE)
             {
                 //Tile_to_invert_Cord.y = 1 + (Board_Size.y - Tile_to_invert_Cord.y);
                 result.SetValues(Tile_to_invert_Cord.x,1 + (Board_Size.y - Tile_to_invert_Cord.y));
-                System.out.println("its WHITE");
 
             }
             return result;

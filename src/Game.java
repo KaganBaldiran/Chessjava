@@ -120,15 +120,23 @@ public class Game extends JPanel implements Runnable
         while (isRunning)
         {
 
-            if(this.mouseListener.isClicked(MouseEvent.BUTTON2))
+            if (ui.CreateGameButton.Pressed.IsMutexTrue())
             {
                 AddNewGame = false;
                 Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
                 System.out.println("GAME ADDED!");
+                ui.CreateGameButton.Pressed.SetMutexFalse();
+            }
+
+            if (ui.JoinGameButton.Pressed.IsMutexTrue())
+            {
+                AddNewGame = false;
+                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
+                System.out.println("GAME ADDED!");
+                ui.JoinGameButton.Pressed.SetMutexFalse();
             }
 
             Games.GetGameEvent(0).GameLoop();
-
 
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();

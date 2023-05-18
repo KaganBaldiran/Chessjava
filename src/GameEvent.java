@@ -64,14 +64,6 @@ public abstract class GameEvent
 
             MoveTheOpponent.SetMutexFalse();
 
-            try
-            {
-                InitNetworking();
-            }
-            catch (IOException | UtilityException e)
-            {
-                throw new RuntimeException(e);
-            }
 
             if (Server != null)
             {
@@ -91,13 +83,30 @@ public abstract class GameEvent
             this.graphicHandler = new GraphicHandler(GameBoard,player1,player2);
         }
 
-        public synchronized void InitNetworking() throws IOException, UtilityException
+        public synchronized void InitServer() throws IOException, UtilityException
         {
-            if (JOptionPane.showConfirmDialog(null, "Do you want to run the server?") == 0)
+            if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game server?") == 0)
             {
                 Server = new KryonetServer(54555, 54777);
+                Client = new KryonetClient(5000, "www.chessjava/rnt/rhv/P/rPj.com", 54555, 54777 , MoveTheOpponent);
             }
-            Client = new KryonetClient(5000, "www.chessjava/rnt/rhv/P/rPj.com", 54555, 54777 , MoveTheOpponent);
+            else
+            {
+                JOptionPane.showMessageDialog(null , "LAN server isn't created");
+            }
+        }
+
+        public synchronized void InitClient() throws IOException, UtilityException
+        {
+            if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game client?") == 0)
+            {
+                Client = new KryonetClient(5000, "www.chessjava/rnt/rhv/P/rPj.com", 54555, 54777 , MoveTheOpponent);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null , "Client isn't created");
+            }
+
         }
 
         Semaphore MoveTheOpponent = new Semaphore(2);

@@ -8,13 +8,32 @@ import java.awt.datatransfer.*;
 public class UI extends JPanel
 {
 
-    JButton button = new JButton("CREATE GAME");
+    Button CreateGameButton = new Button("CREATE GAME");
+    Button JoinGameButton = new Button("JOIN GAME");
     JFrame frame_reference;
     Math.Vec2<Float> BoardSize = new Math.Vec2<>(0.0f,0.0f);
     Math.Vec2<Float> BoardLocation = new Math.Vec2<>(0.0f,0.0f);
 
     Math.Vec2<Float> UIsize = new Math.Vec2<>(0.0f,0.0f);
 
+    public static class Button extends JButton
+    {
+        Semaphore Pressed = new Semaphore(2);
+
+        Button(String Name)
+        {
+            super(Name);
+            Pressed.SetMutexFalse();
+            addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    Pressed.SetMutexTrue();
+                }
+            });
+        }
+
+    }
     public static class Text
     {
         Graphics graphics;
@@ -350,21 +369,25 @@ public class UI extends JPanel
 
     ReadOnlyTextField ReadOnlyField;
 
-    UI(JFrame frame ,MouseInputListener Mouselistener) {
-        button.setSize(100, 50);
-        button.setFont(new Font("Arial", Font.PLAIN, 9));
-        button.setLocation(0, 0);
 
-        button.addMouseListener(Mouselistener);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("BUTTON PRESSED!");
-            }
-        });
+
+    UI(JFrame frame ,MouseInputListener Mouselistener) {
+
+        CreateGameButton.setSize(100, 50);
+        CreateGameButton.setFont(new Font("Arial", Font.PLAIN, 9));
+        CreateGameButton.setLocation(0, 0);
+
+        CreateGameButton.addMouseListener(Mouselistener);
+
+        JoinGameButton.setSize(100, 50);
+        JoinGameButton.setFont(new Font("Arial", Font.PLAIN, 9));
+        JoinGameButton.setLocation(0, 0);
+
+        JoinGameButton.addMouseListener(Mouselistener);
 
         frame_reference = frame;
-        frame_reference.add(button);
+        frame_reference.add(CreateGameButton);
+        frame_reference.add(JoinGameButton);
 
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
         ReadOnlyField = new ReadOnlyTextField("GameLink" , frame_reference);
@@ -411,10 +434,16 @@ public class UI extends JPanel
                     2* UIsize.y.intValue());
 
 
-        button.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 2));
+        CreateGameButton.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 2));
 
-        button.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
-        button.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
+        CreateGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
+        CreateGameButton.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
+
+        JoinGameButton.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 1.5));
+
+        JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
+        JoinGameButton.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
+
 
         CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.20f)));
         CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
