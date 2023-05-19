@@ -49,6 +49,8 @@ public abstract class GameEvent
 
     boolean DataSent = false;
 
+
+
     public static class LANGameEvent extends GameEvent
     {
         public KryonetServer Server;
@@ -56,7 +58,7 @@ public abstract class GameEvent
         public Player PlayerOnThisMachine;
         public Player PlayerOnTheOpponentMachine;
 
-        LANGameEvent(MouseInputListener mouseListener)
+        LANGameEvent(MouseInputListener mouseListener , boolean GameUsage)
         {
             super();
 
@@ -64,6 +66,27 @@ public abstract class GameEvent
 
             MoveTheOpponent.SetMutexFalse();
 
+            if (GameUsage)
+            {
+                try {
+                    InitServer();
+                } catch (IOException | UtilityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else
+            {
+                try {
+                    InitClient();
+                } catch (IOException | UtilityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            /*try {
+                InitNetworking();
+            } catch (IOException | UtilityException e) {
+                throw new RuntimeException(e);
+            }*/
 
             if (Server != null)
             {
@@ -108,6 +131,19 @@ public abstract class GameEvent
             }
 
         }
+
+        /*public synchronized void InitNetworking() throws IOException, UtilityException
+        {
+            if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game server?") == 0)
+            {
+                Server = new KryonetServer(54555, 54777);
+            }
+
+            Client = new KryonetClient(5000, "www.chessjava/rnt/rhv/P/rPj.com", 54555, 54777 , MoveTheOpponent);
+
+        }*/
+
+
 
         Semaphore MoveTheOpponent = new Semaphore(2);
 

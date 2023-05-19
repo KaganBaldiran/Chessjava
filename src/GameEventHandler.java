@@ -12,26 +12,32 @@ public class GameEventHandler
          this.mouseInputListenerReference = mouseListener;
     }
 
-    public void AddGameEvent(int GameType)
+
+    public void AddGameEvent(int GameType , Boolean GameUsage)
     {
-       if(!Games.isEmpty())
-       {
-           Games.clear();
-       }
-       if(GameType == LAN_GAME_EVENT)
-       {
-           Games.add(new GameEvent.LANGameEvent(mouseInputListenerReference));
-       }
+        if(!Games.isEmpty())
+        {
+            Games.clear();
+        }
+        if(GameType == LAN_GAME_EVENT)
+        {
+            Games.add(new GameEvent.LANGameEvent(mouseInputListenerReference,GameUsage));
+        }
 
     }
 
-    public GameEvent GetGameEvent(int index)
+    public<type> type GetGameEvent(int index)
     {
-        return Games.get(index);
+        return (type)Games.get(index);
     }
 
     public int GetGameEventCount()
     {
         return Games.size();
+    }
+
+    public boolean IsThereGame()
+    {
+        return !Games.isEmpty();
     }
 }

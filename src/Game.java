@@ -28,9 +28,7 @@ public class Game extends JPanel implements Runnable
 
 
     GameEventHandler Games;
-
     Color LeftComponentColor = GraphicHandler.HexToRgba("#787F8F");
-
     UI.Text ConnectionState;
 
 
@@ -90,12 +88,7 @@ public class Game extends JPanel implements Runnable
         this.leftComponent = new UI.UIcomponents((int) (ScreenSize.getWidth() * 0.82f), (int) (ScreenSize.getWidth() * 0.82f),BufferedImage.TYPE_INT_ARGB);
 
         Games = new GameEventHandler(mouseListener);
-        Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
 
-        if(  ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server != null)
-        {
-            ui.ReadOnlyField.SetText(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server.GameLink);
-        }
 
         this.ConnectionState = new UI.Text(bufferedImage.getGraphics(),"Arial" ,Font.BOLD, 24 , Color.black);
 
@@ -123,20 +116,27 @@ public class Game extends JPanel implements Runnable
             if (ui.CreateGameButton.Pressed.IsMutexTrue())
             {
                 AddNewGame = false;
-                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
-                System.out.println("GAME ADDED!");
+                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , true);
+
+                if(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server != null)
+                {
+                    ui.ReadOnlyField.SetText(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server.GameLink);
+                }
                 ui.CreateGameButton.Pressed.SetMutexFalse();
             }
 
             if (ui.JoinGameButton.Pressed.IsMutexTrue())
             {
                 AddNewGame = false;
-                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT);
-                System.out.println("GAME ADDED!");
+                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , false);
                 ui.JoinGameButton.Pressed.SetMutexFalse();
             }
 
-            Games.GetGameEvent(0).GameLoop();
+            if(Games.IsThereGame())
+            {
+                Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).GameLoop();
+            }
+
 
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();
@@ -157,20 +157,29 @@ public class Game extends JPanel implements Runnable
             bufferedGraphics.fillRoundRect((int) (ui.UIsliderBar.UnchangingComponentSizes.x + ((ui.UIsliderBar.UnchangingComponentSizes.y * 0.10f) / 2))  , 10, (int) (ui.UIsliderBar.UnchangingComponentSizes.y * 0.90f), (int) (bufferedImage.getHeight() * 0.980f),30,30);
 
 
-
-            if(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("CONNECTED"))
+            if(Games.IsThereGame())
             {
-                Games.GetGameEvent(0).DrawGame(leftComponent.bufferedGraphics);
+                if (((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("CONNECTED"))
+                {
+                    Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DrawGame(leftComponent.bufferedGraphics);
+                }
+                else if (((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("DISCONNECTED"))
+                {
+                    bufferedGraphics.setColor(piece.TRANSPARENT_LIGHT_GRAY);
+                    bufferedGraphics.fillRect(0,
+                            (int) ((bufferedImage.getHeight() - ui.UIsliderBar.UnchangingComponentSizes.x) / 2),
+                            ui.UIsliderBar.UnchangingComponentSizes.x,
+                            ui.UIsliderBar.UnchangingComponentSizes.x);
+                }
             }
-            else if(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("DISCONNECTED"))
+            else
             {
                 bufferedGraphics.setColor(piece.TRANSPARENT_LIGHT_GRAY);
                 bufferedGraphics.fillRect(0,
-                        (int)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2) ,
+                        (int) ((bufferedImage.getHeight() - ui.UIsliderBar.UnchangingComponentSizes.x) / 2),
                         ui.UIsliderBar.UnchangingComponentSizes.x,
                         ui.UIsliderBar.UnchangingComponentSizes.x);
             }
-
 
 
 
@@ -189,15 +198,18 @@ public class Game extends JPanel implements Runnable
 
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
 
-
-            Games.GetGameEvent(0).UpdateBoardUtilities(ScreenSize,final_scale_coeffi,FBO_position,bufferedImage,ui);
+            if(Games.IsThereGame())
+            {
+                Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).UpdateBoardUtilities(ScreenSize, final_scale_coeffi, FBO_position, bufferedImage, ui);
+            }
 
             ui.setUIsize(((int) scaledWidth), (int) scaledHeight,ScreenSize.height * final_scale_coeffi,ScreenSize.height * final_scale_coeffi);
 
-            ConnectionState.SetPosition((int) (ScreenSize.width * 0.835f), 30);
-
-            ConnectionState.DrawText(((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState);
-
+            if(Games.IsThereGame())
+            {
+                ConnectionState.SetPosition((int) (ScreenSize.width * 0.835f), 30);
+                ConnectionState.DrawText(((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState);
+            }
 
             graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int)scaledWidth, (int)scaledHeight, current_canvas);
 
