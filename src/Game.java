@@ -27,7 +27,12 @@ public class Game extends JPanel implements Runnable
 
 
     GameEventHandler Games;
-    Color LeftComponentColor = GraphicHandler.HexToRgba("#787F8F");
+    Color LeftComponentColor = GraphicHandler.HexToRgba("#F5E7E4");
+
+
+
+    Color RightComponentColor = GraphicHandler.HexToRgba("#E4F5EF");
+
     UI.Text ConnectionState;
 
 
@@ -88,9 +93,7 @@ public class Game extends JPanel implements Runnable
 
         Games = new GameEventHandler(mouseListener);
 
-
         this.ConnectionState = new UI.Text(bufferedImage.getGraphics(),"Arial" ,Font.BOLD, 24 , Color.black);
-
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -126,6 +129,11 @@ public class Game extends JPanel implements Runnable
                     ui.ReadOnlyField.SetText(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server.GameLink);
                 }
                 ui.CreateGameButton.Pressed.SetMutexFalse();
+
+                if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue())
+                {
+                    Games.DeleteGameEvents();
+                }
             }
 
             if (ui.JoinGameButton.Pressed.IsMutexTrue())
@@ -133,13 +141,17 @@ public class Game extends JPanel implements Runnable
                 AddNewGame = false;
                 Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , false);
                 ui.JoinGameButton.Pressed.SetMutexFalse();
+
+                if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue())
+                {
+                    Games.DeleteGameEvents();
+                }
             }
 
             if(Games.IsThereGame())
             {
                 Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).GameLoop();
             }
-
 
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();
@@ -149,14 +161,13 @@ public class Game extends JPanel implements Runnable
             graphics.setColor(Color.WHITE);
             graphics.fillRect(0, 0 , current_canvas.getWidth(), current_canvas.getHeight());
 
-
             float final_scale_coeffi = GraphicHandler.GetScreenScaleCoefficient(frame ,this.current_canvas, this.ScreenSize);
 
 
-            bufferedGraphics.setColor(Color.GRAY.darker());
+            bufferedGraphics.setColor(RightComponentColor.darker());
             bufferedGraphics.fillRect((int) (ui.UIsliderBar.UnchangingComponentSizes.x), 0, ui.UIsliderBar.UnchangingComponentSizes.y, (int) ScreenSize.getHeight());
 
-            bufferedGraphics.setColor(Color.GRAY);
+            bufferedGraphics.setColor(RightComponentColor);
             bufferedGraphics.fillRoundRect((int) (ui.UIsliderBar.UnchangingComponentSizes.x + ((ui.UIsliderBar.UnchangingComponentSizes.y * 0.10f) / 2))  , 10, (int) (ui.UIsliderBar.UnchangingComponentSizes.y * 0.90f), (int) (bufferedImage.getHeight() * 0.980f),30,30);
 
 
@@ -184,8 +195,6 @@ public class Game extends JPanel implements Runnable
                         ui.UIsliderBar.UnchangingComponentSizes.x);
             }
 
-
-
             float scaledWidth = bufferedImage.getWidth() * final_scale_coeffi;
             float scaledHeight = bufferedImage.getHeight() * final_scale_coeffi;
 
@@ -196,7 +205,7 @@ public class Game extends JPanel implements Runnable
                     ui.UIsliderBar.UnchangingComponentSizes.x,
                     current_canvas);
 
-            
+
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
 
             if(Games.IsThereGame())

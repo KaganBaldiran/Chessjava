@@ -293,7 +293,7 @@ public class UI extends JPanel
             }
             else
             {
-                g.setColor(Color.darkGray);
+                g.setColor(color.brighter());
             }
 
             if(Shape == ROUND)
@@ -426,7 +426,7 @@ public class UI extends JPanel
             UIsliderBar.SetDrawingAttribs((int) (BoardLocation.x.intValue() + BoardSize.x ) ,
                     BoardLocation.y.intValue(),(int)(UIsize.x * 0.10f),
                     UIsize.y.intValue(),
-                    Color.BLACK);
+                    GraphicHandler.HexToRgba("#4A4D46"));
 
             UIsliderBar.SetCollisionAttribs((int) ((BoardLocation.x.intValue() + BoardSize.x ) + ((UIsize.x * 0.10f)/2) + (UIsliderBar.TotalSlideX * scale_coeffic) ),
                     (int) ((BoardLocation.y.intValue() + BoardSize.y ) + ((UIsize.y * 0.10f)/2)),

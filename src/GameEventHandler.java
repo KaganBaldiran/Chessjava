@@ -26,6 +26,16 @@ public class GameEventHandler
 
     }
 
+    public void DeleteGameEvents()
+    {
+        if(!Games.isEmpty())
+        {
+            Games.clear();
+        }
+    }
+
+
+
     public<type> type GetGameEvent(int index)
     {
         return (type)Games.get(index);

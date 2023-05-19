@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import static java.lang.System.exit;
+
 
 public abstract class GameEvent
 {
@@ -106,6 +108,8 @@ public abstract class GameEvent
             this.graphicHandler = new GraphicHandler(GameBoard,player1,player2);
         }
 
+        Semaphore DeleteGameEvent = new Semaphore(2);
+
         public synchronized void InitServer() throws IOException, UtilityException
         {
             if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game server?") == 0)
@@ -116,6 +120,7 @@ public abstract class GameEvent
             else
             {
                 JOptionPane.showMessageDialog(null , "LAN server isn't created");
+                DeleteGameEvent.SetMutexTrue();
             }
         }
 
@@ -128,6 +133,7 @@ public abstract class GameEvent
             else
             {
                 JOptionPane.showMessageDialog(null , "Client isn't created");
+                DeleteGameEvent.SetMutexTrue();
             }
 
         }
