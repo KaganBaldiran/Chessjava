@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -97,7 +96,11 @@ public class Game extends JPanel implements Runnable
             @Override
             public void windowClosing(WindowEvent e) {
 
-                ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.Disconnect();
+                if(Games.IsThereGame())
+                {
+                    ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.Disconnect();
+                }
+
                 isRunning = false;
 
             }
