@@ -110,8 +110,6 @@ public class Game extends JPanel implements Runnable
         });
     }
 
-    boolean AddNewGame = false;
-    
     @Override
     public void run()
     {
@@ -121,31 +119,42 @@ public class Game extends JPanel implements Runnable
 
             if (ui.CreateGameButton.Pressed.IsMutexTrue())
             {
-                AddNewGame = false;
-                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , true);
-
-                if(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server != null)
-                {
-                    ui.ReadOnlyField.SetText(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server.GameLink);
-                }
-                ui.CreateGameButton.Pressed.SetMutexFalse();
+                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , true , "");
 
                 if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue())
                 {
                     Games.DeleteGameEvents();
                 }
+                else
+                {
+                    if(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server != null)
+                    {
+                        ui.ReadOnlyField.SetText(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server.GameLink);
+                        ui.ReadOnlyField.SetEditable(false);
+                    }
+
+                    ui.JoinGameButton.setVisible(false);
+                    ui.CreateGameButton.setVisible(false);
+                }
+
+                ui.CreateGameButton.Pressed.SetMutexFalse();
             }
 
             if (ui.JoinGameButton.Pressed.IsMutexTrue())
             {
-                AddNewGame = false;
-                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , false);
-                ui.JoinGameButton.Pressed.SetMutexFalse();
+                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , false , ui.ReadOnlyField.GetText());
 
                 if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue())
                 {
                     Games.DeleteGameEvents();
                 }
+                else
+                {
+                    ui.JoinGameButton.setVisible(false);
+                    ui.CreateGameButton.setVisible(false);
+                }
+
+                ui.JoinGameButton.Pressed.SetMutexFalse();
             }
 
             if(Games.IsThereGame())

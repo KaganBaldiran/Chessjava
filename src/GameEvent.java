@@ -12,8 +12,6 @@ public abstract class GameEvent
 {
     public final static int FIRST_PLAYER = 1;
     public final static int SECOND_PLAYER = 2;
-
-
     int Winner = 0;
     Board GameBoard;
     Player player1;
@@ -52,21 +50,20 @@ public abstract class GameEvent
     boolean DataSent = false;
 
 
-
     public static class LANGameEvent extends GameEvent
     {
         public KryonetServer Server;
         public KryonetClient Client;
         public Player PlayerOnThisMachine;
         public Player PlayerOnTheOpponentMachine;
+        Thread ConnectingThread = null;
 
-        LANGameEvent(MouseInputListener mouseListener , boolean GameUsage)
+        LANGameEvent(MouseInputListener mouseListener , boolean GameUsage , String link)
         {
             super();
-
             this.GameBoard = new Board();
-
             MoveTheOpponent.SetMutexFalse();
+
 
             if (GameUsage)
             {
@@ -79,16 +76,19 @@ public abstract class GameEvent
             else
             {
                 try {
-                    InitClient();
+                    InitClient(link);
                 } catch (IOException | UtilityException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
+
+                    if (ConnectingThread != null)
+                    {
+                        ConnectingThread.interrupt();
+                    }
+
+                    DeleteGameEvent.SetMutexTrue();
+                    JOptionPane.showMessageDialog(null , "Unable to connect to the target server!");
                 }
             }
-            /*try {
-                InitNetworking();
-            } catch (IOException | UtilityException e) {
-                throw new RuntimeException(e);
-            }*/
 
             if (Server != null)
             {
@@ -104,7 +104,6 @@ public abstract class GameEvent
                 this.PlayerOnThisMachine = player2;
                 PlayerOnTheOpponentMachine = player1;
             }
-
             this.graphicHandler = new GraphicHandler(GameBoard,player1,player2);
         }
 
@@ -124,11 +123,34 @@ public abstract class GameEvent
             }
         }
 
-        public synchronized void InitClient() throws IOException, UtilityException
+        public synchronized void InitClient(String Link) throws IOException, UtilityException
         {
             if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game client?") == 0)
             {
-                Client = new KryonetClient(5000, "www.chessjava/rnt/rhv/P/rPj.com", 54555, 54777 , MoveTheOpponent);
+                if(Link.isEmpty())
+                {
+                    JOptionPane.showMessageDialog(null , "No game link is provided!");
+                    DeleteGameEvent.SetMutexTrue();
+                }
+                else
+                {
+                    if(Link.length() >= 31)
+                    {
+                        System.out.println("LINK: " + Link.substring(0 , 13) + " " + Link.substring(27 , 31));
+                        if(Link.substring(0 , 13).equalsIgnoreCase("www.chessjava") && Link.substring(27 , 31).equalsIgnoreCase(".com"))
+                        {
+                            ConnectingThread = new Thread(new LoadingDialog());
+                            ConnectingThread.start();
+                            Client = new KryonetClient(5000, Link, 54555, 54777 , MoveTheOpponent);
+                        }
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null , "No game link is provided!");
+                        DeleteGameEvent.SetMutexTrue();
+                    }
+
+                }
             }
             else
             {
@@ -137,20 +159,6 @@ public abstract class GameEvent
             }
 
         }
-
-        /*public synchronized void InitNetworking() throws IOException, UtilityException
-        {
-            if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game server?") == 0)
-            {
-                Server = new KryonetServer(54555, 54777);
-            }
-
-            Client = new KryonetClient(5000, "www.chessjava/rnt/rhv/P/rPj.com", 54555, 54777 , MoveTheOpponent);
-
-        }*/
-
-
-
         Semaphore MoveTheOpponent = new Semaphore(2);
 
         @Override
@@ -177,5 +185,16 @@ public abstract class GameEvent
 
         }
 
+    }
+
+    public static class LoadingDialog implements Runnable {
+        LoadingDialog()
+        {
+            super();
+        }
+        @Override
+        public void run() {
+            JOptionPane.showMessageDialog(null , "CONNECTING...");
+        }
     }
 }

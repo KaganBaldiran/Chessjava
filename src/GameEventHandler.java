@@ -13,7 +13,7 @@ public class GameEventHandler
     }
 
 
-    public void AddGameEvent(int GameType , Boolean GameUsage)
+    public void AddGameEvent(int GameType , Boolean GameUsage , String link)
     {
         if(!Games.isEmpty())
         {
@@ -21,7 +21,7 @@ public class GameEventHandler
         }
         if(GameType == LAN_GAME_EVENT)
         {
-            Games.add(new GameEvent.LANGameEvent(mouseInputListenerReference,GameUsage));
+            Games.add(new GameEvent.LANGameEvent(mouseInputListenerReference,GameUsage,link));
         }
 
     }

@@ -81,30 +81,25 @@ public class UI extends JPanel
         }
     }
 
-    public static class ReadOnlyTextField extends JPanel {
-        private JTextField textField;
-        private JFrame frame_Reference;
+    public static class TextField extends JPanel {
+        private final JTextField textField;
 
-        public ReadOnlyTextField(String text ,JFrame currentFrame) {
+        public TextField(String text , JFrame currentFrame , boolean editable) {
             textField = new JTextField(text);
-            textField.setEditable(false);
+            textField.setEditable(editable);
             textField.setLocation(300,300);
             textField.setSize(100,30);
-            frame_Reference = currentFrame;
-            frame_Reference.add(textField);
+            currentFrame.add(textField);
         }
-
         public void copyToClipboard() {
             StringSelection selection = new StringSelection(textField.getText());
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, null);
         }
-
         public void SetText(String text)
         {
             textField.setText(text);
         }
-
         public void SetSize(int width , int height)
         {
             textField.setSize(width, height);
@@ -112,6 +107,14 @@ public class UI extends JPanel
         public void SetPosition(int x , int y)
         {
             textField.setLocation(x, y);
+        }
+        public String GetText()
+        {
+            return textField.getText();
+        }
+        public void SetEditable(boolean flag)
+        {
+            textField.setEditable(flag);
         }
     }
 
@@ -367,7 +370,7 @@ public class UI extends JPanel
     MainMenu gamemenu;
     DropDownMenu CreateGameMenu;
 
-    ReadOnlyTextField ReadOnlyField;
+    TextField ReadOnlyField;
 
 
 
@@ -390,7 +393,7 @@ public class UI extends JPanel
         frame_reference.add(JoinGameButton);
 
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
-        ReadOnlyField = new ReadOnlyTextField("GameLink" , frame_reference);
+        ReadOnlyField = new TextField("" , frame_reference ,true);
         gamemenu = new MainMenu(frame_reference);
         CreateGameMenu = new DropDownMenu(frame_reference);
 
@@ -443,7 +446,6 @@ public class UI extends JPanel
 
         JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
         JoinGameButton.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
-
 
         CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.20f)));
         CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
