@@ -196,14 +196,17 @@ public class Game extends JPanel implements Runnable
                     ui.UIsliderBar.UnchangingComponentSizes.x,
                     current_canvas);
 
-
-
-
+            
             FBO_position.SetValues((current_canvas.getWidth()/2) - (scaledWidth/2) , current_canvas.getHeight()/2 - (float)(ScreenSize.getHeight() * final_scale_coeffi)/2);
 
             if(Games.IsThereGame())
             {
                 Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).UpdateBoardUtilities(ScreenSize, final_scale_coeffi, FBO_position, bufferedImage, ui);
+            }
+            else
+            {
+                Board.UpdateSquareSize(ScreenSize.height * final_scale_coeffi);
+                Board.UpdateSQUARESIZEUI(ui.UIsliderBar.ComponentSizes.z);
             }
 
             ui.setUIsize(((int) scaledWidth), (int) scaledHeight,ScreenSize.height * final_scale_coeffi,ScreenSize.height * final_scale_coeffi);
