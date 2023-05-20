@@ -5,8 +5,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static java.lang.System.exit;
-
 
 public abstract class GameEvent
 {
@@ -79,15 +77,15 @@ public abstract class GameEvent
                     InitClient(link);
                 } catch (IOException | UtilityException e) {
                     e.printStackTrace();
-
-                    if (ConnectingThread != null)
-                    {
-                        ConnectingThread.interrupt();
-                    }
-
                     DeleteGameEvent.SetMutexTrue();
                     JOptionPane.showMessageDialog(null , "Unable to connect to the target server!");
                 }
+
+                if (ConnectingThread != null)
+                {
+                    ConnectingThread.interrupt();
+                }
+
             }
 
             if (Server != null)
@@ -118,10 +116,12 @@ public abstract class GameEvent
             }
             else
             {
-                JOptionPane.showMessageDialog(null , "LAN server isn't created");
+                JOptionPane.showMessageDialog(null , "LAN server isn't created" , "Server Error" , JOptionPane.ERROR_MESSAGE);
                 DeleteGameEvent.SetMutexTrue();
             }
         }
+
+        Semaphore LinkProvided = new Semaphore(2);
 
         public synchronized void InitClient(String Link) throws IOException, UtilityException
         {
@@ -129,7 +129,7 @@ public abstract class GameEvent
             {
                 if(Link.isEmpty())
                 {
-                    JOptionPane.showMessageDialog(null , "No game link is provided!");
+                    JOptionPane.showMessageDialog(null , "No game link is provided!" , "Connection Error" , JOptionPane.ERROR_MESSAGE);
                     DeleteGameEvent.SetMutexTrue();
                 }
                 else
@@ -143,10 +143,15 @@ public abstract class GameEvent
                             ConnectingThread.start();
                             Client = new KryonetClient(5000, Link, 54555, 54777 , MoveTheOpponent);
                         }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null , "No game link is provided!", "Connection Error" , JOptionPane.ERROR_MESSAGE);
+                            DeleteGameEvent.SetMutexTrue();
+                        }
                     }
                     else
                     {
-                        JOptionPane.showMessageDialog(null , "No game link is provided!");
+                        JOptionPane.showMessageDialog(null , "No game link is provided!", "Connection Error" , JOptionPane.ERROR_MESSAGE);
                         DeleteGameEvent.SetMutexTrue();
                     }
 
@@ -154,7 +159,7 @@ public abstract class GameEvent
             }
             else
             {
-                JOptionPane.showMessageDialog(null , "Client isn't created");
+                JOptionPane.showMessageDialog(null , "Client isn't created" , "Client Error" , JOptionPane.ERROR_MESSAGE);
                 DeleteGameEvent.SetMutexTrue();
             }
 
@@ -181,8 +186,6 @@ public abstract class GameEvent
                 MoveTheOpponent.SetMutexFalse();
                 System.out.println("MOVED THE OPPONENT TO: " + Client.getOtherPlayerMove().x + " " + Client.OtherPlayerMove.y);
             }
-
-
         }
 
     }
@@ -194,7 +197,7 @@ public abstract class GameEvent
         }
         @Override
         public void run() {
-            JOptionPane.showMessageDialog(null , "CONNECTING...");
+            JOptionPane.showMessageDialog(null , "CONNECTING...","Process",JOptionPane.PLAIN_MESSAGE);
         }
     }
 }

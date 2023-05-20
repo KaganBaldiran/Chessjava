@@ -10,6 +10,7 @@ public class UI extends JPanel
 
     Button CreateGameButton = new Button("CREATE GAME");
     Button JoinGameButton = new Button("JOIN GAME");
+    Button DisconnectButton = new Button("DISCONNECT");
     JFrame frame_reference;
     Math.Vec2<Float> BoardSize = new Math.Vec2<>(0.0f,0.0f);
     Math.Vec2<Float> BoardLocation = new Math.Vec2<>(0.0f,0.0f);
@@ -202,7 +203,6 @@ public class UI extends JPanel
 
                 //System.out.println("SLIDE AMOUNT: " + TotalSlideX);
 
-                collisionBox.x = collisionBox.x;
                 this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
             }
 
@@ -369,7 +369,6 @@ public class UI extends JPanel
     boolean button1Pressed = false;
     MainMenu gamemenu;
     DropDownMenu CreateGameMenu;
-
     TextField ReadOnlyField;
 
 
@@ -379,14 +378,17 @@ public class UI extends JPanel
         CreateGameButton.setSize(100, 50);
         CreateGameButton.setFont(new Font("Arial", Font.PLAIN, 9));
         CreateGameButton.setLocation(0, 0);
+        CreateGameButton.setBackground(GraphicHandler.HexToRgba("#9CF3F5"));
 
         CreateGameButton.addMouseListener(Mouselistener);
 
         JoinGameButton.setSize(100, 50);
         JoinGameButton.setFont(new Font("Arial", Font.PLAIN, 9));
         JoinGameButton.setLocation(0, 0);
+        JoinGameButton.setBackground(GraphicHandler.HexToRgba("#9CF3F5"));
 
         JoinGameButton.addMouseListener(Mouselistener);
+
 
         frame_reference = frame;
         frame_reference.add(CreateGameButton);
