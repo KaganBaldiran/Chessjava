@@ -78,7 +78,7 @@ public abstract class GameEvent
                 } catch (IOException | UtilityException e) {
                     e.printStackTrace();
                     DeleteGameEvent.SetMutexTrue();
-                    JOptionPane.showMessageDialog(null , "Unable to connect to the target server!");
+                    JOptionPane.showMessageDialog(null , "Unable to connect to the target server!" , "Connection Error" , JOptionPane.ERROR_MESSAGE);
                 }
 
                 if (ConnectingThread != null)
@@ -112,7 +112,7 @@ public abstract class GameEvent
             if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game server?") == 0)
             {
                 Server = new KryonetServer(54555, 54777);
-                Client = new KryonetClient(5000, "www.chessjava/rnt/rhv/P/rPj.com", 54555, 54777 , MoveTheOpponent);
+                Client = new KryonetClient(5000, Server.GameLink, 54555, 54777 , MoveTheOpponent);
             }
             else
             {
@@ -197,7 +197,7 @@ public abstract class GameEvent
         }
         @Override
         public void run() {
-            JOptionPane.showMessageDialog(null , "CONNECTING...","Process",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null , "                           CONNECTING...","Process",JOptionPane.PLAIN_MESSAGE);
         }
     }
 }

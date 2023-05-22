@@ -208,14 +208,6 @@ public abstract class piece extends JPanel
             g.fillRect(x, y, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
         }
 
-        if(!this.TilePieceStandingOn.isTileEmpty())
-        {
-            g.setColor(TRANSPARENT_LIGHT_GRAY);
-            int x = (this.Coordinates.x -1) * Board.SQUARE_SIZE;
-            int y = (this.Coordinates.y -1) * Board.SQUARE_SIZE;
-            g.fillRect(x, y, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
-        }
-
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/10) , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE - (Board.SQUARE_SIZE/10)  );
 
         piecetexture.paintComponent(g);

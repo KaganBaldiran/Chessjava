@@ -1,12 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.awt.datatransfer.*;
-import java.time.chrono.Chronology;
-import java.time.temporal.ChronoField;
-import java.util.Timer;
 
 public class UI extends JPanel
 {
@@ -14,6 +15,8 @@ public class UI extends JPanel
     Button CreateGameButton = new Button("CREATE GAME");
     Button JoinGameButton = new Button("JOIN GAME");
     Button DisconnectButton = new Button("DISCONNECT");
+
+    Button CopyButton;
     JFrame frame_reference;
     Math.Vec2<Float> BoardSize = new Math.Vec2<>(0.0f,0.0f);
     Math.Vec2<Float> BoardLocation = new Math.Vec2<>(0.0f,0.0f);
@@ -27,6 +30,18 @@ public class UI extends JPanel
         Button(String Name)
         {
             super(Name);
+            Pressed.SetMutexFalse();
+            addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    Pressed.SetMutexTrue();
+                }
+            });
+        }
+        Button(ImageIcon image)
+        {
+            super(image);
             Pressed.SetMutexFalse();
             addActionListener(new ActionListener() {
                 @Override
@@ -136,6 +151,8 @@ public class UI extends JPanel
             });
 
 
+
+
             currentFrame.add(textField);
 
         }
@@ -143,6 +160,11 @@ public class UI extends JPanel
             StringSelection selection = new StringSelection(textField.getText());
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, null);
+        }
+
+        public void Copy()
+        {
+            textField.copy();
         }
         public void SetText(String text)
         {
@@ -435,11 +457,19 @@ public class UI extends JPanel
 
         JoinGameButton.addMouseListener(Mouselistener);
 
+        ImageIcon copyAllPng = new ImageIcon("resources/copy.png");
+        CopyButton = new Button(copyAllPng);
+        CopyButton.setSize(50, 50);
+        CopyButton.setFont(new Font("Arial", Font.PLAIN, 9));
+        CopyButton.setLocation(0, 0);
+        CopyButton.setBackground(GraphicHandler.HexToRgba("#9CF3F5"));
 
+        CopyButton.addMouseListener(Mouselistener);
 
         frame_reference = frame;
         frame_reference.add(CreateGameButton);
         frame_reference.add(JoinGameButton);
+        frame_reference.add(CopyButton);
 
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
         ReadOnlyField = new TextField("" , frame_reference ,true);
@@ -487,6 +517,12 @@ public class UI extends JPanel
         CreateGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
         CreateGameButton.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
 
+        CopyButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (105 * scale_coeffic)), (int) (BoardLocation.y + (BoardSize.y * 0.39f)));
+
+        CopyButton.setPreferredSize(new Dimension((int) (50 * scale_coeffic),  (int) (50 * scale_coeffic)));
+        CopyButton.setSize(new Dimension((int) (50 * scale_coeffic),  (int) (50 * scale_coeffic)));
+
+
         JoinGameButton.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 1.5));
 
         JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
@@ -501,6 +537,12 @@ public class UI extends JPanel
         UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() + (int)((BoardSize.x/9)*2), ScreenSize , BoardLocation.x.intValue());
 
         UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
+
+        if (CopyButton.Pressed.IsMutexTrue())
+        {
+            ReadOnlyField.copyToClipboard();
+            CopyButton.Pressed.SetMutexFalse();
+        }
 
     }
     @Override
