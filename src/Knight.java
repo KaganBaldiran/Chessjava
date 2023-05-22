@@ -65,6 +65,8 @@ public class Knight extends piece
             this.SwitchSide = false;
         }
 
+        isTileEmpty = CheckTileEmptiness(Side , input_Coordinates);
+
         if (this.Side == UP_LEFT && input_Coordinates.y < 7 && input_Coordinates.x > 1 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
@@ -187,56 +189,65 @@ public class Knight extends piece
         return null;
     }
 
+    /*if (this.Side == UP_LEFT && input_Coordinates.y > 1 )
+    {
+        input_Coordinates.y--;
+        result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+    }
+*/
     public boolean CheckTileEmptiness(int Side , Math.Vec2<Integer> Coordinates)
     {
         boolean result = false;
         Math.Vec2<Integer> input_Coordinates = new Math.Vec2<>(Coordinates);
 
-        if(Side <= LEFT_DOWN)
+        if(Side <= RIGHT_DOWN)
         {
-            if (this.Side == UP_LEFT && input_Coordinates.y > 1 )
+            if (Side == UP_LEFT && input_Coordinates.y < 7 && input_Coordinates.x > 1)
             {
-                input_Coordinates.y--;
-                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
-            }
-            else if (this.Side == UP_RIGHT  && input_Coordinates.y < 8 )
-            {
-                input_Coordinates.y++;
-                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
-            }
-            else if (this.Side == DOWN_LEFT  && input_Coordinates.x > 1 )
-            {
+                input_Coordinates.y += 2;
                 input_Coordinates.x--;
                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
             }
-            else if (this.Side == DOWN_RIGHT  && input_Coordinates.x < 8 )
+            else if (Side == UP_RIGHT  && input_Coordinates.y < 7 && input_Coordinates.x < 8)
             {
+                input_Coordinates.y += 2;
                 input_Coordinates.x++;
                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
-
             }
-            else if (this.Side == Knight.LEFT_UP  && input_Coordinates.y > 1  && input_Coordinates.x < 8 )
+            else if (Side == DOWN_LEFT  && input_Coordinates.y > 2 && input_Coordinates.x > 1 )
             {
-                input_Coordinates.x++;
-                input_Coordinates.y--;
+                input_Coordinates.y -= 2;
+                input_Coordinates.x--;
                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
             }
-            else if (this.Side == Knight.UP_LEFT  && input_Coordinates.x < 8  && input_Coordinates.y < 8 )
+            else if (Side == DOWN_RIGHT  && input_Coordinates.y > 2 && input_Coordinates.x < 8 )
             {
+                input_Coordinates.y -= 2;
                 input_Coordinates.x++;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+            else if (Side == LEFT_UP  && input_Coordinates.y < 8  && input_Coordinates.x > 2)
+            {
+                input_Coordinates.x -= 2;
                 input_Coordinates.y++;
                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
             }
-            else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y > 1 )
+            else if (Side == LEFT_DOWN  && input_Coordinates.y > 1  && input_Coordinates.x > 2)
             {
-                input_Coordinates.x--;
+                input_Coordinates.x -= 2;
                 input_Coordinates.y--;
                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
             }
-            else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y < 8 )
+            else if (Side == RIGHT_UP && input_Coordinates.y < 8  && input_Coordinates.x < 7 )
             {
-                input_Coordinates.x--;
+                input_Coordinates.x += 2;
                 input_Coordinates.y++;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+            else if (Side == RIGHT_DOWN && input_Coordinates.y > 1  && input_Coordinates.x < 7)
+            {
+                input_Coordinates.x += 2;
+                input_Coordinates.y--;
                 result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
             }
 

@@ -165,7 +165,11 @@ public class Game extends JPanel implements Runnable
             BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
             Graphics graphics = bufferstrategy.getDrawGraphics();
 
+
+
             Graphics2D bufferedGraphics = bufferedImage.createGraphics();
+            bufferedGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 
             graphics.setColor(Color.WHITE);
             graphics.fillRect(0, 0 , current_canvas.getWidth(), current_canvas.getHeight());

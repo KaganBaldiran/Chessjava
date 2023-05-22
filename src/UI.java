@@ -4,6 +4,9 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.datatransfer.*;
+import java.time.chrono.Chronology;
+import java.time.temporal.ChronoField;
+import java.util.Timer;
 
 public class UI extends JPanel
 {
@@ -84,13 +87,57 @@ public class UI extends JPanel
 
     public static class TextField extends JPanel {
         private final JTextField textField;
+        private final JPopupMenu popupMenu;
+
 
         public TextField(String text , JFrame currentFrame , boolean editable) {
             textField = new JTextField(text);
             textField.setEditable(editable);
             textField.setLocation(300,300);
             textField.setSize(100,30);
+
+            popupMenu = new JPopupMenu();
+            JMenuItem cutItem = new JMenuItem("Cut");
+            JMenuItem copyItem = new JMenuItem("Copy");
+            JMenuItem pasteItem = new JMenuItem("Paste");
+
+            cutItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    textField.cut();
+                }
+            });
+
+            copyItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    textField.copy();
+                }
+            });
+
+            pasteItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    textField.paste();
+                }
+            });
+
+            popupMenu.add(cutItem);
+            popupMenu.add(copyItem);
+            popupMenu.add(pasteItem);
+
+            textField.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        popupMenu.show(textField, e.getX(), e.getY());
+                    }
+                }
+            });
+
+
             currentFrame.add(textField);
+
         }
         public void copyToClipboard() {
             StringSelection selection = new StringSelection(textField.getText());
@@ -372,7 +419,6 @@ public class UI extends JPanel
     TextField ReadOnlyField;
 
 
-
     UI(JFrame frame ,MouseInputListener Mouselistener) {
 
         CreateGameButton.setSize(100, 50);
@@ -390,6 +436,7 @@ public class UI extends JPanel
         JoinGameButton.addMouseListener(Mouselistener);
 
 
+
         frame_reference = frame;
         frame_reference.add(CreateGameButton);
         frame_reference.add(JoinGameButton);
@@ -398,8 +445,6 @@ public class UI extends JPanel
         ReadOnlyField = new TextField("" , frame_reference ,true);
         gamemenu = new MainMenu(frame_reference);
         CreateGameMenu = new DropDownMenu(frame_reference);
-
-
     }
 
     Dimension ScreenSize = new Dimension(0,0);
@@ -426,8 +471,6 @@ public class UI extends JPanel
 
     public void Update()
     {
-
-
             UIsliderBar.SetDrawingAttribs((int) (BoardLocation.x.intValue() + BoardSize.x ) ,
                     BoardLocation.y.intValue(),(int)(UIsize.x * 0.10f),
                     UIsize.y.intValue(),

@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Timer;
 import java.util.Vector;
 
 public abstract class piece extends JPanel
@@ -97,6 +98,8 @@ public abstract class piece extends JPanel
 
     Math.Vec2<Double> previousMousePos = new Math.Vec2<>(0.0,0.0);
 
+    java.util.Timer Timer = new Timer();
+
     public void Move()
     {
             for (int i = 0; i < this.CurrentGameBoard.Tiles.size(); i++) {
@@ -152,6 +155,7 @@ public abstract class piece extends JPanel
                                 LastPlayedMove.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
                                 this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
                                 this.TilePieceStandingOn.SetEmptinessState(false);
+
                             }
 
                         }
@@ -180,11 +184,11 @@ public abstract class piece extends JPanel
 
             if (!Possible_Moves.isEmpty())
             {
-                for (int i = 0; i < Possible_Moves.size(); i++) {
+                for (Math.Vec2<Integer> possibleMove : Possible_Moves) {
 
-                    if (Possible_Moves.get(i).x < 9) {
-                        int centerX = (Possible_Moves.get(i).x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
-                        int centerY = (Possible_Moves.get(i).y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
+                    if (possibleMove.x < 9) {
+                        int centerX = (possibleMove.x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
+                        int centerY = (possibleMove.y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
                         int radius = 35;
 
                         g.setColor(TRANSPARENT_LIGHT_GRAY);
@@ -201,6 +205,14 @@ public abstract class piece extends JPanel
 
             g.setColor(Board.LIGHT_YELLOW);
 
+            g.fillRect(x, y, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
+        }
+
+        if(!this.TilePieceStandingOn.isTileEmpty())
+        {
+            g.setColor(TRANSPARENT_LIGHT_GRAY);
+            int x = (this.Coordinates.x -1) * Board.SQUARE_SIZE;
+            int y = (this.Coordinates.y -1) * Board.SQUARE_SIZE;
             g.fillRect(x, y, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
         }
 

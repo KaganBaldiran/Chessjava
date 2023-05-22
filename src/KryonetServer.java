@@ -147,12 +147,6 @@ public class KryonetServer extends Server {
 
             }
 
-            if (!message.trim().isEmpty() && connection.getRemoteAddressTCP().equals(clientConnection1.getRemoteAddressTCP())) {
-                System.out.println("CLIENT1> " + message.trim());
-            }
-            if (!message.trim().isEmpty() && connection.getRemoteAddressTCP().equals(clientConnection2.getRemoteAddressTCP())) {
-                System.out.println("CLIENT2> " + message.trim());
-            }
         }
     }
 

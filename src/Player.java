@@ -90,7 +90,11 @@ public class Player extends JPanel
         {
             for(piece piece : this.pieces)
             {
-                piece.Coordinates.SetValues(Math.UV_Tools.Invert_Y_Axis(piece.Coordinates,Tile.BLACK));
+                Tile old_tile = piece.TilePieceStandingOn;
+                piece.Coordinates.SetValues(Math.UV_Tools.Invert_Y_Axis(piece.Coordinates,Tile.WHITE));
+                piece.TilePieceStandingOn = this.Current_Board_Reference.FetchTile(piece.Coordinates.x , piece.Coordinates.y);
+                piece.TilePieceStandingOn.SetEmptinessState(false);
+                old_tile.SetEmptinessState(false);
             }
         }
 
@@ -132,7 +136,6 @@ public class Player extends JPanel
             piece.paintComponent(g);
         }
 
-       // g.dispose();
     }
     public boolean isPlayersTurn() {
         return IsPlayersTurn.IsMutexTrue();

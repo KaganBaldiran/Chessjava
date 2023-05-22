@@ -53,11 +53,14 @@ public class Pawn extends piece {
         {
            times_to_repeat = 2;
         }
-        if (input_Coordinates.y < 8 && input_Coordinates.y > 1)
+        if (this.Coordinates.y < 8 && this.Coordinates.y > 1)
         {
             tileTracer.SetValues(this.Coordinates);
             tileTracer.y--;
-            isTileEmpty = this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).isTileEmpty();
+            //tileTracer.SetValues(Math.UV_Tools.Invert_Y_Axis(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates , Tile.WHITE));
+            isTileEmpty = this.CurrentGameBoard.FetchTile(tileTracer.x , tileTracer.y).isTileEmpty();
+            System.out.println("TILE " + input_Coordinates.x + " " + input_Coordinates.y + " " + isTileEmpty);
+
         }
         else
         {
@@ -70,17 +73,12 @@ public class Pawn extends piece {
             this.Possible_Moves.clear();
         }
 
-        if (isTileEmpty && this.Count_of_reco < times_to_repeat && input_Coordinates.y < 8 && input_Coordinates.y >= 1)
+        if (isTileEmpty && (this.Count_of_reco < times_to_repeat) && this.Coordinates.y < 8 && this.Coordinates.y >= 1)
         {
             this.Count_of_reco++;
+
             tileTracer.SetValues(input_Coordinates);
-
-            tileTracer.y -= 1;
-
-           /* if (this.Color == Tile.BLACK)
-            {
-                tileTracer = Math.UV_Tools.Invert_Y_Axis(tileTracer,Tile.WHITE);
-            }*/
+            tileTracer.y--;
 
             this.Possible_Moves.add(new Math.Vec2<>(tileTracer.x,tileTracer.y));
 

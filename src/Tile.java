@@ -5,7 +5,6 @@ public class Tile
 {
     Math.Vec2<Integer>  Tilecoordinates = new Math.Vec2<>();
     boolean TileEmpty;
-
     int Color;
     static final int BLACK = 0;
     static final int WHITE = 1;
