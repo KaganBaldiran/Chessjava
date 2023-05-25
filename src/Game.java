@@ -119,7 +119,7 @@ public class Game extends JPanel implements Runnable
 
             if (ui.CreateGameButton.Pressed.IsMutexTrue())
             {
-                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , true , "");
+                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , true , ui);
 
                 if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue())
                 {
@@ -142,7 +142,7 @@ public class Game extends JPanel implements Runnable
 
             if (ui.JoinGameButton.Pressed.IsMutexTrue())
             {
-                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , false , ui.ReadOnlyField.GetText());
+                Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT , false , ui);
 
                 if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue())
                 {

@@ -56,7 +56,7 @@ public abstract class GameEvent
         public Player PlayerOnTheOpponentMachine;
         Thread ConnectingThread = null;
 
-        LANGameEvent(MouseInputListener mouseListener , boolean GameUsage , String link)
+        LANGameEvent(MouseInputListener mouseListener , boolean GameUsage , UI currentUI)
         {
             super();
             this.GameBoard = new Board();
@@ -74,7 +74,7 @@ public abstract class GameEvent
             else
             {
                 try {
-                    InitClient(link);
+                    InitClient(currentUI.ReadOnlyField.GetText());
                 } catch (IOException | UtilityException e) {
                     e.printStackTrace();
                     DeleteGameEvent.SetMutexTrue();
