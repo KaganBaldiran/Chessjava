@@ -246,36 +246,20 @@ public class UI extends JPanel
 
         public void Update(float scalecoeff , int BoarddSizeX , Dimension screenSize, int BoardLocationX)
         {
+            prevslidedposition = slided_x_position;
+            Double ScaleAmount = SlideAmount(scalecoeff);
 
-            if(resetprevslidedposition)
+            if (ScaleAmount != 0.0)
             {
-                resetprevslidedposition = false;
-                prevslidedposition = 0;
+                slided_x_position = ScaleAmount.intValue();
             }
             else
             {
-                prevslidedposition = slided_x_position;
+                slided_x_position = 0;
             }
 
-
-            //System.out.println("PREV SLIDE AMOUNT: " + prevslidedposition);
-
-            Double ScaleAmount = SlideAmount(scalecoeff);
-
-
-            if(this.Drawingattrib.x <= BoardLocationX + (BoarddSizeX * 0.82f)) {
-                if (ScaleAmount != 0.0 && Drawingattrib.x <= BoarddSizeX) {
-                    slided_x_position = ScaleAmount.intValue();
-                }
-
-                TotalSlideX += ((slided_x_position - prevslidedposition) * scalecoeff);
-
-                //System.out.println("SLIDE AMOUNT: " + TotalSlideX);
-
-                this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
-            }
-
-
+            TotalSlideX += ((slided_x_position - prevslidedposition));
+            this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
         }
 
         float ScaleCoefBoardSizeLeftCom = 0.0f;
@@ -292,20 +276,12 @@ public class UI extends JPanel
             UnchangingComponentSizes.x = (int) (TotalSlideX + (screenSize.width * 0.82f)) ;
             UnchangingComponentSizes.y = (int) (screenSize.width - (TotalSlideX + (screenSize.width * 0.82f)));
 
-
-            //System.out.println("UnchangingComponentSizes.y: " + UnchangingComponentSizes.y);
-            //System.out.println("UnchangingComponentSizes.x: " + UnchangingComponentSizes.x);
-
-            //System.out.println("COMPONENT 1 SIZE X: " + ComponentSizes.x);
-            //System.out.println("COMPONENT 2 SIZE X: " + ComponentSizes.z);
-
         }
 
         public void ReverseUpdate()
         {
             collisionBox.x = collisionBox.x - slided_x_position;
             this.Drawingattrib.x = this.Drawingattrib.x - slided_x_position;
-
         }
 
         public boolean IsClicked()
@@ -321,22 +297,19 @@ public class UI extends JPanel
 
         public Double SlideAmount(float scalecoeff)
         {
-
-            //System.out.println("IS CLICKED : " + IsClicked());
-
             if(this.mouselistenerReference.isReleased(MouseEvent.BUTTON1))
             {
-
+                if(pressed)
+                {
+                    prevslidedposition = 0;
+                }
                 released = true;
                 pressed = false;
             }
 
             if(IsClicked() && this.mouselistenerReference.isClicked(MouseEvent.BUTTON1) && released)
             {
-
                 resetprevslidedposition = true;
-
-
                 ClickkedInitialPosition.SetValues(this.mouselistenerReference.GetMousePos());
                 pressed = true;
                 released = false;
@@ -344,13 +317,11 @@ public class UI extends JPanel
 
             if (ClickkedInitialPosition.x != null && pressed && !released)
             {
-
                 if (this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x != 0.0)
                 {
                     last_size = this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
                     return this.mouselistenerReference.GetMousePos().x - ClickkedInitialPosition.x;
                 }
-
             }
 
             return 0.0;
