@@ -242,24 +242,23 @@ public class UI extends JPanel
         int TotalSlideX = 0;
         int prevslidedposition = 0;
 
-        boolean resetprevslidedposition = false;
-
         public void Update(float scalecoeff , int BoarddSizeX , Dimension screenSize, int BoardLocationX)
         {
-            prevslidedposition = slided_x_position;
-            Double ScaleAmount = SlideAmount(scalecoeff);
+                prevslidedposition = slided_x_position;
+                Double ScaleAmount = SlideAmount(scalecoeff);
 
-            if (ScaleAmount != 0.0)
-            {
-                slided_x_position = ScaleAmount.intValue();
-            }
-            else
-            {
-                slided_x_position = 0;
-            }
+                if (ScaleAmount != 0.0)
+                {
+                    slided_x_position = ScaleAmount.intValue();
+                }
+                else
+                {
+                    slided_x_position = 0;
+                }
 
-            TotalSlideX += ((slided_x_position - prevslidedposition));
-            this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
+                TotalSlideX += ((slided_x_position - prevslidedposition));
+                TotalSlideX = (int) Math.UV_Tools.clamp(TotalSlideX , -(screenSize.width * 0.82f), 0);
+                this.Drawingattrib.x = (int) (Drawingattrib.x + (TotalSlideX * scalecoeff));
         }
 
         float ScaleCoefBoardSizeLeftCom = 0.0f;
@@ -309,7 +308,6 @@ public class UI extends JPanel
 
             if(IsClicked() && this.mouselistenerReference.isClicked(MouseEvent.BUTTON1) && released)
             {
-                resetprevslidedposition = true;
                 ClickkedInitialPosition.SetValues(this.mouselistenerReference.GetMousePos());
                 pressed = true;
                 released = false;
@@ -482,6 +480,8 @@ public class UI extends JPanel
                     (int)(UIsize.x * 0.10f),
                     2* UIsize.y.intValue());
 
+           // UIsliderBar.collisionBox.x = (int) Math.UV_Tools.clamp(UIsliderBar.collisionBox.x  , BoardLocation.x.intValue() , BoardLocation.x + BoardSize.x + (int)((BoardSize.x/9)*2));
+
 
         CreateGameButton.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 2));
 
@@ -505,7 +505,7 @@ public class UI extends JPanel
         ReadOnlyField.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.40f)));
         ReadOnlyField.SetSize((int) (100 * scale_coeffic), (int) (30 * scale_coeffic));
 
-        UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() + (int)((BoardSize.x/9)*2), ScreenSize , BoardLocation.x.intValue());
+        UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() , ScreenSize , BoardLocation.x.intValue());
 
         UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
 

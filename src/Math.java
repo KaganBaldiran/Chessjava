@@ -146,6 +146,10 @@ public class Math {
             return result;
         }
 
+        public static float clamp(float val, float min, float max) {
+            return java.lang.Math.max(min, java.lang.Math.min(max, val));
+        }
+
     }
 
 
