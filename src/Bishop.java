@@ -55,6 +55,8 @@ public class Bishop extends piece{
             this.SwitchSide = false;
         }
 
+        isTileEmpty = CheckTileEmptiness(Side , input_Coordinates);
+
         if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8 && isTileEmpty)
         {
             tileTracer.SetValues(input_Coordinates);
@@ -115,5 +117,43 @@ public class Bishop extends piece{
             return this.Possible_Moves;
         }
         return null;
+    }
+
+    public boolean CheckTileEmptiness(int Side , Math.Vec2<Integer> Coordinates)
+    {
+        boolean result = false;
+        Math.Vec2<Integer> input_Coordinates = new Math.Vec2<>(Coordinates);
+
+        if(Side <= LEFT_DOWN)
+        {
+            if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8 )
+            {
+                input_Coordinates.x++;
+                input_Coordinates.y++;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+            else if (this.Side == RIGHT_DOWN  && input_Coordinates.x < 8  && input_Coordinates.y > 1)
+            {
+                input_Coordinates.x++;
+                input_Coordinates.y--;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+            else if (this.Side == LEFT_UP && input_Coordinates.x > 1 && input_Coordinates.y < 8 )
+            {
+                input_Coordinates.x--;
+                input_Coordinates.y++;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+            else if (this.Side == LEFT_DOWN && input_Coordinates.x > 1 && input_Coordinates.y > 1 )
+            {
+                input_Coordinates.x--;
+                input_Coordinates.y--;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+
+            System.out.println("IS IT EMPTY SIDE "+ Side + ": " + result);
+
+        }
+        return result;
     }
 }

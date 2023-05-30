@@ -46,8 +46,6 @@ public class Rook extends piece{
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates)
     {
 
-        //System.out.println("INSIDE ROOK IS EMPTY: " + isTileEmpty);
-
         if(!this.Possible_Moves.isEmpty() && this.ClearPossibleMoves)
         {
             this.ClearPossibleMoves = false;
@@ -60,6 +58,7 @@ public class Rook extends piece{
             this.SwitchSide = false;
         }
 
+        isTileEmpty = CheckTileEmptiness(Side , input_Coordinates);
 
         if (this.Side == UP && input_Coordinates.y < 8 && isTileEmpty)
         {
@@ -119,4 +118,39 @@ public class Rook extends piece{
         }
         return null;
     }
+
+    public boolean CheckTileEmptiness(int Side , Math.Vec2<Integer> Coordinates)
+    {
+        boolean result = false;
+        Math.Vec2<Integer> input_Coordinates = new Math.Vec2<>(Coordinates);
+
+        if(Side <= RIGHT)
+        {
+            if (this.Side == UP && input_Coordinates.y < 8)
+            {
+                input_Coordinates.y++;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+            else if (this.Side == DOWN  && input_Coordinates.y > 1)
+            {
+                input_Coordinates.y--;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+            else if (this.Side == LEFT  && input_Coordinates.x > 1)
+            {
+                input_Coordinates.x--;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+            else if (this.Side == RIGHT  && input_Coordinates.x < 8)
+            {
+                input_Coordinates.x++;
+                result = this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).isTileEmpty();
+            }
+
+            System.out.println("IS IT EMPTY SIDE "+ Side + ": " + result);
+
+        }
+        return result;
+    }
+
 }

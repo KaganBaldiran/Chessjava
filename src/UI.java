@@ -483,7 +483,7 @@ public class UI extends JPanel
            // UIsliderBar.collisionBox.x = (int) Math.UV_Tools.clamp(UIsliderBar.collisionBox.x  , BoardLocation.x.intValue() , BoardLocation.x + BoardSize.x + (int)((BoardSize.x/9)*2));
 
 
-        CreateGameButton.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 2));
+        CreateGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 2));
 
         CreateGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
         CreateGameButton.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
@@ -494,7 +494,7 @@ public class UI extends JPanel
         CopyButton.setSize(new Dimension((int) (50 * scale_coeffic),  (int) (50 * scale_coeffic)));
 
 
-        JoinGameButton.setLocation((int) (BoardLocation.x.intValue() + BoardSize.x ), (int) (BoardLocation.y + BoardSize.y / 1.5));
+        JoinGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.5));
 
         JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
         JoinGameButton.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
