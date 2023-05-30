@@ -15,6 +15,7 @@ public abstract class GameEvent
     Player player1;
     Player player2;
     GraphicHandler graphicHandler;
+    Math.Chrono timer;
 
     GameEvent(MouseInputListener mouseListener)
     {
@@ -61,7 +62,7 @@ public abstract class GameEvent
             super();
             this.GameBoard = new Board();
             MoveTheOpponent.SetMutexFalse();
-
+            timer = new Math.Chrono();
 
             if (GameUsage)
             {
@@ -103,6 +104,11 @@ public abstract class GameEvent
                 PlayerOnTheOpponentMachine = player1;
             }
             this.graphicHandler = new GraphicHandler(GameBoard,player1,player2);
+
+            if (!DeleteGameEvent.IsMutexTrue())
+            {
+                timer.start();
+            }
         }
 
         Semaphore DeleteGameEvent = new Semaphore(2);
@@ -176,6 +182,10 @@ public abstract class GameEvent
                     PlayerOnThisMachine.GetPosssibleMoves();
                     PlayerOnThisMachine.MovePlayerPieces();
                 }
+            }
+            else
+            {
+                //timer.interrupt();
             }
 
             Client.loop(PlayerOnThisMachine , PlayerOnTheOpponentMachine);

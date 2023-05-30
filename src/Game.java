@@ -106,13 +106,15 @@ public class Game extends JPanel implements Runnable
                     ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.Disconnect();
                 }
 
-                FileHandler.WriteGameDataToJSON("GameData" , String.valueOf(Integer.parseInt(FileHandler.ReadDataFromJSONFile("GameData" ,"GameCount")) + 1), "GameCount");
-
                 isRunning = false;
 
             }
         });
+
+
     }
+
+
 
     @Override
     public void run()
@@ -240,9 +242,10 @@ public class Game extends JPanel implements Runnable
             }
         }
 
-            System.out.println("Game Terminated");
-            frame.dispose();
-            exit(1);
+        FileHandler.WriteGameDataToJSON("GameData" , String.valueOf(Integer.parseInt(FileHandler.ReadDataFromJSONFile("GameData" ,"GameCount")) + 1), "GameCount");
+        System.out.println("Game Terminated");
+        frame.dispose();
+        exit(1);
     }
 
 }

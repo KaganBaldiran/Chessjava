@@ -152,5 +152,29 @@ public class Math {
 
     }
 
+    public static class Chrono extends Thread
+    {
+
+        public long initial_time;
+        public long time_passed;
+
+        Chrono()
+        {
+
+        }
+
+        @Override
+        public void run()
+        {
+            this.initial_time = System.currentTimeMillis();
+
+            while(!this.isInterrupted())
+            {
+                time_passed = System.currentTimeMillis() - initial_time;
+                System.out.println("TIME PASSED: " + time_passed);
+            }
+        }
+    }
+
 
 }
