@@ -35,6 +35,8 @@ public class Game extends JPanel implements Runnable
 
     UI.Text ConnectionState;
 
+    int GameCount = 0;
+
 
     Game() {
 
@@ -104,6 +106,8 @@ public class Game extends JPanel implements Runnable
                     ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.Disconnect();
                 }
 
+                FileHandler.WriteGameDataToJSON("GameData" , String.valueOf(Integer.parseInt(FileHandler.ReadDataFromJSONFile("GameData" ,"GameCount")) + 1), "GameCount");
+
                 isRunning = false;
 
             }
@@ -117,7 +121,10 @@ public class Game extends JPanel implements Runnable
         {
             if(frame.isFocused()) {
 
+                System.out.println("GAME COUNT: " +  FileHandler.ReadDataFromJSONFile("GameData" ,"GameCount"));
+
                 if (ui.CreateGameButton.Pressed.IsMutexTrue()) {
+
                     Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, true, ui);
 
                     if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue()) {
@@ -158,7 +165,7 @@ public class Game extends JPanel implements Runnable
 
                 Graphics2D bufferedGraphics = bufferedImage.createGraphics();
                 bufferedGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
+
                 graphics.setColor(Color.WHITE);
                 graphics.fillRect(0, 0, current_canvas.getWidth(), current_canvas.getHeight());
 
