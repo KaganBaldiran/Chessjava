@@ -213,6 +213,12 @@ public class Queen extends piece
             }
 
         }
+
+        /*if (!result)
+        {
+            if(this.CurrentGameBoard.FetchTile(input_Coordinates.x , input_Coordinates.y).)
+        }*/
+
         return result;
     }
 

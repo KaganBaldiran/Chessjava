@@ -123,7 +123,7 @@ public class Game extends JPanel implements Runnable
         {
             if(frame.isFocused()) {
 
-                System.out.println("GAME COUNT: " +  FileHandler.ReadDataFromJSONFile("GameData" ,"GameCount"));
+                System.out.println("GAME COUNT: " +  FileHandler.ReadDataFromJSONFile("GameData","GameData" ,"GameCount"));
 
                 if (ui.CreateGameButton.Pressed.IsMutexTrue()) {
 
@@ -242,7 +242,7 @@ public class Game extends JPanel implements Runnable
             }
         }
 
-        FileHandler.WriteGameDataToJSON("GameData" , String.valueOf(Integer.parseInt(FileHandler.ReadDataFromJSONFile("GameData" ,"GameCount")) + 1), "GameCount");
+        FileHandler.WriteGameDataToJSON("GameData","GameData" , String.valueOf(Integer.parseInt(FileHandler.ReadDataFromJSONFile("GameData","GameData" ,"GameCount")) + 1), "GameCount");
         System.out.println("Game Terminated");
         frame.dispose();
         exit(1);

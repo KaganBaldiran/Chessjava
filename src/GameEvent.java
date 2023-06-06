@@ -192,7 +192,11 @@ public abstract class GameEvent
 
             if (MoveTheOpponent.IsMutexTrue())
             {
-                PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).Coordinates.SetValues(Math.UV_Tools.Invert_Y_Axis(Client.getOtherPlayerMove() , Tile.WHITE));
+                PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).TilePieceStandingOn.SetEmptinessState(true);
+                Math.Vec2<Integer> NewTilePosition = Math.UV_Tools.Invert_Y_Axis(Client.getOtherPlayerMove() , Tile.WHITE);
+                PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).Coordinates.SetValues(NewTilePosition);
+                PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).TilePieceStandingOn = this.GameBoard.FetchTile(NewTilePosition.x , NewTilePosition.y);
+                PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).TilePieceStandingOn.SetEmptinessState(false);
                 MoveTheOpponent.SetMutexFalse();
                 System.out.println("MOVED THE OPPONENT TO: " + Client.getOtherPlayerMove().x + " " + Client.OtherPlayerMove.y);
             }
