@@ -85,18 +85,22 @@ public class Player extends JPanel
 
         pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[5],current_mouse_listener,this));
 
-
-        if (InvertPlaces)
+        for(piece piece : this.pieces)
         {
-            for(piece piece : this.pieces)
-            {
+            if (InvertPlaces) {
                 Tile old_tile = piece.TilePieceStandingOn;
-                piece.Coordinates.SetValues(Math.UV_Tools.Invert_Y_Axis(piece.Coordinates,Tile.WHITE));
-                piece.TilePieceStandingOn = this.Current_Board_Reference.FetchTile(piece.Coordinates.x , piece.Coordinates.y);
+                piece.Coordinates.SetValues(Math.UV_Tools.Invert_Y_Axis(piece.Coordinates, Tile.WHITE));
+                piece.TilePieceStandingOn = this.Current_Board_Reference.FetchTile(piece.Coordinates.x, piece.Coordinates.y);
                 piece.TilePieceStandingOn.SetEmptinessState(false);
                 old_tile.SetEmptinessState(false);
             }
+
+            piece.TilePieceStandingOn.setPieceThatStandsOnThisTile(this.pieces.get(piece.PieceIndexInPlayer));
         }
+
+
+
+
 
     }
 
@@ -110,8 +114,9 @@ public class Player extends JPanel
         for (piece piece : this.pieces)
         {
 
-            piece.Move();
-
+            if(piece != null) {
+                piece.Move();
+            }
 
         }
     }
@@ -120,9 +125,22 @@ public class Player extends JPanel
     {
         for (piece piece : this.pieces)
         {
-            if (piece.Selected)
-            {
-                piece.GetPossibleMoves(true, piece.Coordinates);
+            if(piece != null) {
+                if (piece.Selected) {
+
+                    piece.GetPossibleMoves(true, piece.Coordinates);
+                }
+            }
+        }
+    }
+
+    public void Capture(Player OpponentPlayer)
+    {
+        for (piece piece : this.pieces)
+        {
+            if(piece != null) {
+
+                  piece.capture(OpponentPlayer);
             }
         }
     }
@@ -133,7 +151,9 @@ public class Player extends JPanel
         super.paintComponent(g);
 
         for (piece piece : this.pieces) {
-            piece.paintComponent(g);
+            if(piece != null) {
+                piece.paintComponent(g);
+            }
         }
 
     }

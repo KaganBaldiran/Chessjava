@@ -123,7 +123,7 @@ public class Game extends JPanel implements Runnable
         {
             if(frame.isFocused()) {
 
-                System.out.println("GAME COUNT: " +  FileHandler.ReadDataFromJSONFile("GameData","GameData" ,"GameCount"));
+                //System.out.println("GAME COUNT: " +  FileHandler.ReadDataFromJSONFile("GameData","GameData" ,"GameCount"));
 
                 if (ui.CreateGameButton.Pressed.IsMutexTrue()) {
 

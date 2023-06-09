@@ -171,7 +171,7 @@ public class Math {
             while(!this.isInterrupted())
             {
                 time_passed = System.currentTimeMillis() - initial_time;
-                System.out.println("TIME PASSED: " + time_passed);
+                //System.out.println("TIME PASSED: " + time_passed);
             }
         }
     }

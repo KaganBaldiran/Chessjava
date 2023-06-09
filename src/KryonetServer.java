@@ -146,6 +146,13 @@ public class KryonetServer extends Server {
                 close();
 
             }
+            if (message.substring(0,8).trim().equalsIgnoreCase("CAPTURED"))
+            {
+                System.out.println("CLIENT1> " + message);
+                SendTheOtherPlayer(connection , message);
+                close();
+
+            }
 
         }
     }

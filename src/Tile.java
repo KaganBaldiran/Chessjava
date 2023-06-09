@@ -8,6 +8,7 @@ public class Tile
     int Color;
     static final int BLACK = 0;
     static final int WHITE = 1;
+    piece PieceThatStandsOnThisTile;
 
     CollisionBox TileCollisionBox;
 
@@ -36,8 +37,10 @@ public class Tile
     {
         TileEmpty = CurrentTileState;
     }
-
-
+    public void setPieceThatStandsOnThisTile(piece ptsott)
+    {
+        PieceThatStandsOnThisTile = ptsott;
+    }
     public boolean isTileEmpty() {
         return TileEmpty;
     }

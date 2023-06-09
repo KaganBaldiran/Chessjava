@@ -17,11 +17,15 @@ public abstract class piece extends JPanel
     boolean Selected = false;
     MouseInputListener CurrentMouseListenerReference;
     Player player_this_piece_belongs;
+
+    boolean NewTileHasEnemyPiece = false;
+    piece NewTileOldEnemyPiece;
+
+
+    int PieceIndexInPlayer;
     String PieceType;
 
     Math.Vec2<Integer> LastPlayedMove = new Math.Vec2<>(0,0);
-
-
 
 
     public boolean IsInsideBoundries(int x_cord , int y_cord)
@@ -45,6 +49,7 @@ public abstract class piece extends JPanel
         this.Coordinates.SetValues(x_cord,y_cord);
         this.Color = color;
         this.TilePieceStandingOn = TilePieceStandingOn;
+        this.TilePieceStandingOn.setPieceThatStandsOnThisTile(this);
         this.CurrentGameBoard = new Board();
         this.PieceType = this.getClass().getName();
     }
@@ -53,12 +58,14 @@ public abstract class piece extends JPanel
         this.Coordinates.SetValues(x_cord,y_cord);
         this.Color = color;
         this.TilePieceStandingOn = TilePieceStandingOn;
+        this.TilePieceStandingOn.setPieceThatStandsOnThisTile(this);
         this.CurrentGameBoard = CurrentBoard;
         this.piecetexture = new Texture(texture_file_path);
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
         piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
         this.CurrentMouseListenerReference = current_mouse_listener;
         this.player_this_piece_belongs = player_this_piece_belongs;
+        this.PieceIndexInPlayer = player_this_piece_belongs.pieces.size();
         this.PieceType = this.getClass().getName();
     }
 
@@ -67,6 +74,7 @@ public abstract class piece extends JPanel
         this.Coordinates.SetValues(x_cord,y_cord);
         this.Color = color;
         this.TilePieceStandingOn = TilePieceStandingOn;
+        this.TilePieceStandingOn.setPieceThatStandsOnThisTile(this);
         this.CurrentGameBoard = CurrentBoard;
         this.piecetexture = existing_texture;
         piecetexture.Position.SetValues((this.Coordinates.x -1 ) * Board.SQUARE_SIZE , (this.Coordinates.y -1 ) * Board.SQUARE_SIZE);
@@ -74,6 +82,7 @@ public abstract class piece extends JPanel
         piecetexture.setScale(Board.SQUARE_SIZE * 0.0045f);
         this.CurrentMouseListenerReference = current_mouse_listener;
         this.player_this_piece_belongs = player_this_piece_belongs;
+        this.PieceIndexInPlayer = player_this_piece_belongs.pieces.size();
         this.PieceType = this.getClass().getName();
     }
 
@@ -137,8 +146,6 @@ public abstract class piece extends JPanel
 
                     }
 
-                    //System.out.println("IsPieceHovering: " + this.IsPieceHovering + " IsPieceHoveringClick: " + IsPieceHoveringClick);
-
                     if (this.CurrentMouseListenerReference.isClicked(MouseEvent.BUTTON1) && this.IsPieceHovering && IsPieceHoveringClick) {
 
                         this.IsPieceHovering = false;
@@ -149,11 +156,20 @@ public abstract class piece extends JPanel
 
                             if (possibleMove.x.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.x.intValue() && possibleMove.y.intValue() == this.CurrentGameBoard.Tiles.get(i).Tilecoordinates.y.intValue()) {
 
+
+                                if(this.CurrentGameBoard.Tiles.get(i).PieceThatStandsOnThisTile != null) {
+                                    if (this.CurrentGameBoard.Tiles.get(i).PieceThatStandsOnThisTile.Color != this.Color) {
+                                        this.NewTileHasEnemyPiece = true;
+                                        NewTileOldEnemyPiece = this.CurrentGameBoard.Tiles.get(i).PieceThatStandsOnThisTile;
+                                    }
+                                }
+
                                 this.FirstMove = true;
                                 this.TilePieceStandingOn.SetEmptinessState(true);
                                 Coordinates.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
                                 LastPlayedMove.SetValues(this.CurrentGameBoard.Tiles.get(i).Tilecoordinates);
                                 this.TilePieceStandingOn = this.CurrentGameBoard.Tiles.get(i);
+                                this.TilePieceStandingOn.setPieceThatStandsOnThisTile(this.player_this_piece_belongs.pieces.get(this.PieceIndexInPlayer));
                                 this.TilePieceStandingOn.SetEmptinessState(false);
 
                             }
@@ -170,7 +186,7 @@ public abstract class piece extends JPanel
         //this.previousMousePos.SetValues(this.CurrentMouseListenerReference.GetMousePos());
 
     }
-    public abstract void capture();
+    public abstract void capture(Player OpponentPlayer);
     public abstract Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates);
 
     public static final Color TRANSPARENT_LIGHT_GRAY = new Color(java.awt.Color.LIGHT_GRAY.getRed()/ 255,java.awt.Color.LIGHT_GRAY.getGreen() / 255,java.awt.Color.LIGHT_GRAY.getBlue() / 255,0.2f );

@@ -34,7 +34,7 @@ public class Knight extends piece
 
 
     @Override
-    public void capture()
+    public void capture(Player OpponentPlayer)
     {
 
 

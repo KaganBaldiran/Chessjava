@@ -91,15 +91,17 @@ public abstract class GameEvent
 
             if (Server != null)
             {
-                player1 = new Player(Tile.WHITE , GameBoard,mouseListener , false);
                 player2 = new Player(Tile.BLACK , GameBoard,mouseListener , true);
+                player1 = new Player(Tile.WHITE , GameBoard,mouseListener , false);
+
                 this.PlayerOnThisMachine = player1;
                 PlayerOnTheOpponentMachine = player2;
             }
             else
             {
-                player1 = new Player(Tile.WHITE , GameBoard,mouseListener , true);
                 player2 = new Player(Tile.BLACK , GameBoard,mouseListener , false);
+                player1 = new Player(Tile.WHITE , GameBoard,mouseListener , true);
+
                 this.PlayerOnThisMachine = player2;
                 PlayerOnTheOpponentMachine = player1;
             }
@@ -181,6 +183,7 @@ public abstract class GameEvent
                 {
                     PlayerOnThisMachine.GetPosssibleMoves();
                     PlayerOnThisMachine.MovePlayerPieces();
+                    PlayerOnThisMachine.Capture(PlayerOnTheOpponentMachine);
                 }
             }
             else
@@ -196,9 +199,22 @@ public abstract class GameEvent
                 Math.Vec2<Integer> NewTilePosition = Math.UV_Tools.Invert_Y_Axis(Client.getOtherPlayerMove() , Tile.WHITE);
                 PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).Coordinates.SetValues(NewTilePosition);
                 PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).TilePieceStandingOn = this.GameBoard.FetchTile(NewTilePosition.x , NewTilePosition.y);
+                PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).TilePieceStandingOn.setPieceThatStandsOnThisTile(PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()));
                 PlayerOnTheOpponentMachine.pieces.get(Client.getOtherPlayerPieceIndex()).TilePieceStandingOn.SetEmptinessState(false);
                 MoveTheOpponent.SetMutexFalse();
                 System.out.println("MOVED THE OPPONENT TO: " + Client.getOtherPlayerMove().x + " " + Client.OtherPlayerMove.y);
+
+                if(this.Client.CapturedPieceIndex > 0)
+                {
+                    PlayerOnThisMachine.pieces.remove(Client.CapturedPieceIndex);
+
+                    for (int i = 0; i < PlayerOnThisMachine.pieces.size(); i++)
+                    {
+                        PlayerOnThisMachine.pieces.get(i).PieceIndexInPlayer = i;
+                    }
+
+                    Client.CapturedPieceIndex = -1;
+                }
             }
         }
 

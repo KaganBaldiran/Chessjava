@@ -13,6 +13,8 @@ public class KryonetClient extends Client {
     Semaphore MoveOpponentPlayer;
     String ConnectionState = "";
 
+    int CapturedPieceIndex = -1;
+
    KryonetClient(int timeout, String host, int tcpPort, int udpPort , Semaphore MoveOpponentPlayer) throws IOException
    {
        super();
@@ -64,6 +66,19 @@ public class KryonetClient extends Client {
                    {
                        ConnectionState = "CONNECTED";
                    }
+                   if(message.substring(0,8).trim().equalsIgnoreCase("CAPTURED"))
+                   {
+                       if(message.length() > 10)
+                       {
+                           CapturedPieceIndex = Integer.parseInt(String.valueOf(message.charAt(9) + message.charAt(10)));
+                       }
+                       else
+                       {
+                           CapturedPieceIndex = Integer.parseInt(String.valueOf(message.charAt(9)));
+                       }
+
+                       System.out.println("CapturedPieceIndex: " + CapturedPieceIndex);
+                   }
 
                    System.out.println("Received message from server: " + message);
                }
@@ -89,10 +104,19 @@ public class KryonetClient extends Client {
 
                 if(piece.LastPlayedMove.x != 0 && piece.LastPlayedMove.y != 0)
                 {
+
                     sendTCP("MOVE "+ String.valueOf(piece.LastPlayedMove.x) +" "+ String.valueOf(piece.LastPlayedMove.y) + " " + i);
                     CurrentPlayer.SetTurnState(false);
                     OpponentPlayer.SetTurnState(true);
                     piece.LastPlayedMove.SetValues(0,0);
+
+
+                    if(piece.NewTileHasEnemyPiece)
+                    {
+                        sendTCP("CAPTURED " + piece.NewTileOldEnemyPiece.PieceIndexInPlayer);
+                        piece.NewTileHasEnemyPiece = false;
+                    }
+
                     break;
                 }
 
