@@ -142,10 +142,9 @@ public abstract class GameEvent
                 }
                 else
                 {
-                    if(Link.length() >= 31)
+                    if(Link.length() >= 28)
                     {
-                        System.out.println("LINK: " + Link.substring(0 , 13) + " " + Link.substring(27 , 31));
-                        if(Link.substring(0 , 13).equalsIgnoreCase("www.chessjava") && Link.substring(27 , 31).equalsIgnoreCase(".com"))
+                        if(Link.substring(0 , 13).equalsIgnoreCase("www.chessjava") && Link.substring(Link.length() - 4).equalsIgnoreCase(".com"))
                         {
                             ConnectingThread = new Thread(new LoadingDialog());
                             ConnectingThread.start();
