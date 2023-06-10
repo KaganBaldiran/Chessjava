@@ -59,7 +59,7 @@ public class Pawn extends piece {
             tileTracer.y--;
             //tileTracer.SetValues(Math.UV_Tools.Invert_Y_Axis(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates , Tile.WHITE));
             isTileEmpty = this.CurrentGameBoard.FetchTile(tileTracer.x , tileTracer.y).isTileEmpty();
-            System.out.println("TILE " + input_Coordinates.x + " " + input_Coordinates.y + " " + isTileEmpty);
+            //System.out.println("TILE " + input_Coordinates.x + " " + input_Coordinates.y + " " + isTileEmpty);
 
         }
         else

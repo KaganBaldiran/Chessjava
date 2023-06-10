@@ -106,7 +106,7 @@ public class KryonetClient extends Client {
                 if(piece.LastPlayedMove.x != 0 && piece.LastPlayedMove.y != 0)
                 {
 
-                    sendTCP("MOVE "+ String.valueOf(piece.LastPlayedMove.x) +" "+ String.valueOf(piece.LastPlayedMove.y) + " " + i);
+                    sendTCP("MOVE "+ String.valueOf(piece.LastPlayedMove.x) +" "+ String.valueOf(piece.LastPlayedMove.y) + " " + piece.PieceIndexInPlayer);
                     CurrentPlayer.SetTurnState(false);
                     OpponentPlayer.SetTurnState(true);
                     piece.LastPlayedMove.SetValues(0,0);

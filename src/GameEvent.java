@@ -99,8 +99,9 @@ public abstract class GameEvent
             }
             else
             {
-                player2 = new Player(Tile.BLACK , GameBoard,mouseListener , false);
                 player1 = new Player(Tile.WHITE , GameBoard,mouseListener , true);
+                player2 = new Player(Tile.BLACK , GameBoard,mouseListener , false);
+
 
                 this.PlayerOnThisMachine = player2;
                 PlayerOnTheOpponentMachine = player1;

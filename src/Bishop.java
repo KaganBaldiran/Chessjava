@@ -33,12 +33,26 @@ public class Bishop extends piece{
     @Override
     public void capture(Player OpponentPlayer) {
 
+        if(this.NewTileHasEnemyPiece)
+        {
+            this.player_this_piece_belongs.TakeOpponentPiece(NewTileOldEnemyPiece);
+            OpponentPlayer.pieces.remove(NewTileOldEnemyPiece.PieceIndexInPlayer);
+
+            for (int i = 0; i < OpponentPlayer.pieces.size(); i++)
+            {
+                OpponentPlayer.pieces.get(i).PieceIndexInPlayer = i;
+            }
+            //NewTileHasEnemyPiece = false;
+        }
+
     }
 
 
     Math.Vec2<Integer> tileTracer = new Math.Vec2<>();
     boolean SwitchSide = false;
     int Side = RIGHT_UP;
+
+    Math.Vec2<Boolean> IsEmptyflag;
 
     @Override
     public Vector<Math.Vec2<Integer>> GetPossibleMoves(boolean isTileEmpty, Math.Vec2<Integer> input_Coordinates)
@@ -49,13 +63,22 @@ public class Bishop extends piece{
             this.Possible_Moves.clear();
         }
 
+        if(IsEmptyflag != null) {
+            if (IsEmptyflag.y) {
+                SwitchSide = true;
+                tileTracer.SetValues(this.Coordinates);
+            }
+        }
+
         if(this.SwitchSide)
         {
             this.Side++;
             this.SwitchSide = false;
         }
 
-        isTileEmpty = CheckTileEmptiness(Side , input_Coordinates);
+        IsEmptyflag = CheckTileEmptiness(Side, input_Coordinates);
+
+        isTileEmpty = IsEmptyflag.x;
 
         if (this.Side == RIGHT_UP  && input_Coordinates.y < 8  && input_Coordinates.x < 8 && isTileEmpty)
         {
@@ -119,7 +142,9 @@ public class Bishop extends piece{
         return null;
     }
 
-    public boolean CheckTileEmptiness(int Side , Math.Vec2<Integer> Coordinates)
+    Math.Vec2<Boolean> flag = new Math.Vec2<>();
+
+    public  Math.Vec2<Boolean> CheckTileEmptiness(int Side , Math.Vec2<Integer> Coordinates)
     {
         boolean result = false;
         Math.Vec2<Integer> input_Coordinates = new Math.Vec2<>(Coordinates);
@@ -154,6 +179,22 @@ public class Bishop extends piece{
             System.out.println("IS IT EMPTY SIDE "+ Side + ": " + result);
 
         }
-        return result;
+
+        flag.SetValues(result, false);
+
+        if (!result) {
+            if (this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).PieceThatStandsOnThisTile != null) {
+                //System.out.println("PIECE COLOR: " + " piece name: " + this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).PieceThatStandsOnThisTile.PieceType + " " + this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).PieceThatStandsOnThisTile.Color + " this.color: " + this.Color);
+                if (this.CurrentGameBoard.FetchTile(input_Coordinates.x, input_Coordinates.y).PieceThatStandsOnThisTile.Color != this.Color) {
+
+                    flag.SetValues(true, true);
+                }
+
+
+            }
+
+
+        }
+        return flag;
     }
 }
