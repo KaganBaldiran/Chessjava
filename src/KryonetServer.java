@@ -150,7 +150,6 @@ public class KryonetServer extends Server {
             {
                 System.out.println("CLIENT1> " + message);
                 SendTheOtherPlayer(connection , message);
-                close();
 
             }
 
