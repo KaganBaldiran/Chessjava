@@ -40,7 +40,6 @@ public class Queen extends piece {
             {
                 OpponentPlayer.pieces.get(i).PieceIndexInPlayer = i;
             }
-            //NewTileHasEnemyPiece = false;
         }
 
     }

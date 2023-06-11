@@ -23,6 +23,17 @@ public class UI extends JPanel
 
     Math.Vec2<Float> UIsize = new Math.Vec2<>(0.0f,0.0f);
 
+    public static class CheckBox extends JCheckBox
+    {
+        CheckBox(int x , int y , int width , int height , String title , boolean Checked)
+        {
+            super(title , Checked);
+            this.setBounds(x, y, width, height);
+            this.setVisible(true);
+        }
+
+    }
+
     public static class Button extends JButton
     {
         Semaphore Pressed = new Semaphore(2);
@@ -409,6 +420,8 @@ public class UI extends JPanel
     DropDownMenu CreateGameMenu;
     TextField ReadOnlyField;
 
+    CheckBox PortMapping;
+
 
     UI(JFrame frame ,MouseInputListener Mouselistener) {
 
@@ -435,10 +448,13 @@ public class UI extends JPanel
 
         CopyButton.addMouseListener(Mouselistener);
 
+        PortMapping = new CheckBox(0,0 , 190 ,50 , "Try UPnP Port Mapping" , false);
+
         frame_reference = frame;
         frame_reference.add(CreateGameButton);
         frame_reference.add(JoinGameButton);
         frame_reference.add(CopyButton);
+        frame_reference.add(PortMapping);
 
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
         ReadOnlyField = new TextField("" , frame_reference ,true);
@@ -508,6 +524,9 @@ public class UI extends JPanel
         UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() , ScreenSize , BoardLocation.x.intValue());
 
         UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
+
+        PortMapping.setSize((int) (190 * scale_coeffic), (int) (50 * scale_coeffic));
+        PortMapping.setLocation((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.30f)));
 
         if (CopyButton.Pressed.IsMutexTrue())
         {

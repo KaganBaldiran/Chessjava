@@ -1,9 +1,13 @@
+import org.xml.sax.SAXException;
+
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import static java.lang.System.exit;
 
@@ -104,6 +108,12 @@ public class Game extends JPanel implements Runnable
                 if(Games.IsThereGame())
                 {
                     ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.Disconnect();
+
+                    if(ui.PortMapping.isSelected())
+                    {
+                        KryonetServer CurrentServer = ((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server;
+                        CurrentServer.DeletePortMapping(CurrentServer.PortMappingDevice, CurrentServer.Ports.x, "TCP");
+                    }
                 }
 
                 isRunning = false;
@@ -129,6 +139,17 @@ public class Game extends JPanel implements Runnable
 
                     Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, true, ui);
 
+                    if(ui.PortMapping.isSelected())
+                    {
+                        KryonetServer CurrentServer = ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server;
+
+                        try {
+                            CurrentServer.PortMappingDevice = CurrentServer.PortMapping(CurrentServer.Ports.x , CurrentServer.Ports.x , "TCP");
+                        } catch (IOException | ParserConfigurationException | SAXException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
                     if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue()) {
                         Games.DeleteGameEvents();
                     } else {
@@ -139,6 +160,7 @@ public class Game extends JPanel implements Runnable
 
                         ui.JoinGameButton.setVisible(false);
                         ui.CreateGameButton.setVisible(false);
+                        ui.PortMapping.setVisible(false);
                     }
 
                     ui.CreateGameButton.Pressed.SetMutexFalse();
@@ -152,6 +174,7 @@ public class Game extends JPanel implements Runnable
                     } else {
                         ui.JoinGameButton.setVisible(false);
                         ui.CreateGameButton.setVisible(false);
+                        ui.PortMapping.setVisible(false);
                     }
 
                     ui.JoinGameButton.Pressed.SetMutexFalse();

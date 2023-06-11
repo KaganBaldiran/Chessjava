@@ -7,7 +7,11 @@ import de.javawi.jstun.attribute.MessageAttribute;
 import de.javawi.jstun.attribute.MessageAttributeParsingException;
 import de.javawi.jstun.header.MessageHeader;
 import de.javawi.jstun.util.UtilityException;
+import org.bitlet.weupnp.GatewayDevice;
+import org.bitlet.weupnp.GatewayDiscover;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -23,6 +27,11 @@ public class KryonetServer extends Server {
     Connection clientConnection2;
 
     String GameLink;
+    String externalIpAddress;
+
+    GatewayDevice PortMappingDevice;
+
+    Math.Vec2<Integer> Ports = new Math.Vec2<>();
 
     KryonetServer(int tcp_port , int udp_port) throws IOException {
         super();
@@ -38,6 +47,7 @@ public class KryonetServer extends Server {
 
         String ipaddress = InetAddress.getLocalHost().getHostAddress();
 
+        Ports.SetValues(tcp_port , udp_port);
 
         GameLink = ConstructLink(ipaddress);
 
@@ -232,6 +242,59 @@ public class KryonetServer extends Server {
 
 
 
+
+    }
+
+    public GatewayDevice PortMapping(int externalPort , int internalPort , String protocol) throws IOException, ParserConfigurationException, SAXException {
+
+        boolean success;
+
+        GatewayDiscover discover = new GatewayDiscover();
+        discover.discover();
+
+        GatewayDevice d = discover.getValidGateway();
+        System.out.println("IS EMPTY?????: " + discover.getAllGateways().isEmpty());
+        if (d == null) {
+            System.err.println("No IGD found");
+            System.err.println("Server cannot be initialized");
+            //System.exit(1);
+        }
+
+        assert d != null;
+        System.out.println("Found IGD: " + d.getFriendlyName());
+
+        this.externalIpAddress = d.getExternalIPAddress();
+        System.out.println("External IP address: " + this.externalIpAddress);
+
+        // Add a port mapping to the IGD
+        String description = "Port mapping";
+
+        InetAddress localAddress = InetAddress.getLocalHost();
+        System.out.println("LOCAL IP address: " + localAddress.getHostAddress());
+        success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
+        if (success) {
+            System.out.println("Port mapping added: " + this.externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
+        } else {
+            System.err.println("Failed to add port mapping");
+        }
+
+        return d;
+    }
+
+    public void DeletePortMapping(GatewayDevice d , int externalPort , String protocol)
+    {
+        boolean success;
+
+        try {
+            success = d.deletePortMapping(externalPort, protocol);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+        if (success) {
+            System.out.println("Port mapping removed");
+        } else {
+            System.err.println("Failed to remove port mapping");
+        }
 
     }
 }

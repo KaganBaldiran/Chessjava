@@ -21,7 +21,7 @@ public class GameServer extends Thread
     public Boolean CLIENT2_STATE = false;
     public int internalPort;
     public int externalPort;
-    public String protocol = "UDP";
+    //public String protocol = "UDP";
 
     String externalIpAddress;
     public GatewayDevice device;
@@ -43,7 +43,7 @@ public class GameServer extends Thread
         try
         {
             this.socket = new DatagramSocket(port,InetAddress.getByName("192.168.0.107"));
-            device = PortMapping();
+            //device = PortMapping();
             this.GameLink = ConstructLink(externalIpAddress);
             //System.out.println("Waiting for client 1 on Port " + socket.getLocalPort());
 
@@ -51,7 +51,7 @@ public class GameServer extends Thread
         catch (SocketException e)
         {
             e.printStackTrace();
-        } catch (IOException | ParserConfigurationException | SAXException | NoSuchAlgorithmException e) {
+        } catch (IOException| NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
 
@@ -254,11 +254,10 @@ public class GameServer extends Thread
     }
 
 
-    public GatewayDevice PortMapping() throws IOException, ParserConfigurationException, SAXException {
+    public static GatewayDevice PortMapping(int externalPort , int internalPort , InetAddress LocalAddress , String protocol) throws IOException, ParserConfigurationException, SAXException {
 
-        System.out.println("MY INTERFACE: " + this.checkIps());
+        boolean success;
 
-        //System.out.println("MY WIFI INTERFACE: " + getWirelessInterfaceName());
         GatewayDiscover discover = new GatewayDiscover();
         discover.discover();
 
@@ -273,8 +272,8 @@ public class GameServer extends Thread
         assert d != null;
         System.out.println("Found IGD: " + d.getFriendlyName());
 
-        this.externalIpAddress = d.getExternalIPAddress();
-        System.out.println("External IP address: " + this.externalIpAddress);
+        String externalIpAddress = d.getExternalIPAddress();
+        System.out.println("External IP address: " + externalIpAddress);
 
         // Add a port mapping to the IGD
         String description = "Port mapping";
@@ -284,7 +283,7 @@ public class GameServer extends Thread
         assert localAddress != null;
         success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
         if (success) {
-            System.out.println("Port mapping added: " + this.externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
+            System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
         } else {
             System.err.println("Failed to add port mapping");
         }
@@ -294,6 +293,8 @@ public class GameServer extends Thread
 
     public void DeletePortMapping(GatewayDevice d , int externalPort , String protocol)
     {
+        boolean success;
+
         try {
             success = d.deletePortMapping(externalPort, protocol);
         } catch (IOException | SAXException e) {
