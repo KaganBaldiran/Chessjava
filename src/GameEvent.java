@@ -57,7 +57,7 @@ public abstract class GameEvent
         public Player PlayerOnTheOpponentMachine;
         Thread ConnectingThread = null;
 
-        LANGameEvent(MouseInputListener mouseListener , boolean GameUsage , UI currentUI)
+        LANGameEvent(MouseInputListener mouseListener , boolean GameUsage , UI currentUI , String ExternalIP)
         {
             super();
             this.GameBoard = new Board();
@@ -67,7 +67,7 @@ public abstract class GameEvent
             if (GameUsage)
             {
                 try {
-                    InitServer();
+                    InitServer(ExternalIP);
                 } catch (IOException | UtilityException e) {
                     throw new RuntimeException(e);
                 }
@@ -116,12 +116,12 @@ public abstract class GameEvent
 
         Semaphore DeleteGameEvent = new Semaphore(2);
 
-        public synchronized void InitServer() throws IOException, UtilityException
+        public synchronized void InitServer(String ExternalIP) throws IOException, UtilityException
         {
             if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game server?") == 0)
             {
-                Server = new KryonetServer(54555, 54777);
-                Client = new KryonetClient(5000, Server.GameLink, 54555, 54777 , MoveTheOpponent);
+                Server = new KryonetServer(54555, 54777 , ExternalIP);
+                Client = new KryonetClient(5000, Server.GameLinkInternal, 54555, 54777 , MoveTheOpponent);
             }
             else
             {

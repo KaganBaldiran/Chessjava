@@ -205,7 +205,7 @@ public abstract class piece extends JPanel
                     if (possibleMove.x < 9) {
                         int centerX = (possibleMove.x - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
                         int centerY = (possibleMove.y - 1) * (Board.SQUARE_SIZE) + (Board.SQUARE_SIZE / 2);
-                        int radius = 35;
+                        int radius = (int) (Board.SQUARE_SIZE * 0.25f);
 
                         g.setColor(TRANSPARENT_LIGHT_GRAY);
                         g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);

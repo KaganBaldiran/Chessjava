@@ -448,7 +448,7 @@ public class UI extends JPanel
 
         CopyButton.addMouseListener(Mouselistener);
 
-        PortMapping = new CheckBox(0,0 , 190 ,50 , "Try UPnP Port Mapping" , false);
+        PortMapping = new CheckBox(0,0 , 170 ,50 , "Try UPnP Port Mapping" , false);
 
         frame_reference = frame;
         frame_reference.add(CreateGameButton);
@@ -525,13 +525,22 @@ public class UI extends JPanel
 
         UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
 
-        PortMapping.setSize((int) (190 * scale_coeffic), (int) (50 * scale_coeffic));
+        PortMapping.setSize((int) (170 * scale_coeffic), (int) (50 * scale_coeffic));
         PortMapping.setLocation((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.30f)));
 
         if (CopyButton.Pressed.IsMutexTrue())
         {
             ReadOnlyField.copyToClipboard();
             CopyButton.Pressed.SetMutexFalse();
+        }
+
+        if(CreateGameMenu.GetSelectedItem().equalsIgnoreCase("WAN Online"))
+        {
+           PortMapping.setVisible(true);
+        }
+        else
+        {
+            PortMapping.setVisible(false);
         }
 
     }

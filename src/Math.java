@@ -123,6 +123,41 @@ public class Math {
         }
 
     }
+    public static class Pair<type1 , type2>
+    {
+        type1 first;
+        type2 second;
+
+        Pair()
+        {
+            this.first = null;
+            this.second = null;
+        }
+        Pair(type1 first , type2 second)
+        {
+            this.first = first;
+            this.second = second;
+        }
+
+        Pair(Pair<type1 , type2> Input)
+        {
+            this.first = Input.first;
+            this.second = Input.second;
+        }
+
+        void SetValues(type1 first , type2 second)
+        {
+            this.first = first;
+            this.second = second;
+        }
+
+        void SetValues(Pair<type1 , type2> Input)
+        {
+            this.first = Input.first;
+            this.second = Input.second;
+        }
+
+    }
     public static class UV_Tools
     {
         static public Math.Vec2<Integer> Board_Size = new Vec2<>(8,8);

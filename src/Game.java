@@ -1,3 +1,4 @@
+import org.bitlet.weupnp.GatewayDevice;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
@@ -32,9 +33,7 @@ public class Game extends JPanel implements Runnable
 
     GameEventHandler Games;
     Color LeftComponentColor = GraphicHandler.HexToRgba("#F5E7E4");
-
-
-
+    Math.Pair<GatewayDevice , String> PortMapping = new Math.Pair<>();
     Color RightComponentColor = GraphicHandler.HexToRgba("#E4F5EF");
 
     UI.Text ConnectionState;
@@ -111,8 +110,12 @@ public class Game extends JPanel implements Runnable
 
                     if(ui.PortMapping.isSelected())
                     {
-                        KryonetServer CurrentServer = ((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server;
-                        CurrentServer.DeletePortMapping(CurrentServer.PortMappingDevice, CurrentServer.Ports.x, "TCP");
+                        if(((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server != null) {
+                            KryonetServer.DeletePortMapping(PortMapping.first, 54555, "TCP");
+                        }
+                        else {
+                            KryonetClient.DeletePortMapping(PortMapping.first, 54555, "TCP");
+                        }
                     }
                 }
 
@@ -137,24 +140,31 @@ public class Game extends JPanel implements Runnable
 
                 if (ui.CreateGameButton.Pressed.IsMutexTrue()) {
 
-                    Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, true, ui);
-
                     if(ui.PortMapping.isSelected())
                     {
-                        KryonetServer CurrentServer = ((GameEvent.LANGameEvent)Games.GetGameEvent(Games.GetGameEventCount() - 1)).Server;
-
                         try {
-                            CurrentServer.PortMappingDevice = CurrentServer.PortMapping(CurrentServer.Ports.x , CurrentServer.Ports.x , "TCP");
+                            PortMapping = KryonetServer.PortMapping(54555 , 54555 , "TCP");
                         } catch (IOException | ParserConfigurationException | SAXException e) {
                             throw new RuntimeException(e);
                         }
                     }
 
+                    Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, true, ui , PortMapping.second);
+
                     if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue()) {
                         Games.DeleteGameEvents();
                     } else {
                         if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server != null) {
-                            ui.ReadOnlyField.SetText(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server.GameLink);
+
+                            if(PortMapping.second == null)
+                            {
+                                ui.ReadOnlyField.SetText(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server.GameLinkInternal);
+                            }
+                            else
+                            {
+                                ui.ReadOnlyField.SetText(Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Server.GameLinkExternal);
+                            }
+
                             ui.ReadOnlyField.SetEditable(false);
                         }
 
@@ -167,7 +177,17 @@ public class Game extends JPanel implements Runnable
                 }
 
                 if (ui.JoinGameButton.Pressed.IsMutexTrue()) {
-                    Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, false, ui);
+
+                    if(ui.PortMapping.isSelected())
+                    {
+                        try {
+                            PortMapping = KryonetClient.PortMapping(54555 , 54555 , "TCP");
+                        } catch (IOException | ParserConfigurationException | SAXException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, false, ui , PortMapping.second);
 
                     if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue()) {
                         Games.DeleteGameEvents();

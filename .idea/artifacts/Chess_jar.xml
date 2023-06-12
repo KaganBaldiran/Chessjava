@@ -3,9 +3,10 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Chess_jar</output-path>
     <root id="archive" name="Chess.jar">
       <element id="module-output" name="Chess" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/weupnp-0.1.4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/include/kryonet-2.21-all.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/include/jstun-0.7.4.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Downloads/weupnp-0.1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/include/json-20230227.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

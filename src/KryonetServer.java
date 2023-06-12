@@ -26,32 +26,31 @@ public class KryonetServer extends Server {
     Connection clientConnection1;
     Connection clientConnection2;
 
-    String GameLink;
+    String GameLinkExternal;
+
+    String GameLinkInternal;
     String externalIpAddress;
 
     GatewayDevice PortMappingDevice;
 
     Math.Vec2<Integer> Ports = new Math.Vec2<>();
 
-    KryonetServer(int tcp_port , int udp_port) throws IOException {
+    KryonetServer(int tcp_port , int udp_port , String ExternalIP) throws IOException {
         super();
         start();
-
-        try {
-            StunAddress = SendRequestToSTUNserver();
-        } catch (UtilityException | MessageAttributeParsingException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println("STUN SERVER: "+ StunAddress.getAddress() + " " + StunAddress.getPort());
 
         String ipaddress = InetAddress.getLocalHost().getHostAddress();
 
         Ports.SetValues(tcp_port , udp_port);
 
-        GameLink = ConstructLink(ipaddress);
+        if(ExternalIP != null)
+        {
+            GameLinkExternal = ConstructLink(ExternalIP);
+        }
 
-        System.out.println("GameLink: "+ GameLink + " " + ipaddress);
+        GameLinkInternal = ConstructLink(ipaddress);
+
+        System.out.println("GameLink: "+ GameLinkExternal + " " + ExternalIP + " internal: " + GameLinkInternal);
 
         bind(tcp_port, udp_port);
 
@@ -245,7 +244,7 @@ public class KryonetServer extends Server {
 
     }
 
-    public GatewayDevice PortMapping(int externalPort , int internalPort , String protocol) throws IOException, ParserConfigurationException, SAXException {
+    public static Math.Pair<GatewayDevice , String> PortMapping(int externalPort , int internalPort , String protocol) throws IOException, ParserConfigurationException, SAXException {
 
         boolean success;
 
@@ -263,8 +262,8 @@ public class KryonetServer extends Server {
         assert d != null;
         System.out.println("Found IGD: " + d.getFriendlyName());
 
-        this.externalIpAddress = d.getExternalIPAddress();
-        System.out.println("External IP address: " + this.externalIpAddress);
+        String externalIpAddress = d.getExternalIPAddress();
+        System.out.println("External IP address: " + externalIpAddress);
 
         // Add a port mapping to the IGD
         String description = "Port mapping";
@@ -273,15 +272,15 @@ public class KryonetServer extends Server {
         System.out.println("LOCAL IP address: " + localAddress.getHostAddress());
         success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
         if (success) {
-            System.out.println("Port mapping added: " + this.externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
+            System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
         } else {
             System.err.println("Failed to add port mapping");
         }
 
-        return d;
+        return new Math.Pair<>(d ,externalIpAddress);
     }
 
-    public void DeletePortMapping(GatewayDevice d , int externalPort , String protocol)
+    public static void DeletePortMapping(GatewayDevice d , int externalPort , String protocol)
     {
         boolean success;
 

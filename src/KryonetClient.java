@@ -1,9 +1,14 @@
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import org.bitlet.weupnp.GatewayDevice;
+import org.bitlet.weupnp.GatewayDiscover;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.net.InetAddress;
 
 public class KryonetClient extends Client {
 
@@ -15,6 +20,12 @@ public class KryonetClient extends Client {
 
     int CapturedPieceIndex = -1;
 
+    String externalIpAddress;
+
+    GatewayDevice PortMappingDevice;
+
+    Math.Vec2<Integer> Ports = new Math.Vec2<>();
+
    KryonetClient(int timeout, String host, int tcpPort, int udpPort , Semaphore MoveOpponentPlayer) throws IOException
    {
        super();
@@ -22,6 +33,8 @@ public class KryonetClient extends Client {
        start();
 
        String ipAddress = KryonetServer.DeConstructLink(host);
+
+       Ports.SetValues(tcpPort , udpPort);
 
        connect(timeout,ipAddress,tcpPort,udpPort);
        ConnectionState = "DISCONNECTED";
@@ -152,6 +165,59 @@ public class KryonetClient extends Client {
     public void run() {
 
         super.run();
+
+    }
+
+    public static Math.Pair<GatewayDevice , String> PortMapping(int externalPort , int internalPort , String protocol) throws IOException, ParserConfigurationException, SAXException {
+
+        boolean success;
+
+        GatewayDiscover discover = new GatewayDiscover();
+        discover.discover();
+
+        GatewayDevice d = discover.getValidGateway();
+        System.out.println("IS EMPTY?????: " + discover.getAllGateways().isEmpty());
+        if (d == null) {
+            System.err.println("No IGD found");
+            System.err.println("Server cannot be initialized");
+            //System.exit(1);
+        }
+
+        assert d != null;
+        System.out.println("Found IGD: " + d.getFriendlyName());
+
+        String externalIpAddress = d.getExternalIPAddress();
+        System.out.println("External IP address: " + externalIpAddress);
+
+        // Add a port mapping to the IGD
+        String description = "Port mapping";
+
+        InetAddress localAddress = InetAddress.getLocalHost();
+        System.out.println("LOCAL IP address: " + localAddress.getHostAddress());
+        success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
+        if (success) {
+            System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
+        } else {
+            System.err.println("Failed to add port mapping");
+        }
+
+        return new Math.Pair<>(d ,externalIpAddress);
+    }
+
+    public static void DeletePortMapping(GatewayDevice d , int externalPort , String protocol)
+    {
+        boolean success;
+
+        try {
+            success = d.deletePortMapping(externalPort, protocol);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+        if (success) {
+            System.out.println("Port mapping removed");
+        } else {
+            System.err.println("Failed to remove port mapping");
+        }
 
     }
 }

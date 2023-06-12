@@ -13,7 +13,7 @@ public class GameEventHandler
     }
 
 
-    public void AddGameEvent(int GameType , Boolean GameUsage , UI currentUI)
+    public void AddGameEvent(int GameType , Boolean GameUsage , UI currentUI , String ExternalIP)
     {
         if(!Games.isEmpty())
         {
@@ -21,7 +21,7 @@ public class GameEventHandler
         }
         if(GameType == LAN_GAME_EVENT)
         {
-            Games.add(new GameEvent.LANGameEvent(mouseInputListenerReference,GameUsage,currentUI));
+            Games.add(new GameEvent.LANGameEvent(mouseInputListenerReference,GameUsage,currentUI , ExternalIP));
         }
 
     }
