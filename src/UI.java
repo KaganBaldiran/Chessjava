@@ -510,14 +510,12 @@ public class UI extends JPanel
         if(CreateGameButton.isVisible())
         {
             CreateGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 2));
-
             CreateGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
             CreateGameButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
         }
 
         if(CopyButton.isVisible()) {
             CopyButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (105 * scale_coeffic)), (int) (BoardLocation.y + (BoardSize.y * 0.39f)));
-
             CopyButton.setPreferredSize(new Dimension((int) (50 * scale_coeffic), (int) (50 * scale_coeffic)));
             CopyButton.setSize(new Dimension((int) (50 * scale_coeffic), (int) (50 * scale_coeffic)));
 
@@ -525,27 +523,30 @@ public class UI extends JPanel
 
         if(JoinGameButton.isVisible()) {
             JoinGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.5));
-
             JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
             JoinGameButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
         }
 
         if(DisconnectButton.isVisible()) {
             DisconnectButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (30 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.5));
-
             DisconnectButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
             DisconnectButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
         }
 
-        CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.20f)));
-        CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
+        if(CreateGameMenu.comboBox.isVisible()) {
+            CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.20f)));
+            CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
+        }
 
-        ReadOnlyField.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.40f)));
-        ReadOnlyField.SetSize((int) (100 * scale_coeffic), (int) (30 * scale_coeffic));
+        if(ReadOnlyField.isVisible()) {
+            ReadOnlyField.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.40f)));
+            ReadOnlyField.SetSize((int) (100 * scale_coeffic), (int) (30 * scale_coeffic));
+        }
 
-        UIsliderBar.Update(scale_coeffic , BoardSize.x.intValue() , ScreenSize , BoardLocation.x.intValue());
-
-        UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
+        if(UIsliderBar.isVisible()) {
+            UIsliderBar.Update(scale_coeffic, BoardSize.x.intValue(), ScreenSize, BoardLocation.x.intValue());
+            UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int) ((BoardSize.x / 9) * 2) + BoardLocation.x.intValue(), BoardLocation.x.intValue(), ScreenSize, scale_coeffic);
+        }
 
         if(PortMapping.isVisible()) {
             PortMapping.setSize((int) (170 * scale_coeffic), (int) (50 * scale_coeffic));
