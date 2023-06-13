@@ -34,10 +34,10 @@ public class Game extends JPanel implements Runnable
     GameEventHandler Games;
     Color LeftComponentColor = GraphicHandler.HexToRgba("#F5E7E4");
     Math.Pair<GatewayDevice , String> PortMapping = new Math.Pair<>();
+    boolean DeleteGameEvent = false;
     Color RightComponentColor = GraphicHandler.HexToRgba("#E4F5EF");
 
     UI.Text ConnectionState;
-
     int GameCount = 0;
 
 
@@ -143,13 +143,19 @@ public class Game extends JPanel implements Runnable
                     if(ui.PortMapping.isSelected())
                     {
                         try {
-                            PortMapping = KryonetServer.PortMapping(54555 , 54555 , "TCP");
+                            PortMapping = KryonetServer.PortMapping(54555 , 54555 , "TCP" , DeleteGameEvent);
                         } catch (IOException | ParserConfigurationException | SAXException e) {
                             throw new RuntimeException(e);
                         }
                     }
 
                     Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, true, ui , PortMapping.second);
+
+                    if(DeleteGameEvent)
+                    {
+                        Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.SetMutexTrue();
+                        DeleteGameEvent = false;
+                    }
 
                     if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue()) {
                         Games.DeleteGameEvents();
@@ -171,6 +177,8 @@ public class Game extends JPanel implements Runnable
                         ui.JoinGameButton.setVisible(false);
                         ui.CreateGameButton.setVisible(false);
                         ui.PortMapping.setVisible(false);
+                        ui.CreateGameMenu.comboBox.setVisible(false);
+                        ui.DisconnectButton.setVisible(true);
                     }
 
                     ui.CreateGameButton.Pressed.SetMutexFalse();
@@ -181,7 +189,7 @@ public class Game extends JPanel implements Runnable
                     if(ui.PortMapping.isSelected())
                     {
                         try {
-                            PortMapping = KryonetClient.PortMapping(54555 , 54555 , "TCP");
+                            PortMapping = KryonetClient.PortMapping(54555 , 54555 , "TCP" , DeleteGameEvent);
                         } catch (IOException | ParserConfigurationException | SAXException e) {
                             throw new RuntimeException(e);
                         }
@@ -189,12 +197,20 @@ public class Game extends JPanel implements Runnable
 
                     Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, false, ui , PortMapping.second);
 
+                    if(DeleteGameEvent)
+                    {
+                        Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.SetMutexTrue();
+                        DeleteGameEvent = false;
+                    }
+
                     if (Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DeleteGameEvent.IsMutexTrue()) {
                         Games.DeleteGameEvents();
                     } else {
                         ui.JoinGameButton.setVisible(false);
                         ui.CreateGameButton.setVisible(false);
                         ui.PortMapping.setVisible(false);
+                        ui.CreateGameMenu.comboBox.setVisible(false);
+                        ui.DisconnectButton.setVisible(true);
                     }
 
                     ui.JoinGameButton.Pressed.SetMutexFalse();

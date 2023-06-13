@@ -147,7 +147,7 @@ public abstract class GameEvent
                     {
                         if(Link.substring(0 , 13).equalsIgnoreCase("www.chessjava") && Link.substring(Link.length() - 4).equalsIgnoreCase(".com"))
                         {
-                            ConnectingThread = new Thread(new LoadingDialog());
+                            ConnectingThread = new Thread(new LoadingDialog("                           CONNECTING..."));
                             ConnectingThread.start();
                             Client = new KryonetClient(5000, Link, 54555, 54777 , MoveTheOpponent);
                         }
@@ -221,13 +221,15 @@ public abstract class GameEvent
     }
 
     public static class LoadingDialog implements Runnable {
-        LoadingDialog()
+        String Text;
+        LoadingDialog(String text)
         {
             super();
+            Text = text;
         }
         @Override
         public void run() {
-            JOptionPane.showMessageDialog(null , "                           CONNECTING...","Process",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null ,Text ,"Process",JOptionPane.PLAIN_MESSAGE);
         }
     }
 }

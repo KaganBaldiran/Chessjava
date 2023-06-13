@@ -168,9 +168,10 @@ public class KryonetClient extends Client {
 
     }
 
-    public static Math.Pair<GatewayDevice , String> PortMapping(int externalPort , int internalPort , String protocol) throws IOException, ParserConfigurationException, SAXException {
+    public static Math.Pair<GatewayDevice , String> PortMapping(int externalPort , int internalPort , String protocol, boolean DeleteGameEvent) throws IOException, ParserConfigurationException, SAXException {
 
         boolean success;
+        String Error = "Requested port is already mapped!";
 
         GatewayDiscover discover = new GatewayDiscover();
         discover.discover();
@@ -180,7 +181,7 @@ public class KryonetClient extends Client {
         if (d == null) {
             System.err.println("No IGD found");
             System.err.println("Server cannot be initialized");
-            //System.exit(1);
+            Error = "No IGD found // Server cannot be initialized";
         }
 
         assert d != null;
@@ -198,7 +199,9 @@ public class KryonetClient extends Client {
         if (success) {
             System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
         } else {
-            System.err.println("Failed to add port mapping");
+            System.err.println("Unable to execute Port Mapping! :: " + Error);
+            DeleteGameEvent = true;
+            new Thread(new GameEvent.LoadingDialog("Unable to execute Port Mapping! :: " + Error)).start();
         }
 
         return new Math.Pair<>(d ,externalIpAddress);

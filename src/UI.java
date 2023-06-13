@@ -439,6 +439,14 @@ public class UI extends JPanel
 
         JoinGameButton.addMouseListener(Mouselistener);
 
+        DisconnectButton.setSize(100, 50);
+        DisconnectButton.setFont(new Font("Arial", Font.PLAIN, 9));
+        DisconnectButton.setLocation(0, 0);
+        DisconnectButton.setBackground(GraphicHandler.HexToRgba("#9CF3F5"));
+        DisconnectButton.setVisible(false);
+
+        DisconnectButton.addMouseListener(Mouselistener);
+
         ImageIcon copyAllPng = new ImageIcon("resources/copy.png");
         CopyButton = new Button(copyAllPng);
         CopyButton.setSize(50, 50);
@@ -455,6 +463,7 @@ public class UI extends JPanel
         frame_reference.add(JoinGameButton);
         frame_reference.add(CopyButton);
         frame_reference.add(PortMapping);
+        frame_reference.add(DisconnectButton);
 
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
         ReadOnlyField = new TextField("" , frame_reference ,true);
@@ -498,22 +507,35 @@ public class UI extends JPanel
 
            // UIsliderBar.collisionBox.x = (int) Math.UV_Tools.clamp(UIsliderBar.collisionBox.x  , BoardLocation.x.intValue() , BoardLocation.x + BoardSize.x + (int)((BoardSize.x/9)*2));
 
+        if(CreateGameButton.isVisible())
+        {
+            CreateGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 2));
 
-        CreateGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 2));
+            CreateGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
+            CreateGameButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
+        }
 
-        CreateGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
-        CreateGameButton.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
+        if(CopyButton.isVisible()) {
+            CopyButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (105 * scale_coeffic)), (int) (BoardLocation.y + (BoardSize.y * 0.39f)));
 
-        CopyButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (105 * scale_coeffic)), (int) (BoardLocation.y + (BoardSize.y * 0.39f)));
+            CopyButton.setPreferredSize(new Dimension((int) (50 * scale_coeffic), (int) (50 * scale_coeffic)));
+            CopyButton.setSize(new Dimension((int) (50 * scale_coeffic), (int) (50 * scale_coeffic)));
 
-        CopyButton.setPreferredSize(new Dimension((int) (50 * scale_coeffic),  (int) (50 * scale_coeffic)));
-        CopyButton.setSize(new Dimension((int) (50 * scale_coeffic),  (int) (50 * scale_coeffic)));
+        }
 
+        if(JoinGameButton.isVisible()) {
+            JoinGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.5));
 
-        JoinGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.5));
+            JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
+            JoinGameButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
+        }
 
-        JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
-        JoinGameButton.setSize(new Dimension((int) (100 * scale_coeffic),  (int) (50 * scale_coeffic)));
+        if(DisconnectButton.isVisible()) {
+            DisconnectButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (30 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.5));
+
+            DisconnectButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
+            DisconnectButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
+        }
 
         CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.20f)));
         CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
@@ -525,8 +547,10 @@ public class UI extends JPanel
 
         UIsliderBar.CalculateComponentSizes(BoardSize.x.intValue() + (int)((BoardSize.x/9)*2) + BoardLocation.x.intValue() , BoardLocation.x.intValue() ,ScreenSize,scale_coeffic);
 
-        PortMapping.setSize((int) (170 * scale_coeffic), (int) (50 * scale_coeffic));
-        PortMapping.setLocation((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.30f)));
+        if(PortMapping.isVisible()) {
+            PortMapping.setSize((int) (170 * scale_coeffic), (int) (50 * scale_coeffic));
+            PortMapping.setLocation((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.30f)));
+        }
 
         if (CopyButton.Pressed.IsMutexTrue())
         {
@@ -534,14 +558,7 @@ public class UI extends JPanel
             CopyButton.Pressed.SetMutexFalse();
         }
 
-        if(CreateGameMenu.GetSelectedItem().equalsIgnoreCase("WAN Online"))
-        {
-           PortMapping.setVisible(true);
-        }
-        else
-        {
-            PortMapping.setVisible(false);
-        }
+        PortMapping.setVisible(CreateGameMenu.GetSelectedItem().equalsIgnoreCase("WAN Online"));
 
     }
     @Override
