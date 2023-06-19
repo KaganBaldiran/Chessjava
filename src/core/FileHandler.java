@@ -1,3 +1,5 @@
+package core;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.FileWriter;
@@ -39,7 +41,7 @@ public class FileHandler {
 
         try (FileWriter file = new FileWriter(filename)) {
             file.write(jsonObject.toString());
-            System.out.println("Game meta data has been written successfully!");
+            System.out.println("Main.Game meta data has been written successfully!");
         } catch (IOException e) {
             System.out.println("Error writing the game meta data!");
             e.printStackTrace();

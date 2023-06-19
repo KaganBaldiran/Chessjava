@@ -1,3 +1,5 @@
+package core;
+
 public class Math {
 
     public static class Vec2<type>

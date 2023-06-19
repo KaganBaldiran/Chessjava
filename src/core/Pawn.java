@@ -1,4 +1,5 @@
-import javax.swing.*;
+package core;
+
 import java.util.Vector;
 
 public class Pawn extends piece {
@@ -57,7 +58,7 @@ public class Pawn extends piece {
         {
             tileTracer.SetValues(this.Coordinates);
             tileTracer.y--;
-            //tileTracer.SetValues(Math.UV_Tools.Invert_Y_Axis(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates , Tile.WHITE));
+            //tileTracer.SetValues(Main.Math.UV_Tools.Invert_Y_Axis(this.CurrentGameBoard.FetchTile(tileTracer.x, tileTracer.y).Tilecoordinates , Main.Tile.WHITE));
             isTileEmpty = this.CurrentGameBoard.FetchTile(tileTracer.x , tileTracer.y).isTileEmpty();
             //System.out.println("TILE " + input_Coordinates.x + " " + input_Coordinates.y + " " + isTileEmpty);
 

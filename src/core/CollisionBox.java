@@ -1,3 +1,5 @@
+package core;
+
 public class CollisionBox
 {
     int x;

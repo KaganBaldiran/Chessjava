@@ -1,8 +1,10 @@
+package core;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import static java.awt.MouseInfo.getNumberOfButtons;
 
 public class MouseInputListener extends MouseAdapter {
@@ -11,7 +13,7 @@ public class MouseInputListener extends MouseAdapter {
     Math.Vec2<Double> MousePos = new Math.Vec2<>();
     JFrame frame;
 
-    MouseInputListener(JFrame frame)
+    public MouseInputListener(JFrame frame)
     {
         clickked = new boolean[getNumberOfButtons()];
         this.frame = frame;

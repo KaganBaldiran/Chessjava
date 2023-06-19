@@ -1,3 +1,5 @@
+package core;
+
 import javax.swing.*;
 
 class Chess extends JFrame

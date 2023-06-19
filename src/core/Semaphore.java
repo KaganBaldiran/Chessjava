@@ -1,3 +1,5 @@
+package core;
+
 public class Semaphore
 {
     private int Flag;
@@ -26,7 +28,7 @@ public class Semaphore
         }
         else
         {
-            throw new RuntimeException("Semaphore out of range :: "+ flag + " | " + CountofStates);
+            throw new RuntimeException("Main.Semaphore out of range :: "+ flag + " | " + CountofStates);
         }
     }
 
@@ -38,7 +40,7 @@ public class Semaphore
         }
         else
         {
-            throw new RuntimeException("Semaphore out of range :: "+ Flag + " | " + CountofStates);
+            throw new RuntimeException("Main.Semaphore out of range :: "+ Flag + " | " + CountofStates);
         }
     }
 
@@ -50,7 +52,7 @@ public class Semaphore
         }
         else
         {
-            throw new RuntimeException("Semaphore out of range :: "+ Flag + " | " + CountofStates);
+            throw new RuntimeException("Main.Semaphore out of range :: "+ Flag + " | " + CountofStates);
         }
     }
 

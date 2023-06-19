@@ -1,3 +1,5 @@
+package core;
+
 import de.javawi.jstun.util.UtilityException;
 
 import javax.swing.*;

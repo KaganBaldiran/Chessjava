@@ -1,3 +1,5 @@
+package core;
+
 import org.bitlet.weupnp.GatewayDevice;
 import org.xml.sax.SAXException;
 
@@ -45,7 +47,7 @@ public class Game extends JPanel implements Runnable
 
         chessBoard = new Board();
 
-        frame = new javax.swing.JFrame("Chess");
+        frame = new javax.swing.JFrame("Main.Chess");
         MouseInputListener mouseListener = new MouseInputListener(frame);
         this.mouseListener = mouseListener;
 
@@ -136,7 +138,7 @@ public class Game extends JPanel implements Runnable
         {
             if(frame.isFocused()) {
 
-                //System.out.println("GAME COUNT: " +  FileHandler.ReadDataFromJSONFile("GameData","GameData" ,"GameCount"));
+                //System.out.println("GAME COUNT: " +  Main.FileHandler.ReadDataFromJSONFile("GameData","GameData" ,"GameCount"));
 
                 if (ui.CreateGameButton.Pressed.IsMutexTrue()) {
 
@@ -302,7 +304,7 @@ public class Game extends JPanel implements Runnable
         }
 
         FileHandler.WriteGameDataToJSON("GameData","GameData" , String.valueOf(Integer.parseInt(FileHandler.ReadDataFromJSONFile("GameData","GameData" ,"GameCount")) + 1), "GameCount");
-        System.out.println("Game Terminated");
+        System.out.println("Main.Game Terminated");
         frame.dispose();
         exit(1);
     }

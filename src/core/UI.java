@@ -1,3 +1,5 @@
+package core;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -505,7 +507,7 @@ public class UI extends JPanel
                     (int)(UIsize.x * 0.10f),
                     2* UIsize.y.intValue());
 
-           // UIsliderBar.collisionBox.x = (int) Math.UV_Tools.clamp(UIsliderBar.collisionBox.x  , BoardLocation.x.intValue() , BoardLocation.x + BoardSize.x + (int)((BoardSize.x/9)*2));
+           // UIsliderBar.collisionBox.x = (int) Main.Math.UV_Tools.clamp(UIsliderBar.collisionBox.x  , BoardLocation.x.intValue() , BoardLocation.x + BoardSize.x + (int)((BoardSize.x/9)*2));
 
         if(CreateGameButton.isVisible())
         {

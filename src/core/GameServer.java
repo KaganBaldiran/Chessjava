@@ -1,6 +1,5 @@
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
+package core;
+
 import org.bitlet.weupnp.GatewayDevice;
 import org.bitlet.weupnp.GatewayDiscover;
 import org.xml.sax.SAXException;
@@ -10,7 +9,6 @@ import java.io.IOException;
 import java.net.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
-import java.security.MessageDigest;
 
 
 public class GameServer extends Thread

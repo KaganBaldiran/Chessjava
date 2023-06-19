@@ -1,3 +1,5 @@
+package core;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -11,7 +13,6 @@ import org.bitlet.weupnp.GatewayDevice;
 import org.bitlet.weupnp.GatewayDiscover;
 import org.xml.sax.SAXException;
 
-import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -249,6 +250,7 @@ public class KryonetServer extends Server {
 
         boolean success;
         String Error = "Requested port is already mapped!";
+        String externalIpAddress = null;
 
         GatewayDiscover discover = new GatewayDiscover();
         discover.discover();
@@ -261,26 +263,26 @@ public class KryonetServer extends Server {
             Error = "No IGD found // Server cannot be initialized";
         }
 
-        assert d != null;
-        System.out.println("Found IGD: " + d.getFriendlyName());
+        if(d != null) {
+            System.out.println("Found IGD: " + d.getFriendlyName());
 
-        String externalIpAddress = d.getExternalIPAddress();
-        System.out.println("External IP address: " + externalIpAddress);
+            externalIpAddress = d.getExternalIPAddress();
+            System.out.println("External IP address: " + externalIpAddress);
 
-        // Add a port mapping to the IGD
-        String description = "Port mapping";
+            // Add a port mapping to the IGD
+            String description = "Port mapping";
 
-        InetAddress localAddress = InetAddress.getLocalHost();
-        System.out.println("LOCAL IP address: " + localAddress.getHostAddress());
-        success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
-        if (success) {
-            System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
-        } else {
-            System.err.println("Unable to execute Port Mapping! :: " + Error);
-            DeleteGameEvent = true;
-            new Thread(new GameEvent.LoadingDialog("Unable to execute Port Mapping! :: " + Error)).start();
+            InetAddress localAddress = InetAddress.getLocalHost();
+            System.out.println("LOCAL IP address: " + localAddress.getHostAddress());
+            success = d.addPortMapping(externalPort, internalPort, localAddress.getHostAddress(), protocol, description);
+            if (success) {
+                System.out.println("Port mapping added: " + externalIpAddress + ":" + externalPort + " -> " + localAddress.getHostAddress() + ":" + internalPort);
+            } else {
+                System.err.println("Unable to execute Port Mapping! :: " + Error);
+                DeleteGameEvent = true;
+                new Thread(new GameEvent.LoadingDialog("Unable to execute Port Mapping! :: " + Error)).start();
+            }
         }
-
         return new Math.Pair<>(d ,externalIpAddress);
     }
 

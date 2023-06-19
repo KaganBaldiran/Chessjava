@@ -1,4 +1,5 @@
-import javax.lang.model.type.NullType;
+package core;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
@@ -20,7 +21,7 @@ public class Board extends JPanel
     public static final Color DARK_CUSTOM_GREEN = GraphicHandler.HexToRgba("#7D945D");
     public static final Color LIGHT_YELLOW = GraphicHandler.HexToRgba("#E4EA87");
 
-    Board() {
+    public Board() {
 
         int TempColor = 0;
         int ColorCounter = 0;
