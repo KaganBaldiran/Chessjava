@@ -4,15 +4,15 @@ public class Math {
 
     public static class Vec2<type>
     {
-        type x;
-        type y;
+        public type x;
+        public type y;
 
         Vec2()
         {
             this.x = null;
             this.y = null;
         }
-        Vec2(type x , type y)
+        public Vec2(type x, type y)
         {
             this.x = x;
             this.y = y;

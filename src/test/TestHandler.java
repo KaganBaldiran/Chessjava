@@ -1,26 +1,48 @@
 package test;
 
 import core.Board;
-import core.Pawn;
+import core.GraphicHandler;
+import core.Math;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+
+import java.util.Vector;
 
 public class TestHandler
 {
     core.Board GameBoard = new Board();
-    core.Player TestPlayer = new core.Player(GameBoard , )
+    core.Player TestPlayer;
 
-    TestHandler(core.MouseInputListener mouseInputListener ,)
+    core.GraphicHandler graphicHandler;
+
+    public TestHandler()
     {
-        mouseInputListener = new core.MouseInputListener();
-
-
-
+        TestPlayer = new core.Player(GameBoard , null , false);
+        graphicHandler = new GraphicHandler(GameBoard,TestPlayer,null);
     }
 
+    @Test
+    @DisplayName("Test Pawn possible moves")
     public void TestPawn()
     {
-        TestPieces.add(new Pawn(x,7,this.Color,current_board.FetchTile(x,7),this.gameboard,pawn_texture,current_mouse_listener,this))
+        Vector<Math.Vec2<Integer>> CorrectPossibleMoves = new Vector<>();
+        CorrectPossibleMoves.add(new Math.Vec2<>(4,2));
+        CorrectPossibleMoves.add(new Math.Vec2<>(4,1));
 
+        TestPlayer.AddPiece("pawn" , 4 ,3);
+        TestPlayer.GetLastPiece().GetPossibleMoves(true , TestPlayer.GetLastPiece().Coordinates);
+        Vector<Math.Vec2<Integer>> PossibleMoves = TestPlayer.GetLastPiece().Possible_Moves;
 
+        for (int i = 0; i < CorrectPossibleMoves.size(); i++)
+        {
+            System.out.println("Possible pos x: " + PossibleMoves.get(i).x + " y: " + PossibleMoves.get(i).y);
+
+            Assertions.assertEquals(PossibleMoves.get(i).x , CorrectPossibleMoves.get(i).x);
+            Assertions.assertEquals(PossibleMoves.get(i).y , CorrectPossibleMoves.get(i).y);
+        }
+
+        TestPlayer.ClearPieces();
     }
 
 }

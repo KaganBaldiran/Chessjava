@@ -26,7 +26,7 @@ public class Player extends JPanel
     Semaphore IsPlayersTurn = new Semaphore(2);
     int Color;
 
-    Player(Board current_board , MouseInputListener current_mouse_listener , boolean InvertPlaces)
+    public Player(Board current_board, MouseInputListener current_mouse_listener, boolean InvertPlaces)
     {
         this.Color = Tile.WHITE;
 
@@ -49,24 +49,6 @@ public class Player extends JPanel
             y_axis = Math.UV_Tools.Invert_Y_Axis( Current_Board_Reference.FetchTile(1,y_axis).Tilecoordinates,Tile.BLACK).y;
         }
 
-        for (int x = 1; x < 9; x++)
-        {
-            pieces.add(new Pawn(x,7,this.Color,current_board.FetchTile(x,7),this.Current_Board_Reference,pawn_texture,current_mouse_listener,this));
-        }
-
-        pieces.add(new Knight(2,8,this.Color,current_board.FetchTile(2,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[1],current_mouse_listener,this));
-        pieces.add(new Knight(7,8,this.Color,current_board.FetchTile(7,8),this.Current_Board_Reference,pieces.get(pieces.size()-1).piecetexture,current_mouse_listener,this));
-
-        pieces.add(new Rook(8,8,this.Color,current_board.FetchTile(8,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[2],current_mouse_listener,this));
-        pieces.add(new Rook(1,8,this.Color,current_board.FetchTile(1,8),this.Current_Board_Reference,pieces.get(pieces.size()-1).piecetexture,current_mouse_listener,this));
-
-        pieces.add(new Bishop(3,8,this.Color,current_board.FetchTile(3,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[3],current_mouse_listener,this));
-        pieces.add(new Bishop(6,8,this.Color,current_board.FetchTile(6,8),this.Current_Board_Reference,pieces.get(pieces.size()-1).piecetexture,current_mouse_listener,this));
-
-        pieces.add(new Queen(4,8,this.Color,current_board.FetchTile(4,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[4],current_mouse_listener,this));
-
-        pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[5],current_mouse_listener,this));
-
         for(piece piece : this.pieces)
         {
             if (InvertPlaces) {
@@ -79,6 +61,7 @@ public class Player extends JPanel
 
             piece.TilePieceStandingOn.setPieceThatStandsOnThisTile(this.pieces.get(piece.PieceIndexInPlayer));
         }
+
     }
 
     public void AddPiece(String PieceType , int xPosition , int yPosition)
@@ -114,6 +97,20 @@ public class Player extends JPanel
             pieces.get(pieces.size() - 1).TilePieceStandingOn.setPieceThatStandsOnThisTile(this.pieces.get(pieces.get(pieces.size() - 1).PieceIndexInPlayer));
         }
 
+    }
+
+    public piece GetPiece(int index)
+    {
+        return this.pieces.get(index);
+    }
+
+    public piece GetLastPiece()
+    {
+        return this.pieces.get(this.pieces.size() - 1);
+    }
+    public void ClearPieces()
+    {
+        this.pieces.clear();
     }
 
     Player(int color , Board current_board , MouseInputListener current_mouse_listener , boolean InvertPlaces)

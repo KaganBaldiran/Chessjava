@@ -380,6 +380,7 @@ public class UI extends JPanel
             filemenuitem = new JMenuItem("Open");
             filemenu.add(filemenuitem);
             menuBar.add(filemenu);
+            menuBar.add(new JMenu("Tests")).add(new JMenuItem("Pawn Test"));
             frame.setJMenuBar(menuBar);
         }
 
