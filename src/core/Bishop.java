@@ -37,6 +37,12 @@ public class Bishop extends piece{
 
         if(this.NewTileHasEnemyPiece)
         {
+            if(NewTileOldEnemyPiece.PieceType == "core.King")
+            {
+                CheckMate = true;
+                this.player_this_piece_belongs.CheckMate = true;
+            }
+
             this.player_this_piece_belongs.TakeOpponentPiece(NewTileOldEnemyPiece);
             OpponentPlayer.pieces.remove(NewTileOldEnemyPiece.PieceIndexInPlayer);
 

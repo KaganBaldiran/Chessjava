@@ -14,7 +14,7 @@ public class King extends piece
     public static final int LEFT_UP = 7;
     public static final int LEFT_DOWN = 8;
 
-    boolean CheckMate;
+
     King(int x_cord , int y_cord , int color)
     {
         super(x_cord, y_cord, color);
@@ -38,6 +38,12 @@ public class King extends piece
     {
         if(this.NewTileHasEnemyPiece)
         {
+            if(NewTileOldEnemyPiece.PieceType == "core.King")
+            {
+                CheckMate = true;
+                this.player_this_piece_belongs.CheckMate = true;
+            }
+
             this.player_this_piece_belongs.TakeOpponentPiece(NewTileOldEnemyPiece);
             OpponentPlayer.pieces.remove(NewTileOldEnemyPiece.PieceIndexInPlayer);
 

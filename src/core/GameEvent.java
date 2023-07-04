@@ -176,11 +176,26 @@ public abstract class GameEvent
         }
         Semaphore MoveTheOpponent = new Semaphore(2);
 
+        boolean ShowedCheckMate = false;
+
         @Override
         public void GameLoop()
         {
             if(Client.ConnectionState.equalsIgnoreCase("CONNECTED"))
             {
+                if(PlayerOnTheOpponentMachine.IsCheckMate() && !ShowedCheckMate)
+                {
+                    JOptionPane.showMessageDialog(null , "CHECKMATE :: OPPONENT WINS!", "CHECKMATE" , JOptionPane.ERROR_MESSAGE);
+                    ShowedCheckMate = true;
+                    Client.Disconnect();
+                }
+                else if (PlayerOnThisMachine.IsCheckMate() && !ShowedCheckMate)
+                {
+                    JOptionPane.showMessageDialog(null , "CHECKMATE :: PLAYER 1 WINS!", "CHECKMATE" , JOptionPane.ERROR_MESSAGE);
+                    ShowedCheckMate = true;
+                    Client.Disconnect();
+                }
+
                 if (PlayerOnThisMachine.isPlayersTurn())
                 {
                     PlayerOnThisMachine.GetPosssibleMoves();

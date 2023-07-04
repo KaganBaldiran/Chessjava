@@ -2,6 +2,7 @@ package core;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 import java.util.Vector;
 
 public class Player extends JPanel
@@ -23,8 +24,12 @@ public class Player extends JPanel
     String[] CurrentTextures;
     Texture pawn_texture;
 
+    King PlayerKingReference = null;
+
     Semaphore IsPlayersTurn = new Semaphore(2);
     int Color;
+
+    public boolean CheckMate;
 
     public Player(Board current_board, MouseInputListener current_mouse_listener, boolean InvertPlaces)
     {
@@ -60,8 +65,16 @@ public class Player extends JPanel
             }
 
             piece.TilePieceStandingOn.setPieceThatStandsOnThisTile(this.pieces.get(piece.PieceIndexInPlayer));
+
         }
 
+
+
+    }
+
+    public boolean IsCheckMate()
+    {
+        return this.CheckMate;
     }
 
     public void AddPiece(String PieceType , int xPosition , int yPosition)
@@ -168,6 +181,7 @@ public class Player extends JPanel
         pieces.add(new Queen(4,8,this.Color,current_board.FetchTile(4,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[4],current_mouse_listener,this));
 
         pieces.add(new King(5,8,this.Color,current_board.FetchTile(5,8),this.Current_Board_Reference,RelativeFilePath + CurrentTextures[5],current_mouse_listener,this));
+        this.PlayerKingReference = (King)pieces.get(pieces.size() -1);
 
         for(piece piece : this.pieces)
         {
@@ -180,6 +194,7 @@ public class Player extends JPanel
             }
 
             piece.TilePieceStandingOn.setPieceThatStandsOnThisTile(this.pieces.get(piece.PieceIndexInPlayer));
+
         }
 
     }

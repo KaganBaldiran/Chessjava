@@ -9,22 +9,23 @@ import java.util.Vector;
 public abstract class piece extends JPanel
 {
     public Math.Vec2<Integer> Coordinates = new Math.Vec2<>();
-    Tile TilePieceStandingOn;
-    Board CurrentGameBoard;
+    public Tile TilePieceStandingOn;
+    public Board CurrentGameBoard;
     public Vector<Math.Vec2<Integer>> Possible_Moves = new Vector<>();
-    boolean ClearPossibleMoves = false;
-    int Color;
-    Texture piecetexture;
-    boolean Selected = false;
-    MouseInputListener CurrentMouseListenerReference;
-    Player player_this_piece_belongs;
+    public boolean ClearPossibleMoves = false;
+    public int Color;
+    public Texture piecetexture;
+    public boolean Selected = false;
+    public MouseInputListener CurrentMouseListenerReference;
+    public Player player_this_piece_belongs;
 
-    boolean NewTileHasEnemyPiece = false;
-    piece NewTileOldEnemyPiece;
+    public boolean NewTileHasEnemyPiece = false;
+    public piece NewTileOldEnemyPiece;
+    public boolean CheckMate;
 
 
-    int PieceIndexInPlayer;
-    String PieceType;
+    public int PieceIndexInPlayer;
+    public String PieceType;
 
     Math.Vec2<Integer> LastPlayedMove = new Math.Vec2<>(0,0);
 
@@ -44,6 +45,7 @@ public abstract class piece extends JPanel
        this.CurrentGameBoard = new Board();
        this.Color = color;
        this.PieceType = this.getClass().getName();
+        this.CheckMate = false;
     }
     piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn)
     {
@@ -53,6 +55,7 @@ public abstract class piece extends JPanel
         this.TilePieceStandingOn.setPieceThatStandsOnThisTile(this);
         this.CurrentGameBoard = new Board();
         this.PieceType = this.getClass().getName();
+        this.CheckMate = false;
     }
     piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , String texture_file_path , MouseInputListener current_mouse_listener , Player player_this_piece_belongs)
     {
@@ -68,6 +71,7 @@ public abstract class piece extends JPanel
         this.player_this_piece_belongs = player_this_piece_belongs;
         this.PieceIndexInPlayer = player_this_piece_belongs.pieces.size();
         this.PieceType = this.getClass().getName();
+        this.CheckMate = false;
     }
 
     piece(int x_cord, int y_cord , int color , Tile TilePieceStandingOn , Board CurrentBoard , Texture existing_texture , MouseInputListener current_mouse_listener , Player player_this_piece_belongs)
@@ -85,6 +89,7 @@ public abstract class piece extends JPanel
         this.player_this_piece_belongs = player_this_piece_belongs;
         this.PieceIndexInPlayer = player_this_piece_belongs.pieces.size();
         this.PieceType = this.getClass().getName();
+        this.CheckMate = false;
     }
 
     void ReferenceTile(Tile input_tile)
