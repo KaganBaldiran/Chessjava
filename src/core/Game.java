@@ -138,8 +138,6 @@ public class Game extends JPanel implements Runnable
         {
             if(frame.isFocused()) {
 
-                //System.out.println("GAME COUNT: " +  Main.FileHandler.ReadDataFromJSONFile("GameData","GameData" ,"GameCount"));
-
                 if (ui.CreateGameButton.Pressed.IsMutexTrue()) {
 
                     if(ui.PortMapping.isSelected())
@@ -218,13 +216,26 @@ public class Game extends JPanel implements Runnable
                     ui.JoinGameButton.Pressed.SetMutexFalse();
                 }
 
+                if(ui.DisconnectButton.isVisible()) {
+                    if (ui.DisconnectButton.Pressed.IsMutexTrue()) {
+                        Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Client.Disconnect();
+                        Games.DeleteGameEvents();
+
+
+                        ui.DisconnectButton.Pressed.SetMutexFalse();
+                        ui.JoinGameButton.setVisible(true);
+                        ui.CreateGameButton.setVisible(true);
+                        ui.CreateGameMenu.comboBox.setVisible(true);
+                        ui.DisconnectButton.setVisible(false);
+                    }
+                }
+
                 if (Games.IsThereGame()) {
                     Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).GameLoop();
                 }
 
                 BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
                 Graphics graphics = bufferstrategy.getDrawGraphics();
-
 
                 Graphics2D bufferedGraphics = bufferedImage.createGraphics();
                 bufferedGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -240,7 +251,12 @@ public class Game extends JPanel implements Runnable
                 bufferedGraphics.setColor(RightComponentColor);
                 bufferedGraphics.fillRoundRect((int) (ui.UIsliderBar.UnchangingComponentSizes.x + ((ui.UIsliderBar.UnchangingComponentSizes.y * 0.10f) / 2)), 10, (int) (ui.UIsliderBar.UnchangingComponentSizes.y * 0.90f), (int) (bufferedImage.getHeight() * 0.980f), 30, 30);
 
-                if (Games.IsThereGame()) {
+
+
+                if (Games.IsThereGame())
+                {
+                    System.out.println("IS THERE GAME: " + Games.IsThereGame());
+
                     if (((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("CONNECTED")) {
                         Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DrawGame(leftComponent.bufferedGraphics);
                     } else if (((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("DISCONNECTED")) {
@@ -250,7 +266,11 @@ public class Game extends JPanel implements Runnable
                                 ui.UIsliderBar.UnchangingComponentSizes.x,
                                 ui.UIsliderBar.UnchangingComponentSizes.x);
                     }
-                } else {
+                }
+                else
+                {
+                    System.out.println("NO GAME: " + Games.IsThereGame());
+
                     bufferedGraphics.setColor(piece.TRANSPARENT_LIGHT_GRAY);
                     bufferedGraphics.fillRect(0,
                             (int) ((bufferedImage.getHeight() - ui.UIsliderBar.UnchangingComponentSizes.x) / 2),
