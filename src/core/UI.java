@@ -1,5 +1,6 @@
 package core;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -10,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 
 public class UI extends JPanel
 {
@@ -467,6 +470,8 @@ public class UI extends JPanel
     CheckBox PortMapping;
     JInternalFrame internalFrame;
 
+    Image GameIcon;
+
     UI(JFrame frame ,MouseInputListener Mouselistener) {
 
         CreateGameButton.setSize(100, 50);
@@ -514,6 +519,12 @@ public class UI extends JPanel
         gamemenu = new MainMenu(frame_reference);
         CreateGameMenu = new DropDownMenu(frame_reference);
 
+        try {
+            GameIcon = ImageIO.read(new File("resources/chessjava-low-resolution-color-logo.png"));
+            frame_reference.setIconImage(GameIcon);
+        } catch (IOException e) {
+            System.err.println("ERROR READING ICON FILE FOR THE GAME LOGO");
+        }
 
     }
 

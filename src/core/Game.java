@@ -45,6 +45,7 @@ public class Game extends JPanel implements Runnable
     UI.Text PlayerNameOnOpponentMachine;
     int GameCount = 0;
 
+
     UI.GameSettingsDialog GameSettingDialog;
 
 
@@ -85,7 +86,6 @@ public class Game extends JPanel implements Runnable
         frame.addKeyListener(input_handler);
 
         frame.add(current_canvas);
-
 
         current_canvas.addMouseListener(mouseListener);
 
