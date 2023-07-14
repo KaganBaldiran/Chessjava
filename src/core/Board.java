@@ -21,6 +21,8 @@ public class Board extends JPanel
     public static final Color DARK_CUSTOM_GREEN = GraphicHandler.HexToRgba("#7D945D");
     public static final Color LIGHT_YELLOW = GraphicHandler.HexToRgba("#E4EA87");
 
+    public boolean FlipTheBoard = false;
+
     public Board() {
 
         int TempColor = 0;
@@ -143,7 +145,6 @@ public class Board extends JPanel
         return returntile;
     };
 
-
     @Override
     protected void paintComponent(Graphics g) {
 
@@ -153,11 +154,21 @@ public class Board extends JPanel
             for (int col = 0; col < 8; col++) {
                 int x = col * SQUARE_SIZE;
                 int y = row * SQUARE_SIZE;
-                if ((row + col) % 2 == 0) {
-                    g.setColor(Color.WHITE);
-                } else {
 
-                    g.setColor(DARK_CUSTOM_GREEN);
+                if(!FlipTheBoard) {
+                    if ((row + col) % 2 == 0) {
+                        g.setColor(Color.WHITE);
+                    } else {
+                        g.setColor(DARK_CUSTOM_GREEN);
+                    }
+                }
+                else
+                {
+                    if ((row + col) % 2 == 0) {
+                        g.setColor(DARK_CUSTOM_GREEN);
+                    } else {
+                        g.setColor(Color.WHITE);
+                    }
                 }
                 g.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
             }

@@ -74,7 +74,7 @@ public class Game extends JPanel implements Runnable
 
         frame.setFocusable(true);
 
-        this.ui = new UI(frame,mouseListener);
+        this.ui = new UI(frame,mouseListener , ScreenSize);
 
         current_canvas = new Canvas();
 

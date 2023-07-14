@@ -110,6 +110,7 @@ public abstract class GameEvent
                 player1 = new Player(Tile.WHITE , GameBoard,mouseListener , true);
                 player2 = new Player(Tile.BLACK , GameBoard,mouseListener , false);
 
+                this.GameBoard.FlipTheBoard = true;
 
                 this.PlayerOnThisMachine = player2;
                 PlayerOnTheOpponentMachine = player1;
@@ -278,8 +279,6 @@ public abstract class GameEvent
         {
             System.out.println(si.getOperatingSystem().getVersionInfo());
         }
-
-
 
     }
 }

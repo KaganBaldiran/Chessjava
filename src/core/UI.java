@@ -42,6 +42,7 @@ public class UI extends JPanel
     public static class Button extends JButton
     {
         Semaphore Pressed = new Semaphore(2);
+        Dimension InitialSize = new Dimension();
 
         Button(String Name)
         {
@@ -160,13 +161,14 @@ public class UI extends JPanel
     public static class TextField extends JPanel {
         private final JTextField textField;
         private final JPopupMenu popupMenu;
+        Dimension InitialSize = new Dimension();
 
-
-        public TextField(String text , JFrame currentFrame , boolean editable) {
+        public TextField(String text , JFrame currentFrame , boolean editable , Dimension InitialSize) {
             textField = new JTextField(text);
             textField.setEditable(editable);
+            this.InitialSize.setSize(InitialSize);
             textField.setLocation(300,300);
-            textField.setSize(100,30);
+            textField.setSize((int) InitialSize.getWidth(), (int) InitialSize.getHeight());
 
             popupMenu = new JPopupMenu();
             JMenuItem cutItem = new JMenuItem("Cut");
@@ -207,11 +209,7 @@ public class UI extends JPanel
                 }
             });
 
-
-
-
             currentFrame.add(textField);
-
         }
         public void copyToClipboard() {
             StringSelection selection = new StringSelection(textField.getText());
@@ -434,11 +432,13 @@ public class UI extends JPanel
     {
         String[] options;
         JComboBox<String> comboBox;
-        DropDownMenu(JFrame frame)
+        Dimension InitialSize = new Dimension();
+        DropDownMenu(JFrame frame , Dimension InitialSize)
         {
             options = new String[]{"LAN Online", "WAN Online", "Offline"};
             comboBox = new JComboBox<String>(options);
-            comboBox.setBounds(50, 50, 200, 30);
+            this.InitialSize.setSize(InitialSize);
+            comboBox.setBounds(50, 50, (int) this.InitialSize.getWidth(), (int) this.InitialSize.getHeight());
             comboBox.setSelectedIndex(0);
             frame.add(comboBox);
         }
@@ -472,23 +472,28 @@ public class UI extends JPanel
 
     Image GameIcon;
 
-    UI(JFrame frame ,MouseInputListener Mouselistener) {
+    UI(JFrame frame ,MouseInputListener Mouselistener  , Dimension screensize) {
 
-        CreateGameButton.setSize(100, 50);
+        ScreenSize.setSize(screensize);
+
+        CreateGameButton.InitialSize.setSize((int) (screensize.getWidth() * 0.1f) , (int)(screensize.getWidth() * 0.05f));
+        CreateGameButton.setSize(CreateGameButton.InitialSize);
         CreateGameButton.setFont(new Font("Arial", Font.PLAIN, 9));
         CreateGameButton.setLocation(0, 0);
         CreateGameButton.setBackground(GraphicHandler.HexToRgba("#9CF3F5"));
 
         CreateGameButton.addMouseListener(Mouselistener);
 
-        JoinGameButton.setSize(100, 50);
+        JoinGameButton.InitialSize.setSize((int) (screensize.getWidth() * 0.1f) , (int)(screensize.getWidth() * 0.05f));
+        JoinGameButton.setSize(JoinGameButton.InitialSize);
         JoinGameButton.setFont(new Font("Arial", Font.PLAIN, 9));
         JoinGameButton.setLocation(0, 0);
         JoinGameButton.setBackground(GraphicHandler.HexToRgba("#9CF3F5"));
 
         JoinGameButton.addMouseListener(Mouselistener);
 
-        DisconnectButton.setSize(100, 50);
+        DisconnectButton.InitialSize.setSize((int) (screensize.getWidth() * 0.1f) , (int)(screensize.getWidth() * 0.05f));
+        DisconnectButton.setSize(DisconnectButton.InitialSize);
         DisconnectButton.setFont(new Font("Arial", Font.PLAIN, 9));
         DisconnectButton.setLocation(0, 0);
         DisconnectButton.setBackground(GraphicHandler.HexToRgba("#9CF3F5"));
@@ -498,7 +503,8 @@ public class UI extends JPanel
 
         ImageIcon copyAllPng = new ImageIcon("resources/copy.png");
         CopyButton = new Button(copyAllPng);
-        CopyButton.setSize(50, 50);
+        CopyButton.InitialSize.setSize((int) (screensize.getWidth() * 0.04f) , (int)(screensize.getWidth() * 0.04f));
+        CopyButton.setSize(CopyButton.InitialSize);;
         CopyButton.setFont(new Font("Arial", Font.PLAIN, 9));
         CopyButton.setLocation(0, 0);
         CopyButton.setBackground(GraphicHandler.HexToRgba("#9CF3F5"));
@@ -515,9 +521,9 @@ public class UI extends JPanel
         frame_reference.add(DisconnectButton);
 
         UIsliderBar = new SliderBar(SliderBar.ROUND , 7,Mouselistener);
-        ReadOnlyField = new TextField("" , frame_reference ,true);
+        ReadOnlyField = new TextField("" , frame_reference ,true , new Dimension((int) (ScreenSize.getWidth() * 0.085f), (int) (ScreenSize.getHeight() * 0.04f)));
         gamemenu = new MainMenu(frame_reference);
-        CreateGameMenu = new DropDownMenu(frame_reference);
+        CreateGameMenu = new DropDownMenu(frame_reference , new Dimension((int) (ScreenSize.getWidth() * 0.14f), (int) (ScreenSize.getWidth() * 0.02f)));
 
         try {
             GameIcon = ImageIO.read(new File("resources/chessjava-low-resolution-color-logo.png"));
@@ -562,26 +568,24 @@ public class UI extends JPanel
                     (int)(UIsize.x * 0.10f),
                     2* UIsize.y.intValue());
 
-           // UIsliderBar.collisionBox.x = (int) Main.Math.UV_Tools.clamp(UIsliderBar.collisionBox.x  , BoardLocation.x.intValue() , BoardLocation.x + BoardSize.x + (int)((BoardSize.x/9)*2));
-
         if(CreateGameButton.isVisible())
         {
             CreateGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 2));
             CreateGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
-            CreateGameButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
+            CreateGameButton.setSize(new Dimension((int) (CreateGameButton.InitialSize.getWidth() * scale_coeffic), (int) (CreateGameButton.InitialSize.getHeight() * scale_coeffic)));
         }
 
         if(CopyButton.isVisible()) {
             CopyButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (105 * scale_coeffic)), (int) (BoardLocation.y + (BoardSize.y * 0.39f)));
-            CopyButton.setPreferredSize(new Dimension((int) (50 * scale_coeffic), (int) (50 * scale_coeffic)));
-            CopyButton.setSize(new Dimension((int) (50 * scale_coeffic), (int) (50 * scale_coeffic)));
+            CopyButton.setPreferredSize(new Dimension((int) (CopyButton.InitialSize.getWidth() * scale_coeffic), (int) (CopyButton.InitialSize.getHeight() * scale_coeffic)));
+            CopyButton.setSize(new Dimension((int) (CopyButton.InitialSize.getWidth() * scale_coeffic), (int) (CopyButton.InitialSize.getHeight() * scale_coeffic)));
 
         }
 
         if(JoinGameButton.isVisible()) {
             JoinGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.7));
             JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
-            JoinGameButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
+            JoinGameButton.setSize(new Dimension((int) (JoinGameButton.InitialSize.getWidth() * scale_coeffic), (int) (JoinGameButton.InitialSize.getHeight() * scale_coeffic)));
         }
 
         if(DisconnectButton.isVisible()) {
@@ -591,13 +595,13 @@ public class UI extends JPanel
         }
 
         if(CreateGameMenu.comboBox.isVisible()) {
-            CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.28f)));
-            CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
+            CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.115)), (int) (BoardLocation.y + (BoardSize.y * 0.28f)));
+            CreateGameMenu.SetSize((int) (CreateGameMenu.InitialSize.getWidth() * scale_coeffic), (int) (CreateGameMenu.InitialSize.getHeight() * scale_coeffic));
         }
 
         if(ReadOnlyField.isVisible()) {
-            ReadOnlyField.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.40f)));
-            ReadOnlyField.SetSize((int) (100 * scale_coeffic), (int) (30 * scale_coeffic));
+            ReadOnlyField.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.115)), (int) (BoardLocation.y + (BoardSize.y * 0.40f)));
+            ReadOnlyField.SetSize((int) (ReadOnlyField.InitialSize.getWidth() * scale_coeffic), (int) (ReadOnlyField.InitialSize.getHeight() * scale_coeffic));
         }
 
         if(UIsliderBar.isVisible()) {
