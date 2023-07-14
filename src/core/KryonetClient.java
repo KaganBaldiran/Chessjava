@@ -77,7 +77,7 @@ public class KryonetClient extends Client {
                        ConnectionState = "DISCONNECTED";
                        close();
                    }
-                   if(message.length() >= 9) {
+                   if(message.length() >= 11) {
                        if (message.substring(0, 11).trim().equalsIgnoreCase("BOTH ONLINE")) {
                            OpponentPlayerName = message.substring(12);
                            System.out.println("OPPONENT PLAYER NAME: " + OpponentPlayerName);

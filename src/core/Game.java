@@ -44,6 +44,7 @@ public class Game extends JPanel implements Runnable
     UI.Text PlayerNameOnThisMachine;
     UI.Text PlayerNameOnOpponentMachine;
     int GameCount = 0;
+    GameEvent.GameStateHandler StateHandler = new GameEvent.GameStateHandler();
 
 
     UI.GameSettingsDialog GameSettingDialog;
@@ -53,7 +54,7 @@ public class Game extends JPanel implements Runnable
 
         chessBoard = new Board();
 
-        frame = new javax.swing.JFrame("Main.Chess");
+        frame = new javax.swing.JFrame("Chessjava v1.4(Alpha -- " + StateHandler.si.getOperatingSystem() +")");
         MouseInputListener mouseListener = new MouseInputListener(frame);
         this.mouseListener = mouseListener;
 
@@ -62,7 +63,6 @@ public class Game extends JPanel implements Runnable
         ScreenSize = Toolkit.getDefaultToolkit().getScreenSize().getSize();
 
         ScreenSize.setSize(ScreenSize.getHeight() * 0.90f + ScreenSize.getHeight() * 0.20f , ScreenSize.getHeight() * 0.90f);
-
 
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setVisible(true);

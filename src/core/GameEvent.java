@@ -1,6 +1,11 @@
 package core;
 
 import de.javawi.jstun.util.UtilityException;
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.GraphicsCard;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.NetworkIF;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +15,7 @@ import java.io.IOException;
 
 public abstract class GameEvent
 {
+    GameStateHandler StateHandler = new GameStateHandler();
     public final static int FIRST_PLAYER = 1;
     public final static int SECOND_PLAYER = 2;
     int Winner = 0;
@@ -181,6 +187,8 @@ public abstract class GameEvent
         @Override
         public void GameLoop(String PlayerName)
         {
+
+
             if(Client.ConnectionState.equalsIgnoreCase("CONNECTED"))
             {
                 if(PlayerOnTheOpponentMachine.IsWon() && !ShowedCheckMate)
@@ -248,5 +256,30 @@ public abstract class GameEvent
         public void run() {
             JOptionPane.showMessageDialog(null ,Text ,"Process",JOptionPane.PLAIN_MESSAGE);
         }
+    }
+
+    public static class GameStateHandler
+    {
+        public CentralProcessor cpu;
+        public HardwareAbstractionLayer hal;
+        public NetworkIF NIF;
+        public GraphicsCard gpu;
+        SystemInfo si;
+        GameStateHandler()
+        {
+            si = new SystemInfo();
+            hal = si.getHardware();
+            NIF = hal.getNetworkIFs().get(0);
+            cpu = hal.getProcessor();
+            gpu = hal.getGraphicsCards().get(0);
+        }
+
+        public void PrintNIF()
+        {
+            System.out.println(si.getOperatingSystem().getVersionInfo());
+        }
+
+
+
     }
 }
