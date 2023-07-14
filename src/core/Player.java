@@ -65,14 +65,45 @@ public class Player extends JPanel
             }
 
             piece.TilePieceStandingOn.setPieceThatStandsOnThisTile(this.pieces.get(piece.PieceIndexInPlayer));
-
         }
 
 
 
     }
 
-    public boolean IsCheckMate()
+    /*Math.Pair<Boolean , piece> result = new Math.Pair<>();
+
+    public Math.Pair<Boolean , piece> IsCheckMate(Player OpponentPlayer)
+    {
+        result.SetValues(false , null);
+        boolean Break = false;
+
+        for (piece piece : OpponentPlayer.pieces)
+        {
+            if(!piece.Possible_Moves.isEmpty())
+            {
+                Vector<Math.Vec2<Integer>> Possible_Moves = piece.Possible_Moves;
+
+                for (Math.Vec2<Integer> Coordinate : Possible_Moves) {
+                    System.out.println("HEREEEEEEE");
+                    if (this.PlayerKingReference.Coordinates.x == Coordinate.x && this.PlayerKingReference.Coordinates.y == Coordinate.y) {
+                        JOptionPane.showMessageDialog(null, "CHECKMATTOOOOO", "CHECKMATE", JOptionPane.ERROR_MESSAGE);
+                        result.SetValues(true, piece);
+                        Break = true;
+                        break;
+                    }
+                }
+                if(Break)
+                {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }*/
+
+    public boolean IsWon()
     {
         return this.CheckMate;
     }
@@ -204,15 +235,15 @@ public class Player extends JPanel
         TakenPieces.add(takenPiece);
     }
 
-    public void MovePlayerPieces()
+    public void MovePlayerPieces(Player OpponentPlayer)
     {
         for (piece piece : this.pieces)
         {
-
             if(piece != null) {
-                piece.Move();
-            }
 
+                piece.Move();
+
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 import static java.lang.System.exit;
 
@@ -40,7 +41,11 @@ public class Game extends JPanel implements Runnable
     Color RightComponentColor = GraphicHandler.HexToRgba("#E4F5EF");
 
     UI.Text ConnectionState;
+    UI.Text PlayerNameOnThisMachine;
+    UI.Text PlayerNameOnOpponentMachine;
     int GameCount = 0;
+
+    UI.GameSettingsDialog GameSettingDialog;
 
 
     Game() {
@@ -101,6 +106,11 @@ public class Game extends JPanel implements Runnable
         Games = new GameEventHandler(mouseListener);
 
         this.ConnectionState = new UI.Text(bufferedImage.getGraphics(),"Arial" ,Font.BOLD, 24 , Color.black);
+        this.PlayerNameOnThisMachine = new UI.Text(bufferedImage.getGraphics(),"Arial" ,Font.BOLD, 24 , Color.black);
+        this.PlayerNameOnOpponentMachine = new UI.Text(bufferedImage.getGraphics(),"Arial" ,Font.BOLD, 24 , Color.black);
+
+        this.GameSettingDialog = new UI.GameSettingsDialog(frame);
+        GameSettingDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -126,9 +136,7 @@ public class Game extends JPanel implements Runnable
             }
         });
 
-
     }
-
 
 
     @Override
@@ -147,6 +155,11 @@ public class Game extends JPanel implements Runnable
                         } catch (IOException | ParserConfigurationException | SAXException e) {
                             throw new RuntimeException(e);
                         }
+                    }
+
+                    while(Objects.equals(GameSettingDialog.GetPlayerName(), ""))
+                    {
+                        this.GameSettingDialog.setVisible(true);
                     }
 
                     Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, true, ui , PortMapping.second);
@@ -195,6 +208,11 @@ public class Game extends JPanel implements Runnable
                         }
                     }
 
+                    while(Objects.equals(GameSettingDialog.GetPlayerName(), ""))
+                    {
+                        this.GameSettingDialog.setVisible(true);
+                    }
+
                     Games.AddGameEvent(GameEventHandler.LAN_GAME_EVENT, false, ui , PortMapping.second);
 
                     if(DeleteGameEvent)
@@ -211,6 +229,7 @@ public class Game extends JPanel implements Runnable
                         ui.PortMapping.setVisible(false);
                         ui.CreateGameMenu.comboBox.setVisible(false);
                         ui.DisconnectButton.setVisible(true);
+
                     }
 
                     ui.JoinGameButton.Pressed.SetMutexFalse();
@@ -221,17 +240,17 @@ public class Game extends JPanel implements Runnable
                         Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).Client.Disconnect();
                         Games.DeleteGameEvents();
 
-
                         ui.DisconnectButton.Pressed.SetMutexFalse();
                         ui.JoinGameButton.setVisible(true);
                         ui.CreateGameButton.setVisible(true);
                         ui.CreateGameMenu.comboBox.setVisible(true);
                         ui.DisconnectButton.setVisible(false);
+                        ui.ReadOnlyField.setVisible(true);
                     }
                 }
 
                 if (Games.IsThereGame()) {
-                    Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).GameLoop();
+                    Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).GameLoop(GameSettingDialog.GetPlayerName());
                 }
 
                 BufferStrategy bufferstrategy = current_canvas.getBufferStrategy();
@@ -255,7 +274,7 @@ public class Game extends JPanel implements Runnable
 
                 if (Games.IsThereGame())
                 {
-                    System.out.println("IS THERE GAME: " + Games.IsThereGame());
+                    //System.out.println("IS THERE GAME: " + Games.IsThereGame());
 
                     if (((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState.equalsIgnoreCase("CONNECTED")) {
                         Games.<GameEvent.LANGameEvent>GetGameEvent(Games.GetGameEventCount() - 1).DrawGame(leftComponent.bufferedGraphics);
@@ -269,7 +288,7 @@ public class Game extends JPanel implements Runnable
                 }
                 else
                 {
-                    System.out.println("NO GAME: " + Games.IsThereGame());
+                    //System.out.println("NO GAME: " + Games.IsThereGame());
 
                     bufferedGraphics.setColor(piece.TRANSPARENT_LIGHT_GRAY);
                     bufferedGraphics.fillRect(0,
@@ -303,6 +322,12 @@ public class Game extends JPanel implements Runnable
                 if (Games.IsThereGame()) {
                     ConnectionState.SetPosition((int) (ScreenSize.width * 0.835f), 30);
                     ConnectionState.DrawText(((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.ConnectionState);
+
+                    PlayerNameOnThisMachine.SetPosition((int) (ScreenSize.width * 0.835f), 940);
+                    PlayerNameOnThisMachine.DrawText(GameSettingDialog.GetPlayerName());
+
+                    PlayerNameOnOpponentMachine.SetPosition((int) (ScreenSize.width * 0.835f), 50);
+                    PlayerNameOnOpponentMachine.DrawText(((GameEvent.LANGameEvent) Games.GetGameEvent(Games.GetGameEventCount() - 1)).Client.OpponentPlayerName);
                 }
 
                 graphics.drawImage(bufferedImage, FBO_position.x.intValue(), FBO_position.y.intValue(), (int) scaledWidth, (int) scaledHeight, current_canvas);

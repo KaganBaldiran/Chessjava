@@ -17,6 +17,7 @@ public class KryonetClient extends Client {
     Boolean STATEINFORM = false;
     Math.Vec2<Integer> OtherPlayerMove = new Math.Vec2<>(0,0);
     int OtherPlayerPieceIndex = 0;
+    String OpponentPlayerName = "";
     Semaphore MoveOpponentPlayer;
     String ConnectionState = "";
 
@@ -76,9 +77,12 @@ public class KryonetClient extends Client {
                        ConnectionState = "DISCONNECTED";
                        close();
                    }
-                   if(message.equalsIgnoreCase("BOTH ONLINE"))
-                   {
-                       ConnectionState = "CONNECTED";
+                   if(message.length() >= 9) {
+                       if (message.substring(0, 11).trim().equalsIgnoreCase("BOTH ONLINE")) {
+                           OpponentPlayerName = message.substring(12);
+                           System.out.println("OPPONENT PLAYER NAME: " + OpponentPlayerName);
+                           ConnectionState = "CONNECTED";
+                       }
                    }
                    if(message.substring(0,8).trim().equalsIgnoreCase("CAPTURED"))
                    {
@@ -106,11 +110,11 @@ public class KryonetClient extends Client {
 
    }
 
-    public void loop(Player CurrentPlayer , Player OpponentPlayer)
+    public void loop(Player CurrentPlayer , Player OpponentPlayer , String PlayerName)
     {
         if (!STATEINFORM)
         {
-            sendTCP("ONLINE");
+            sendTCP("ONLINE " + PlayerName);
         }
         else
         {

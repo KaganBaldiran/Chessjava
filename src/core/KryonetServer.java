@@ -36,6 +36,8 @@ public class KryonetServer extends Server {
     GatewayDevice PortMappingDevice;
 
     Math.Vec2<Integer> Ports = new Math.Vec2<>();
+    Math.Vec2<String> PlayerNames = new Math.Vec2<>();
+
 
     KryonetServer(int tcp_port , int udp_port , String ExternalIP) throws IOException {
         super();
@@ -109,36 +111,44 @@ public class KryonetServer extends Server {
     public void loop(String message , Connection connection)
     {
         if(!CLIENT1_STATE) {
-            if (message.trim().equals("ONLINE")) {
-                System.out.println("CLIENT1> " + message.trim());
-                CLIENT1_STATE = true;
+            if(!message.isEmpty()) {
+                if (message.substring(0, 6).trim().equals("ONLINE")) {
 
-                clientConnection1 = connection;
-                connection.sendTCP("RECEIVED");
+                    PlayerNames.x = message.substring(7);
 
-                System.out.println("CLIENT1 CONNECTION> " + clientConnection1.getRemoteAddressTCP());
+                    System.out.println("CLIENT1> " + message.trim() + " NAME: " + PlayerNames.x);
+                    CLIENT1_STATE = true;
 
-                message = "";
+                    clientConnection1 = connection;
+                    connection.sendTCP("RECEIVED");
+
+                    System.out.println("CLIENT1 CONNECTION> " + clientConnection1.getRemoteAddressTCP());
+
+                    message = "";
+                }
             }
         }
         if(!CLIENT2_STATE)
         {
-            if (message.trim().equals("ONLINE")) {
-                System.out.println("CLIENT2> " + message.trim());
-                CLIENT2_STATE = true;
+            if(!message.isEmpty()) {
+                if (message.substring(0, 6).trim().equals("ONLINE")) {
 
-                clientConnection2 = connection;
-                connection.sendTCP("RECEIVED");
-                System.out.println("CLIENT2 CONNECTION> " + clientConnection2.getRemoteAddressTCP());
-                message = "";
+                    PlayerNames.y = message.substring(7);
 
-                if (AreBothPlayersOnline())
-                {
-                    clientConnection1.sendTCP("BOTH ONLINE");
-                    clientConnection2.sendTCP("BOTH ONLINE");
+                    System.out.println("CLIENT2> " + message.trim() + " NAME: " + PlayerNames.y);
+                    CLIENT2_STATE = true;
+
+                    clientConnection2 = connection;
+                    connection.sendTCP("RECEIVED");
+                    System.out.println("CLIENT2 CONNECTION> " + clientConnection2.getRemoteAddressTCP());
+                    message = "";
+
+                    if (AreBothPlayersOnline()) {
+                        clientConnection1.sendTCP("BOTH ONLINE " + PlayerNames.y);
+                        clientConnection2.sendTCP("BOTH ONLINE " + PlayerNames.x);
+                    }
                 }
             }
-
         }
         else if(AreBothPlayersOnline())
         {
@@ -165,6 +175,8 @@ public class KryonetServer extends Server {
             }
 
         }
+
+
     }
 
     public boolean AreBothPlayersOnline()

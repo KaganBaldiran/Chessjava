@@ -66,6 +66,48 @@ public class UI extends JPanel
         }
 
     }
+
+    public static class GameSettingsDialog extends JDialog {
+
+        public JTextField nameField;
+
+        public GameSettingsDialog(JFrame parent) {
+            super(parent, "Profile Setting", true);
+
+            JLabel titleLabel = new JLabel("Set Player Name");
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            JLabel nameLabel = new JLabel("Player Name:");
+            nameField = new JTextField(20);
+            JButton saveButton = new JButton("Save");
+
+            JPanel panel = new JPanel();
+            panel.setLayout(new GridLayout(3, 2, 10, 10));
+            panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+            panel.add(titleLabel);
+            panel.add(new JLabel());
+            panel.add(nameLabel);
+            panel.add(nameField);
+            panel.add(new JLabel());
+            panel.add(saveButton);
+
+            saveButton.addActionListener(e -> {
+                String playerName = nameField.getText();
+                System.out.println("Player Name: " + playerName);
+                dispose();
+            });
+
+            setContentPane(panel);
+            setSize(300, 150);
+            setLocationRelativeTo(parent);
+        }
+
+        public String GetPlayerName()
+        {
+            return nameField.getText();
+        }
+    }
+
     public static class Text
     {
         Graphics graphics;
@@ -94,7 +136,6 @@ public class UI extends JPanel
             graphics.drawString(text, position.x, position.y);
         }
     }
-
 
     public static class UIcomponents
     {
@@ -424,7 +465,7 @@ public class UI extends JPanel
     TextField ReadOnlyField;
 
     CheckBox PortMapping;
-
+    JInternalFrame internalFrame;
 
     UI(JFrame frame ,MouseInputListener Mouselistener) {
 
@@ -472,6 +513,8 @@ public class UI extends JPanel
         ReadOnlyField = new TextField("" , frame_reference ,true);
         gamemenu = new MainMenu(frame_reference);
         CreateGameMenu = new DropDownMenu(frame_reference);
+
+
     }
 
     Dimension ScreenSize = new Dimension(0,0);
@@ -525,7 +568,7 @@ public class UI extends JPanel
         }
 
         if(JoinGameButton.isVisible()) {
-            JoinGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.5));
+            JoinGameButton.setLocation((int) ((UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)) + (10 * scale_coeffic)), (int) (BoardLocation.y + BoardSize.y / 1.7));
             JoinGameButton.setPreferredSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
             JoinGameButton.setSize(new Dimension((int) (100 * scale_coeffic), (int) (50 * scale_coeffic)));
         }
@@ -537,7 +580,7 @@ public class UI extends JPanel
         }
 
         if(CreateGameMenu.comboBox.isVisible()) {
-            CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.20f)));
+            CreateGameMenu.SetPosition((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.28f)));
             CreateGameMenu.SetSize((int) (200 * scale_coeffic), (int) (30 * scale_coeffic));
         }
 
@@ -553,7 +596,7 @@ public class UI extends JPanel
 
         if(PortMapping.isVisible()) {
             PortMapping.setSize((int) (170 * scale_coeffic), (int) (50 * scale_coeffic));
-            PortMapping.setLocation((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.30f)));
+            PortMapping.setLocation((int) (UIsliderBar.ComponentSizes.z + BoardLocation.x + (UIsliderBar.ComponentSizes.x * 0.10)), (int) (BoardLocation.y + (BoardSize.y * 0.33f)));
         }
 
         if (CopyButton.Pressed.IsMutexTrue())

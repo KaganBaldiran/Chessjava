@@ -37,7 +37,7 @@ public abstract class GameEvent
         Board.UpdateSQUARESIZEUI(ui.UIsliderBar.ComponentSizes.z);
         this.GameBoard.UpdateCollisionBoxes(new Math.Vec2<>(FBO_position.x,(float)((bufferedImage.getHeight() -ui.UIsliderBar.UnchangingComponentSizes.x)/2)) );
     }
-    public abstract void GameLoop();
+    public abstract void GameLoop(String PlayerName);
 
     public void EndGame()
     {
@@ -123,7 +123,7 @@ public abstract class GameEvent
             if (JOptionPane.showConfirmDialog(null, "Are you sure to create a LAN game server?") == 0)
             {
                 Server = new KryonetServer(54555, 54777 , ExternalIP);
-                Client = new KryonetClient(5000, Server.GameLinkInternal, 54555, 54777 , MoveTheOpponent);
+                Client = new KryonetClient(15000, Server.GameLinkInternal, 54555, 54777 , MoveTheOpponent);
             }
             else
             {
@@ -179,17 +179,17 @@ public abstract class GameEvent
         boolean ShowedCheckMate = false;
 
         @Override
-        public void GameLoop()
+        public void GameLoop(String PlayerName)
         {
             if(Client.ConnectionState.equalsIgnoreCase("CONNECTED"))
             {
-                if(PlayerOnTheOpponentMachine.IsCheckMate() && !ShowedCheckMate)
+                if(PlayerOnTheOpponentMachine.IsWon() && !ShowedCheckMate)
                 {
                     JOptionPane.showMessageDialog(null , "CHECKMATE :: OPPONENT WINS!", "CHECKMATE" , JOptionPane.ERROR_MESSAGE);
                     ShowedCheckMate = true;
                     Client.Disconnect();
                 }
-                else if (PlayerOnThisMachine.IsCheckMate() && !ShowedCheckMate)
+                else if (PlayerOnThisMachine.IsWon() && !ShowedCheckMate)
                 {
                     JOptionPane.showMessageDialog(null , "CHECKMATE :: PLAYER 1 WINS!", "CHECKMATE" , JOptionPane.ERROR_MESSAGE);
                     ShowedCheckMate = true;
@@ -199,7 +199,7 @@ public abstract class GameEvent
                 if (PlayerOnThisMachine.isPlayersTurn())
                 {
                     PlayerOnThisMachine.GetPosssibleMoves();
-                    PlayerOnThisMachine.MovePlayerPieces();
+                    PlayerOnThisMachine.MovePlayerPieces(PlayerOnTheOpponentMachine);
                     PlayerOnThisMachine.Capture(PlayerOnTheOpponentMachine);
                 }
             }
@@ -208,7 +208,7 @@ public abstract class GameEvent
                 //timer.interrupt();
             }
 
-            Client.loop(PlayerOnThisMachine , PlayerOnTheOpponentMachine);
+            Client.loop(PlayerOnThisMachine , PlayerOnTheOpponentMachine , PlayerName);
 
             if (MoveTheOpponent.IsMutexTrue())
             {
